@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev.config.js --progress --color --bail",
+    "build": "webpack --config webpack-dev.config.js --progress --color --bail",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -25,8 +26,10 @@
     "webpack-merge": "^5.0.4"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.2.1",
     "@babel/runtime": "^7.10.4",
     "antd": "^4.4.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"

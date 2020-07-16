@@ -1,34 +1,38 @@
 import React from 'react';
-import { Card, Row, Col } from 'antd';
+import { Layout } from 'antd';
 import Header from './Header';
 import Home from './Home';
 import ContractNegotiationEntry from './contract-negotiation/Entry';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import NavMenu from "./NavMenu";
 
 export default function Application(props) {
   return (
-      <Router>
-        <React.Fragment>
+    <Router>
+      <Layout>
+        <Layout.Header className="header">
           <Switch>
-            <Route render={routeProps => (
-                <Header {...routeProps} />
-            )} />
+            <Route render={routeProps => (<Header {...routeProps} />)} />
           </Switch>
-          <Row justify="center" align="top">
-            <Col span={16}>
-              <Card className="middle" style={{ marginTop: -5, zIndex: -1 }}>
-                <Switch>
-                  <Route exact path="/" rener={routeProps => (
-                      <Home {...routeProps} />
-                  )} />
-                  <Route path="/contract-negotiation" rener={routeProps => (
-                      <ContractNegotiationEntry {...routeProps} />
-                  )} />
-                </Switch>
-              </Card>
-            </Col>
-          </Row>
-        </React.Fragment>
-      </Router>
+        </Layout.Header>
+        <Layout>
+          <Layout.Sider width={250}>
+            <Switch>
+              <Route render={routeProps => (<NavMenu {...routeProps} vertical />)} />
+            </Switch>
+          </Layout.Sider>
+          <Layout.Content className="content">
+            <Switch>
+              <Route path="/tools/contract-negotiation" render={routeProps => (
+                  <ContractNegotiationEntry {...routeProps} />
+              )} />
+              <Route path="/" render={routeProps => (
+                  <Home {...routeProps} />
+              )} />
+            </Switch>
+          </Layout.Content>
+        </Layout>
+      </Layout>
+    </Router>
   );
 }

@@ -1,12 +1,18 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import {Switch, Route, Link} from 'react-router-dom';
+import { Typography } from 'antd';
 
 export default function Entry(props) {
     return (
-        <Switch>
-            <Route>
+        <React.Fragment>
+            <Typography>
+                <Typography.Title level={2}>Contract Negotiation</Typography.Title>
+            </Typography>
+            <Switch>
+                <Route>
 
-            </Route>
-        </Switch>
+                </Route>
+            </Switch>
+        </React.Fragment>
     )
 }
