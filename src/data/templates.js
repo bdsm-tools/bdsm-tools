@@ -7,18 +7,54 @@ export default [
                 type: 'object',
                 name: {
                     type: 'string',
+                },
+                verifyAge: {
+                    type: 'boolean',
+                },
+            },
+            pussy: {
+                type: 'object',
+                verifyPussy: {
+                    type: 'boolean',
+                },
+                acts: {
+                    type: 'lookuplist'
                 }
+            },
+            dick: {
+                type: 'object',
+            },
+            ass: {
+
+            },
+            equipment: {
+                type: 'object',
             }
         },
         uischema: {
-            type: "VerticalLayout",
+            type: 'Categorization',
             elements: [
                 {
-                    type: "Control",
-                    scope: "#/intro/name",
-                    label: "Your Name:"
-                }
-            ]
+                    type: 'Category',
+                    label: 'Intro',
+                    elements: [
+                        {
+                            type: "VerticalLayout",
+                            elements: [
+                                {
+                                    type: "Control",
+                                    scope: "#/intro/name",
+                                    label: "Your Name:",
+                                }, {
+                                    type: 'Control',
+                                    scope: '#/intro/verifyAge',
+                                    label: 'Verify I am over the age of 18',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         },
         questions: [
             {

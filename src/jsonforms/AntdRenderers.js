@@ -1,9 +1,9 @@
-import { rankWith, scopeEndsWith } from '@jsonforms/core';
-import TextFieldControl from './cells/TextFieldCell';
+import {isControl, rankWith } from '@jsonforms/core';
+import ControlRenderer from "./renderer/ControlRenderer";
 
 export default [
     {
-        tester: rankWith(3, scopeEndsWith('text')),
-        renderer: TextFieldControl,
+        tester: rankWith(3, isControl),
+        renderer: ControlRenderer,
     },
 ];
