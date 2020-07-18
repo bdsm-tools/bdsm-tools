@@ -28,10 +28,15 @@
   "dependencies": {
     "@ant-design/icons": "^4.2.1",
     "@babel/runtime": "^7.10.4",
+    "@jsonforms/core": "^2.4.0",
+    "@jsonforms/react": "^2.4.0",
+    "@jsonforms/vanilla-renderers": "^2.4.0",
     "antd": "^4.4.1",
+    "lodash": "^4.17.19",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.2.0"
   }
 }
