@@ -1,9 +1,9 @@
-import {isControl, rankWith } from '@jsonforms/core';
+import {isControl, rankWith} from '@jsonforms/core';
 import ControlRenderer from "./renderer/ControlRenderer";
 
 export default [
-    {
-        tester: rankWith(3, isControl),
-        renderer: ControlRenderer,
-    },
+  {
+    tester: rankWith(3, isControl),
+    renderer: ControlRenderer,
+  },
 ];

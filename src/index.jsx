@@ -9,6 +9,6 @@ rootElement.className = 'app-root';
 document.body.appendChild(rootElement);
 
 ReactDOM.render(
-  <Application />,
+  <Application/>,
   rootElement,
 );
