@@ -23,8 +23,22 @@ export default [
       },
       dick: {
         type: 'object',
+        verifyDick: {
+          type: 'boolean',
+        },
+        acts: {
+          type: 'lookuplist',
+        },
       },
-      ass: {},
+      ass: {
+        type: 'object',
+        verifyAss: {
+          type: 'boolean',
+        },
+        acts: {
+          type: 'lookuplist',
+        },
+      },
       equipment: {
         type: 'object',
       },
@@ -78,20 +92,62 @@ export default [
               ],
             }
           ],
+        }, {
+          type: 'Category',
+          label: 'Dick',
+          elements: [
+            {
+              type: "VerticalLayout",
+              elements: [
+                {
+                  type: 'Control',
+                  scope: '#/dick/verifyDick',
+                  label: 'Verify I have a Dick',
+                }, {
+                  type: 'Control',
+                  scope: '#/dick/acts',
+                  label: '',
+                  questions: [
+                    'Penetration',
+                  ],
+                  answers: [
+                    '',
+                    'Soft Limit',
+                    'Hard Limit',
+                  ],
+                },
+              ],
+            }
+          ],
+        }, {
+          type: 'Category',
+          label: 'Ass',
+          elements: [
+            {
+              type: "VerticalLayout",
+              elements: [
+                {
+                  type: 'Control',
+                  scope: '#/ass/verifyAss',
+                  label: 'Verify I have an Ass',
+                }, {
+                  type: 'Control',
+                  scope: '#/ass/acts',
+                  label: '',
+                  questions: [
+                    'Penetration',
+                  ],
+                  answers: [
+                    '',
+                    'Soft Limit',
+                    'Hard Limit',
+                  ],
+                },
+              ],
+            }
+          ],
         },
       ],
     },
-    questions: [
-      {
-        label: 'Question',
-        description: '',
-        imageUrl: null,
-      },
-    ],
-    answerLabels: [
-      '...',
-      'Soft Limit',
-      'Hard Limit',
-    ],
   },
 ];

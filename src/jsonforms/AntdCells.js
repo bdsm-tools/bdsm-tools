@@ -1,4 +1,13 @@
-import {rankWith, isStringControl, isBooleanControl, isEnabled, and, schemaTypeIs, uiTypeIs} from '@jsonforms/core';
+import {
+  rankWith,
+  isStringControl,
+  isBooleanControl,
+  isEnabled,
+  and,
+  schemaTypeIs,
+  uiTypeIs,
+  isEnumControl
+} from '@jsonforms/core';
 import TextFieldCell from './cells/TextFieldCell';
 import CheckboxCell from "./cells/CheckboxCell";
 import SelectionCell from "./cells/SelectionCell";
@@ -12,7 +21,7 @@ export default [
     tester: rankWith(3, isBooleanControl),
     cell: CheckboxCell,
   }, {
-    tester: rankWith(3, isEnabled),
+    tester: rankWith(3, isEnumControl),
     cell: SelectionCell,
   }, {
     tester: rankWith(3, and(

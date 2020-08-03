@@ -2,10 +2,10 @@ import React from 'react';
 import {withJsonFormsControlProps} from '@jsonforms/react';
 import {Checkbox} from 'antd';
 
-function CheckboxCell(props) {
+function LookupListCell(props) {
   const {data, className, id, enabled, uischema, path, handleChange} = props;
 
-  return null;
+  return 'LookupListCell';
 }
 
-export default withJsonFormsControlProps(CheckboxCell);
+export default withJsonFormsControlProps(LookupListCell);
