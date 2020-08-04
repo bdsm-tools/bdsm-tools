@@ -82,6 +82,8 @@ export default [
                   label: '',
                   questions: [
                     'Penetration',
+                    'Vibrator',
+                    'Clamps',
                   ],
                   answers: [
                     '',

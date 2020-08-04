@@ -1,8 +1,11 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
 import {Typography, Button, Empty, PageHeader} from 'antd';
-import Contract from "./Contract";
 import templates from '../data/templates';
+
+const Contract = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './Contract')
+);
 
 export default function Entry(props) {
   const {match, history} = props;

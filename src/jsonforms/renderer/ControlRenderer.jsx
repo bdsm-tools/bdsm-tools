@@ -45,7 +45,6 @@ function ControlRenderer(props) {
     console.warn('No applicable cell found.', uischema, schema);
     return null;
   }
-  console.log(props);
   return (
     <div
       className={(classNames || {}).wrapper}

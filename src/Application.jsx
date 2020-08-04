@@ -1,10 +1,17 @@
 import React from 'react';
-import {Layout} from 'antd';
+import {Layout, Spin} from 'antd';
 import Header from './Header';
-import Home from './Home';
-import SceneNegotiationEntry from './scene-negotiation/Entry';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import NavMenu from "./NavMenu";
+
+const SceneNegotiationEntry = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './scene-negotiation/Entry')
+);
+
+const Home = React.lazy(() =>
+  import(/* webpackPrefetch: true */ './Home')
+);
+
 
 export default function Application(props) {
   return (
@@ -22,14 +29,16 @@ export default function Application(props) {
             </Switch>
           </Layout.Sider>
           <Layout.Content className="content">
-            <Switch>
-              <Route path="/tools/scene-negotiation" render={routeProps => (
-                <SceneNegotiationEntry {...routeProps} />
-              )}/>
-              <Route path="/" render={routeProps => (
-                <Home {...routeProps} />
-              )}/>
-            </Switch>
+            <React.Suspense fallback={<Spin />}>
+              <Switch>
+                <Route path="/tools/scene-negotiation" render={routeProps => (
+                  <SceneNegotiationEntry {...routeProps} />
+                )}/>
+                <Route path="/" render={routeProps => (
+                  <Home {...routeProps} />
+                )}/>
+              </Switch>
+            </React.Suspense>
           </Layout.Content>
         </Layout>
       </Layout>
