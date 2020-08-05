@@ -5,11 +5,11 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import NavMenu from "./NavMenu";
 
 const SceneNegotiationEntry = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './scene-negotiation/Entry')
+  import(/* webpackChunkName: "SceneNegatiation", webpackPrefetch: true */ './scene-negotiation/Entry')
 );
 
 const Home = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './Home')
+  import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
 );
 
 

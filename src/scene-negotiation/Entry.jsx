@@ -4,7 +4,7 @@ import {Typography, Button, Empty, PageHeader} from 'antd';
 import templates from '../data/templates';
 
 const Contract = React.lazy(() =>
-  import(/* webpackPrefetch: true */ './Contract')
+  import(/* webpackChunkName: "Contract", webpackPrefetch: true */ './Contract')
 );
 
 export default function Entry(props) {
