@@ -1,6 +1,9 @@
 {
   "name": "scene-negotiation-api",
-  "version": "0.0.1",
+  "version": "1.0.0",
+  "scripts": {
+    "deploy": "./deploy.sh"
+  },
   "dependencies": {
     "firebase-admin": "9.0.0"
   }

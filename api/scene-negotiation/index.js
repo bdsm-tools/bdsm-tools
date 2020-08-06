@@ -1,5 +1,4 @@
 const admin = require('firebase-admin');
-const sceneNegotiationTypes = require('./scene-negotiation-types.js');
 
 admin.initializeApp(); // functions.config().firebase
 const db = admin.firestore();
@@ -35,16 +34,65 @@ async function doGet(req, res) {
   const { path, query } = req;
   const { id } = query;
 
-
-
-  if (id) {
-
-  } else {
-    await sceneNegotiationTypes.withDb(db, req, res).getAll();
+  if (path.startsWith('/negotiation-types')) {
+    if (id) {
+      return await sceneNegotiationTypes(req, res).getOne(id);
+    } else {
+      return await sceneNegotiationTypes(req, res).getAll();
+    }
   }
+  if (path.startsWith('/negotiation')) {
+    if (id) {
+      return await sceneNegotiation(req, res).getOne(id);
+    }
+  }
+
+  res.status(404).send('No data found for resource');
 }
 
 async function doPost(req, res) {
   const { path, query } = req;
   const { id } = query;
 }
+
+const sceneNegotiationTypes = (req, res) => {
+  const collection = db.collection("scene-negotiation-types");
+  return ({
+    async getAll() {
+      const docs = await collection
+        .limit(100)
+        .get()
+        .then(extract);
+
+      res.status(200).json(docs);
+    },
+    async getOne(id) {
+      const doc = await collection
+        .doc(id)
+        .get();
+
+      res.status(200).json(doc);
+    }
+  });
+};
+
+const sceneNegotiation = (req, res) => {
+  const collection = db.collection("scene-negotiations");
+  return ({
+    async getOne(id) {
+      const doc = await collection
+        .doc(id)
+        .get();
+
+      res.status(200).json(doc);
+    },
+    async save(body) {
+      const negotiation = await collection.doc()
+        .set(JSON.parse(body));
+
+      res.status(200).json(negotiation);
+    }
+  });
+};
+
+const extract = (querySnapshot) => querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));

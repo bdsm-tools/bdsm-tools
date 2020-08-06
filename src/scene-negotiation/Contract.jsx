@@ -4,15 +4,15 @@ import {JsonForms} from '@jsonforms/react';
 import {vanillaRenderers, vanillaCells} from '@jsonforms/vanilla-renderers';
 import antdRenderers from '../jsonforms/AntdRenderers';
 import antdCells from '../jsonforms/AntdCells';
-import api from '../services/api';
+import api from '../services/scene-negotiation-api';
 
 const Wrapper = (props) => {
   const [data, setData] = React.useState({});
   const [template, setTemplate] = React.useState({});
   React.useEffect(() => {
-    api.getContract(props.id).then(({ data, templateId }) => {
+    api.getNegotiation(props.id).then(({ data, templateId }) => {
       setData(data);
-      api.getContractType(templateId)
+      api.getNegotiationType(templateId)
         .then(setTemplate);
     });
   }, []);
@@ -22,9 +22,9 @@ const Wrapper = (props) => {
 }
 
 function fetchData({ id, setData, setTemplate }) {
-  api.getContract(id).then(({ data, templateId }) => {
+  api.getNegotiation(id).then(({ data, templateId }) => {
     setData(data);
-    api.getContractType(templateId)
+    api.getNegotiationType(templateId)
       .then(setTemplate);
   });
 }
@@ -47,7 +47,7 @@ function Contract(props) {
       fetchData({ id, setData, setTemplate });
     }
     else if (sourceId) {
-      api.getContract(sourceId).then(source => {
+      api.getNegotiation(sourceId).then(source => {
         setData(source.data);
       });
     }
