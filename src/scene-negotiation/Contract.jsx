@@ -10,9 +10,9 @@ const Wrapper = (props) => {
   const [data, setData] = React.useState({});
   const [template, setTemplate] = React.useState({});
   React.useEffect(() => {
-    api.getNegotiation(props.id).then(({ data, templateId }) => {
+    api.getNegotiation(props.id).then(({ data, template }) => {
       setData(data);
-      api.getNegotiationType(templateId)
+      api.getNegotiationType(template)
         .then(setTemplate);
     });
   }, []);
@@ -21,18 +21,20 @@ const Wrapper = (props) => {
   )
 }
 
-function fetchData({ id, setData, setTemplate }) {
-  api.getNegotiation(id).then(({ data, templateId }) => {
-    setData(data);
-    api.getNegotiationType(templateId)
-      .then(setTemplate);
+function fetchData({ id, setData, setTemplate, setErrors }) {
+  api.getNegotiation(id).then(({ data, template }) => {
+    if (data && template) {
+      setData(data);
+      api.getNegotiationType(template)
+        .then(setTemplate);
+    }
   });
 }
 
 function Contract(props) {
   const [template, setTemplate] = React.useState(props.template);
   const [data, setData] = React.useState({});
-  const [errors, setErrors] = React.useState({});
+  const [errors, setErrors] = React.useState([]);
   const { search } = useLocation();
 
   React.useEffect(() => {
@@ -44,7 +46,7 @@ function Contract(props) {
     const sourceId = params.get('source');
     const id = params.get('id');
     if (id) {
-      fetchData({ id, setData, setTemplate });
+      fetchData({ id, setData, setTemplate, setErrors });
     }
     else if (sourceId) {
       api.getNegotiation(sourceId).then(source => {
@@ -55,8 +57,8 @@ function Contract(props) {
 
   return (
     <JsonForms
-      schema={template.schema}
-      uischema={template.uischema}
+      schema={template.schema || {}}
+      uischema={template.uischema || {}}
       renderers={[
         ...vanillaRenderers,
         ...antdRenderers,
@@ -66,10 +68,7 @@ function Contract(props) {
         ...antdCells,
       ]}
       data={data}
-      onChange={(errors, data) => {
-        setErrors(errors);
-        setData(data);
-      }}
+      // onChange={}
     />
   );
 }

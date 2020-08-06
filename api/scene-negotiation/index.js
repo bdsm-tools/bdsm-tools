@@ -69,7 +69,8 @@ const sceneNegotiationTypes = (req, res) => {
     async getOne(id) {
       const doc = await collection
         .doc(id)
-        .get();
+        .get()
+        .then(extract);
 
       res.status(200).json(doc);
     }
@@ -82,17 +83,28 @@ const sceneNegotiation = (req, res) => {
     async getOne(id) {
       const doc = await collection
         .doc(id)
-        .get();
+        .get()
+        .then(extract);
 
       res.status(200).json(doc);
     },
     async save(body) {
       const negotiation = await collection.doc()
-        .set(JSON.parse(body));
+        .set(JSON.parse(body))
+        .then(extract);
 
       res.status(200).json(negotiation);
     }
   });
 };
 
-const extract = (querySnapshot) => querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+const extract = (querySnapshot) => {
+  const mapper = (doc) => ({ id: doc.id, ...doc.data() });
+  if (querySnapshot.data) {
+    return querySnapshot.data();
+  }
+  if (querySnapshot.docs) {
+    return querySnapshot.docs.map(mapper);
+  }
+  return querySnapshot;
+}
