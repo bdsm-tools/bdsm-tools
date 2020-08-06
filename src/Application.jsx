@@ -12,7 +12,6 @@ const Home = React.lazy(() =>
   import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
 );
 
-
 export default function Application(props) {
   return (
     <Router>

@@ -1,6 +1,7 @@
 export default [
   {
     title: 'Simple Negotiation',
+    active: true,
     schema: {
       type: 'object',
       intro: {
