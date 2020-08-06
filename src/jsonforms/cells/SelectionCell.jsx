@@ -1,9 +1,9 @@
 import React from 'react';
-import {withJsonFormsControlProps} from '@jsonforms/react';
+import {withJsonFormsControlProps, withJsonFormsEnumCellProps} from '@jsonforms/react';
 import {Select} from 'antd';
 
 function SelectionCell(props) {
-  const {data, className, id, enabled, uischema, path, handleChange, options} = props;
+  const {data, className, id, enabled, schema, uischema, path, handleChange, options} = props;
 
   return (
     <Select
@@ -12,10 +12,11 @@ function SelectionCell(props) {
       disabled={!enabled}
       autoFocus={uischema.options && uischema.options.focus}
       value={data || ''}
-      onChange={ev => handleChange(path, ev.target.value)}
+      onChange={value => handleChange(path, value)}
       style={{ width: '100%' }}
     >
-      {(options || []).map(optionValue => (
+      <Select.Option value="" label="">{''}</Select.Option>
+      {(schema.options || []).map(optionValue => (
         <Select.Option value={optionValue} label={optionValue} key={optionValue}>
           {optionValue}
         </Select.Option>
@@ -24,4 +25,4 @@ function SelectionCell(props) {
   );
 }
 
-export default withJsonFormsControlProps(SelectionCell);
+export default withJsonFormsEnumCellProps(SelectionCell);

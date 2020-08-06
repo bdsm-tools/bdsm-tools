@@ -11,6 +11,7 @@ export default function NavMenu({location, vertical}) {
       mode={vertical ? 'inline' : 'horizontal'}
       selectedKeys={pathname.split('/')}
       defaultOpenKeys={['tools']}
+      style={{ paddingBottom: 'auto' }}
     >
       <Menu.SubMenu key="tools" title="Tools">
         <Menu.Item key="scene-negotiation" icon={<FileDoneOutlined/>}>

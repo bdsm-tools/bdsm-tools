@@ -55,6 +55,7 @@ function Contract(props) {
     }
   }, [search]);
 
+  console.log(data);
   return (
     <JsonForms
       schema={template.schema || {}}
@@ -68,7 +69,7 @@ function Contract(props) {
         ...antdCells,
       ]}
       data={data}
-      // onChange={}
+      onChange={(form) => setData(form.data)}
     />
   );
 }

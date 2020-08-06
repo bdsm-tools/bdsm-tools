@@ -22,7 +22,7 @@ export default function Application(props) {
           </Switch>
         </Layout.Header>
         <Layout>
-          <Layout.Sider width={250}>
+          <Layout.Sider width={250} style={{ height: '100%' }}>
             <Switch>
               <Route render={routeProps => (<NavMenu {...routeProps} vertical/>)}/>
             </Switch>

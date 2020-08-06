@@ -12,6 +12,15 @@ export default [
         verifyAge: {
           type: 'boolean',
         },
+        experience: {
+          type: 'enum',
+          options: [
+            'None',
+            'A Little',
+            'A Lot',
+            'Very Experienced',
+          ],
+        }
       },
       pussy: {
         type: 'object',
@@ -53,6 +62,7 @@ export default [
           elements: [
             {
               type: "VerticalLayout",
+              width: '400px',
               elements: [
                 {
                   type: "Control",
@@ -62,6 +72,10 @@ export default [
                   type: 'Control',
                   scope: '#/intro/verifyAge',
                   label: 'Verify I am over the age of 18',
+                }, {
+                  type: 'Control',
+                  scope: '#/intro/experience',
+                  label: 'BDSM Experience Level',
                 },
               ],
             },
@@ -91,9 +105,16 @@ export default [
                     'Soft Limit',
                     'Hard Limit',
                   ],
+                  // rule: {
+                  //   effect: 'HIDE',
+                  //   condition: {
+                  //     scope: '#/pussy/verifyPussy',
+                  //     schema: { boolean: [true] }
+                  //   },
+                  // },
                 },
               ],
-            }
+            },
           ],
         }, {
           type: 'Category',
@@ -118,9 +139,16 @@ export default [
                     'Soft Limit',
                     'Hard Limit',
                   ],
+                  rule: {
+                    effect: 'HIDE',
+                    condition: {
+                      scope: '#/dick/verifyDick',
+                      schema: { boolean: [true] }
+                    },
+                  },
                 },
               ],
-            }
+            },
           ],
         }, {
           type: 'Category',
@@ -145,9 +173,16 @@ export default [
                     'Soft Limit',
                     'Hard Limit',
                   ],
+                  rule: {
+                    effect: 'HIDE',
+                    condition: {
+                      scope: '#/ass/verifyAss',
+                      schema: { boolean: [true] }
+                    },
+                  },
                 },
               ],
-            }
+            },
           ],
         },
       ],

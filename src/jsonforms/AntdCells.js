@@ -21,7 +21,10 @@ export default [
     tester: rankWith(3, isBooleanControl),
     cell: CheckboxCell,
   }, {
-    tester: rankWith(3, isEnumControl),
+    tester: rankWith(3, and(
+      uiTypeIs('Control'),
+      schemaTypeIs('enum'),
+    )),
     cell: SelectionCell,
   }, {
     tester: rankWith(3, and(

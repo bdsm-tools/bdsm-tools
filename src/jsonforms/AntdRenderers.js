@@ -1,6 +1,7 @@
-import {isCategorization, isControl, rankWith} from '@jsonforms/core';
+import {isCategorization, isControl, rankWith, uiTypeIs, isLayout} from '@jsonforms/core';
 import ControlRenderer from "./renderer/ControlRenderer";
 import CatagorizationRenderer from "./renderer/CatagorizationRenderer";
+import VerticalLayoutRenderer from "./renderer/VerticalLayoutRenderer";
 
 export default [
   {
@@ -9,5 +10,8 @@ export default [
   }, {
     tester: rankWith(3, isCategorization),
     renderer: CatagorizationRenderer,
+  }, {
+    tester: rankWith(3, uiTypeIs('VerticalLayout')),
+    renderer: VerticalLayoutRenderer,
   },
 ];
