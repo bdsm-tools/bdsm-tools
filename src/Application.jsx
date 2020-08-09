@@ -3,6 +3,7 @@ import {Layout, Spin} from 'antd';
 import Header from './Header';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import NavMenu from "./NavMenu";
+import ConsentModal from "./ConsentModal";
 
 const SceneNegotiationEntry = React.lazy(() =>
   import(/* webpackChunkName: "SceneNegatiation", webpackPrefetch: true */ './scene-negotiation/Entry')
@@ -15,6 +16,7 @@ const Home = React.lazy(() =>
 export default function Application(props) {
   return (
     <Router>
+      <ConsentModal />
       <Layout>
         <Layout.Header className="header">
           <Switch>
