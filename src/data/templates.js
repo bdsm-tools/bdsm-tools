@@ -105,13 +105,13 @@ export default [
                     'Soft Limit',
                     'Hard Limit',
                   ],
-                  // rule: {
-                  //   effect: 'HIDE',
-                  //   condition: {
-                  //     scope: '#/pussy/verifyPussy',
-                  //     schema: { boolean: [true] }
-                  //   },
-                  // },
+                  rule: {
+                    effect: 'SHOW',
+                    condition: {
+                      scope: '#/pussy/verifyPussy',
+                      schema: { const: true }
+                    },
+                  },
                 },
               ],
             },
@@ -143,7 +143,7 @@ export default [
                     effect: 'HIDE',
                     condition: {
                       scope: '#/dick/verifyDick',
-                      schema: { boolean: [true] }
+                      schema: { boolean: [false] }
                     },
                   },
                 },
@@ -177,7 +177,7 @@ export default [
                     effect: 'HIDE',
                     condition: {
                       scope: '#/ass/verifyAss',
-                      schema: { boolean: [true] }
+                      schema: { boolean: [false] }
                     },
                   },
                 },
