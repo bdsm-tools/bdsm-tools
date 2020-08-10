@@ -1,14 +1,17 @@
 import React from 'react';
-import {withJsonFormsControlProps} from '@jsonforms/react';
+import {withJsonFormsCellProps} from '@jsonforms/react';
 import {Checkbox} from 'antd';
 
 function CheckboxCell(props) {
-  const {data, className, id, enabled, uischema, path, handleChange} = props;
+  const {data, className, id, enabled, visible, uischema, path, handleChange} = props;
 
+  if (!visible) {
+    return null;
+  }
   return (
     <Checkbox
       checked={!!data}
-      onChange={ev => handleChange(path, ev.target.checked)}
+      onChange={e => handleChange(path, e.target.checked)}
       className={className}
       id={id}
       disabled={!enabled}
@@ -19,4 +22,4 @@ function CheckboxCell(props) {
   );
 }
 
-export default withJsonFormsControlProps(CheckboxCell);
+export default withJsonFormsCellProps(CheckboxCell);

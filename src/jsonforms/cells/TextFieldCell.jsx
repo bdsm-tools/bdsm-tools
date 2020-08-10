@@ -1,5 +1,5 @@
 import React from 'react';
-import {withJsonFormsControlProps} from '@jsonforms/react';
+import {withJsonFormsCellProps} from '@jsonforms/react';
 import {Input, Typography} from 'antd';
 import _ from 'lodash';
 
@@ -10,6 +10,7 @@ function TextFieldCell(props) {
     className,
     id,
     enabled,
+    visible,
     uischema,
     schema,
     path,
@@ -17,6 +18,10 @@ function TextFieldCell(props) {
   } = props;
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = _.merge({}, config, uischema.options);
+
+  if (!visible) {
+    return null;
+  }
   return (
     <Typography>
       <Typography.Text>
@@ -37,4 +42,4 @@ function TextFieldCell(props) {
   );
 }
 
-export default withJsonFormsControlProps(TextFieldCell);
+export default withJsonFormsCellProps(TextFieldCell);

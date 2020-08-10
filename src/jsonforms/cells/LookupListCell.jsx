@@ -1,9 +1,9 @@
 import React from 'react';
-import {withJsonFormsControlProps} from '@jsonforms/react';
+import {withJsonFormsCellProps} from '@jsonforms/react';
 import {List, Typography, Radio} from 'antd';
 
 function LookupListCell(props) {
-  const {data, uischema, path, handleChange, enabled, } = props;
+  const {data, uischema, path, handleChange, enabled, visible } = props;
 
   const responses = data || [];
   const click = (index) => (e) => {
@@ -11,7 +11,10 @@ function LookupListCell(props) {
     handleChange(path, responses);
   };
 
-  console.log(props);
+  if (!visible) {
+    return null;
+  }
+
   return (
     <List
       dataSource={uischema.questions || []}
@@ -37,4 +40,4 @@ function LookupListCell(props) {
   );
 }
 
-export default withJsonFormsControlProps(LookupListCell);
+export default withJsonFormsCellProps(LookupListCell);

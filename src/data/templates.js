@@ -140,10 +140,10 @@ export default [
                     'Hard Limit',
                   ],
                   rule: {
-                    effect: 'HIDE',
+                    effect: 'SHOW',
                     condition: {
                       scope: '#/dick/verifyDick',
-                      schema: { boolean: [false] }
+                      schema: { const: true }
                     },
                   },
                 },
@@ -174,10 +174,10 @@ export default [
                     'Hard Limit',
                   ],
                   rule: {
-                    effect: 'HIDE',
+                    effect: 'SHOW',
                     condition: {
                       scope: '#/ass/verifyAss',
-                      schema: { boolean: [false] }
+                      schema: { const: true }
                     },
                   },
                 },

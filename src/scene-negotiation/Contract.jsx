@@ -4,22 +4,8 @@ import {JsonForms} from '@jsonforms/react';
 import {vanillaRenderers, vanillaCells} from '@jsonforms/vanilla-renderers';
 import antdRenderers from '../jsonforms/AntdRenderers';
 import antdCells from '../jsonforms/AntdCells';
+import customCells from '../jsonforms/CustomCells';
 import api from '../services/scene-negotiation-api';
-
-const Wrapper = (props) => {
-  const [data, setData] = React.useState({});
-  const [template, setTemplate] = React.useState({});
-  React.useEffect(() => {
-    api.getNegotiation(props.id).then(({ data, template }) => {
-      setData(data);
-      api.getNegotiationType(template)
-        .then(setTemplate);
-    });
-  }, []);
-  return (
-    <Contract {...props} template={template} data={data} />
-  )
-}
 
 function fetchData({ id, setData, setTemplate, setErrors }) {
   api.getNegotiation(id).then(({ data, template }) => {
@@ -67,6 +53,7 @@ function Contract(props) {
       cells={[
         ...vanillaCells,
         ...antdCells,
+        ...customCells,
       ]}
       data={data}
       onChange={(form) => setData(form.data)}

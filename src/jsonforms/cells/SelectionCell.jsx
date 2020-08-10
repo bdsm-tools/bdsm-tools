@@ -1,10 +1,13 @@
 import React from 'react';
-import {withJsonFormsControlProps, withJsonFormsEnumCellProps} from '@jsonforms/react';
+import { withJsonFormsEnumCellProps} from '@jsonforms/react';
 import {Select} from 'antd';
 
 function SelectionCell(props) {
-  const {data, className, id, enabled, schema, uischema, path, handleChange, options} = props;
+  const {data, className, id, enabled, visible, schema, uischema, path, handleChange, options} = props;
 
+  if (!visible) {
+    return null;
+  }
   return (
     <Select
       className={className}

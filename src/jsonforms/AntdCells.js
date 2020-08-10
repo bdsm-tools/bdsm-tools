@@ -11,7 +11,6 @@ import {
 import TextFieldCell from './cells/TextFieldCell';
 import CheckboxCell from "./cells/CheckboxCell";
 import SelectionCell from "./cells/SelectionCell";
-import LookupListCell from "./cells/LookupListCell";
 
 export default [
   {
@@ -26,11 +25,5 @@ export default [
       schemaTypeIs('enum'),
     )),
     cell: SelectionCell,
-  }, {
-    tester: rankWith(3, and(
-      uiTypeIs('Control'),
-      schemaTypeIs('lookuplist'),
-    )),
-    cell: LookupListCell,
-  },
+  }
 ];
