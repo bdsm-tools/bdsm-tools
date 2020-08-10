@@ -2,11 +2,9 @@ import {
   rankWith,
   isStringControl,
   isBooleanControl,
-  isEnabled,
   and,
   schemaTypeIs,
   uiTypeIs,
-  isEnumControl
 } from '@jsonforms/core';
 import TextFieldCell from './cells/TextFieldCell';
 import CheckboxCell from "./cells/CheckboxCell";

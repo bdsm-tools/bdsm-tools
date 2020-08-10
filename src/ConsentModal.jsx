@@ -40,7 +40,7 @@ export default function ConsentModal() {
           </ul>
         </Typography.Paragraph>
         <Typography.Paragraph type="warning">
-          By clicking 'I Agree' you are stating that you are permitted to access
+          By clicking &aposI Agree&apos you are stating that you are permitted to access
           this type of material in accordance with your local laws. You also understand
           the type of content you may see on this site.
         </Typography.Paragraph>

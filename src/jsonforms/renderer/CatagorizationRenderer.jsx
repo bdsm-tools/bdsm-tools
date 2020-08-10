@@ -1,5 +1,5 @@
 import React from 'react';
-import {DispatchCell, ResolvedJsonFormsDispatch, withJsonFormsLayoutProps} from '@jsonforms/react';
+import {ResolvedJsonFormsDispatch, withJsonFormsLayoutProps} from '@jsonforms/react';
 import { Tabs } from "antd";
 
 function CategorizationRenderer(props) {

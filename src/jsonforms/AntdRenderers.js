@@ -1,4 +1,4 @@
-import {isCategorization, isControl, rankWith, uiTypeIs, isLayout} from '@jsonforms/core';
+import {isCategorization, isControl, rankWith, uiTypeIs} from '@jsonforms/core';
 import ControlRenderer from "./renderer/ControlRenderer";
 import CatagorizationRenderer from "./renderer/CatagorizationRenderer";
 import VerticalLayoutRenderer from "./renderer/VerticalLayoutRenderer";

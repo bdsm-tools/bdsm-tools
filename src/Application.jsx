@@ -13,7 +13,7 @@ const Home = React.lazy(() =>
   import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
 );
 
-export default function Application(props) {
+export default function Application() {
   return (
     <Router>
       <ConsentModal />

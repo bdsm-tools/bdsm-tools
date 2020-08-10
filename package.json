@@ -6,7 +6,10 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev.config.js --progress --color --bail",
     "build": "webpack --config webpack-prod.config.js --progress --color --bail",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npmrun lint && npm run test-compile",
+    "test-compile": "webpack --config webpack-common.config.js --color --bail --mode development",
+    "lint": "eslint './**/*.{js,jsx}'",
+    "lint:fix": "npm run lint -- --fix"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +22,9 @@
     "clean-webpack-plugin": "^3.0.0",
     "compression-webpack-plugin": "^4.0.0",
     "css-loader": "^3.6.0",
+    "eslint": "^7.6.0",
+    "eslint-plugin-css-modules": "^2.11.0",
+    "eslint-plugin-react": "^7.20.5",
     "html-webpack-plugin": "^4.3.0",
     "less-loader": "^6.2.0",
     "style-loader": "^1.2.1",
