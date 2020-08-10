@@ -7,7 +7,7 @@ import antdCells from '../jsonforms/AntdCells';
 import customCells from '../jsonforms/CustomCells';
 import api from '../services/scene-negotiation-api';
 
-function fetchData({ id, setData, setTemplate, setErrors }) {
+function fetchData({ id, setData, setTemplate }) {
   api.getNegotiation(id).then(({ data, template }) => {
     if (data && template) {
       setData(data);
@@ -22,6 +22,8 @@ function Contract(props) {
   const [data, setData] = React.useState({});
   const [errors, setErrors] = React.useState([]);
   const { search } = useLocation();
+
+  console.warn('Errors: ', errors);
 
   React.useEffect(() => {
     setTemplate(props.template);
@@ -56,7 +58,10 @@ function Contract(props) {
         ...customCells,
       ]}
       data={data}
-      onChange={(form) => setData(form.data)}
+      onChange={(form) => {
+        setData(form.data);
+        setErrors(form.errors);
+      }}
     />
   );
 }
