@@ -31,6 +31,24 @@ export default [
           type: 'lookuplist',
         },
       },
+      bondage: {
+        type: 'object',
+        verifyBondage: {
+          type: 'boolean',
+        },
+        acts: {
+          type: 'lookuplist',
+        },
+      },
+      roleplay: {
+        type: 'object',
+        verifyRoleplay: {
+          type: 'boolean',
+        },
+        acts: {
+          type: 'lookuplist',
+        },
+      },
       dick: {
         type: 'object',
         verifyDick: {
@@ -82,6 +100,80 @@ export default [
           ],
         }, {
           type: 'Category',
+          label: 'Bondage',
+          elements: [
+            {
+              type: "VerticalLayout",
+              elements: [
+                {
+                  type: 'Control',
+                  scope: '#/bondage/verifyBondage',
+                  label: 'Verify I want to be in Bondage',
+                }, {
+                  type: 'Control',
+                  scope: '#/bondage/acts',
+                  label: 'Select an answer for each act',
+                  questions: [
+                    'Rope Bondage',
+                  ],
+                  answers: [
+                    'Accept',
+                    'Soft Limit',
+                    'Hard Limit',
+                  ],
+                  rule: {
+                    effect: 'SHOW',
+                    condition: {
+                      scope: '#/bondage/verifyBondage',
+                      schema: { const: true }
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        }, {
+          type: 'Category',
+          label: 'Role Play',
+          elements: [
+            {
+              type: "VerticalLayout",
+              elements: [
+                {
+                  type: 'Control',
+                  scope: '#/roleplay/verifyRoleplay',
+                  label: 'Verify I want to partake in Role Play',
+                }, {
+                  type: 'Control',
+                  scope: '#/roleplay/acts',
+                  label: 'Select an answer for each act',
+                  questions: [
+                    'Master/Slave',
+                    'Daddy/Daughter',
+                    'Owner/Pet',
+                    'Teacher/Student',
+                    'Nurse/Patient',
+                    'Police Officer/Suspect',
+                  ],
+                  answers: [
+                    'Very Interested',
+                    'Interested',
+                    'Not Interested',
+                    'Definitely Not Interested',
+                  ],
+                  rule: {
+                    effect: 'SHOW',
+                    condition: {
+                      scope: '#/roleplay/verifyRoleplay',
+                      schema: { const: true }
+                    },
+                  },
+                },
+              ],
+            },
+          ],
+        }, {
+          type: 'Category',
           label: 'Pussy',
           elements: [
             {
@@ -94,14 +186,14 @@ export default [
                 }, {
                   type: 'Control',
                   scope: '#/pussy/acts',
-                  label: '',
+                  label: 'Select an answer for each act',
                   questions: [
                     'Penetration',
                     'Vibrator',
                     'Clamps',
                   ],
                   answers: [
-                    '',
+                    'Accept',
                     'Soft Limit',
                     'Hard Limit',
                   ],

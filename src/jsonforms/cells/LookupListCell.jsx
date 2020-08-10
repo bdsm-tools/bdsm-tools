@@ -21,8 +21,8 @@ function LookupListCell(props) {
       bordered
       renderItem={(item, index) => (
         <List.Item>
-          <Typography.Text>{item}</Typography.Text>
-          <Radio.Group>
+          <Typography.Text style={{ maxWidth: '50%' }}>{item}</Typography.Text>
+          <Radio.Group style={{ maxWidth: '50%' }}>
             {(uischema.answers || []).map((answer) => (
               <Radio.Button
                 key={answer}
