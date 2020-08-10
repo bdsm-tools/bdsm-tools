@@ -1,0 +1,47 @@
+
+name: Build and Deploy to Google Cloud Platform
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Setup - gcloud / gsutil
+      uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+      with:
+        service_account_key: ${{ secrets.GC_KEY }}
+        project_id: bdsm-tools
+        export_default_credentials: true
+        
+    - name: Build
+      uses: actions/setup-node@v1
+    - run: npm run build
+
+    - name: Clean Bucket
+      run: gsutil rm gs://bdsm-tools-ui/**
+
+    - name: GCP Cloud Storage - Deploy
+      run: gsutil -m cp -r ./dist/* gs://bdsm-tools-ui
+
+    - name: Set Entry Points
+      run: gsutil web set -m index.html -e index.html gs://bdsm-tools-ui
+
+    - name: Add Scene Negotiation API Function
+    - run: cd api/scene-negotiation
+    - run: |-
+      gcloud functions deploy scene-negotiation \
+        --entry-point doProcess \
+        --runtime nodejs10 \
+        --trigger-http \
+        --allow-unauthenticated \
+        --memory 512MB \
+        --timeout 10s \
+        --region europe-west2
