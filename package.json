@@ -6,7 +6,7 @@
   "scripts": {
     "start": "webpack-dev-server --config webpack-dev.config.js --progress --color --bail",
     "build": "webpack --config webpack-prod.config.js --progress --color --bail",
-    "test": "npmrun lint && npm run test-compile",
+    "test": "npm run lint && npm run test-compile",
     "test-compile": "webpack --config webpack-common.config.js --color --bail --mode development",
     "lint": "eslint './**/*.{js,jsx}'",
     "lint:fix": "npm run lint -- --fix"
