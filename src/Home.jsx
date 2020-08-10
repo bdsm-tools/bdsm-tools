@@ -1,7 +1,7 @@
 import React from 'react';
 import {Typography} from 'antd';
 
-export default function Home(props) {
+export default function Home() {
   return (
     <React.Fragment>
       <Typography>
