@@ -4,6 +4,11 @@ export default [
     active: true,
     schema: {
       type: 'object',
+      required: [
+        'name',
+        'verifyAge',
+        'experience',
+      ],
       intro: {
         type: 'object',
         name: {
@@ -11,6 +16,7 @@ export default [
         },
         verifyAge: {
           type: 'boolean',
+          const: true,
         },
         experience: {
           type: 'enum',

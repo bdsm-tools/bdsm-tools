@@ -62,9 +62,9 @@ function ControlRenderer(props) {
         path={path}
         id={id + '-input'}
       />
-      <div className={divClassNames}>
-        {!isValid ? errors : showDescription ? description : null}
-      </div>
+      {/*<div className={divClassNames}>*/}
+      {/*  {!isValid ? errors : showDescription ? description : null}*/}
+      {/*</div>*/}
     </div>
   );
 }
