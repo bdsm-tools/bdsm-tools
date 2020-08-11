@@ -1,12 +1,12 @@
 export default [
   {
+    id: 'fQAVUh5x7jEbi00wx8js',
     title: 'Simple Negotiation',
     active: true,
     schema: {
       type: 'object',
       required: [
         'name',
-        'verifyAge',
         'experience',
       ],
       intro: {
@@ -16,7 +16,9 @@ export default [
         },
         verifyAge: {
           type: 'boolean',
-          const: true,
+        },
+        verifyAge2: {
+          type: 'boolean',
         },
         experience: {
           type: 'enum',
@@ -96,6 +98,17 @@ export default [
                   type: 'Control',
                   scope: '#/intro/verifyAge',
                   label: 'Verify I am over the age of 18',
+                }, {
+                  type: 'Control',
+                  scope: '#/intro/verifyAge2',
+                  label: 'Verify I am over the age of 21',
+                  rule: {
+                    effect: 'SHOW',
+                    condition: {
+                      scope: '#/intro/verifyAge',
+                      schema: { const: true },
+                    },
+                  },
                 }, {
                   type: 'Control',
                   scope: '#/intro/experience',

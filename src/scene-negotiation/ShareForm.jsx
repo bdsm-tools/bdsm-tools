@@ -1,10 +1,11 @@
 import React from 'react';
 import { Result, Typography, Button, Alert } from 'antd';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import api from '../services/scene-negotiation-api';
 
-export default function ShareForm({ data, errors }) {
+export default function ShareForm({ data, errors, template }) {
   const { pathname } = useLocation();
+  const { replace } = useHistory();
   const [saving, setSaving] = React.useState(false);
   const [link, setLink] = React.useState(undefined);
 
@@ -13,8 +14,13 @@ export default function ShareForm({ data, errors }) {
 
   const save = () => {
     setSaving(true);
-    api.saveNegotiation(data).then(res => {
+    api.saveNegotiation({ data, template }).then(res => {
       setLink(generateLink(res.id));
+      setSaving(false);
+      replace({
+        search: `?id=${res.id}`,
+      });
+    }).catch(error => {
       setSaving(false);
     });
   }
@@ -37,16 +43,16 @@ export default function ShareForm({ data, errors }) {
               </Typography.Paragraph>
             </Typography>
             {!!link &&
-            <Typography>
-              <Typography.Link>
-                {link}
-              </Typography.Link>
-            </Typography>
+              <Typography>
+                <Typography.Link style={{ textColor: '#2525f1' }}>
+                  {link}
+                </Typography.Link>
+              </Typography>
             }
             {!link &&
-            <Button type="primary" loading={saving} onClick={save}>
-              Generate Link
-            </Button>
+              <Button type="primary" loading={saving} onClick={save}>
+                Generate Link
+              </Button>
             }
           </React.Fragment>
         )}

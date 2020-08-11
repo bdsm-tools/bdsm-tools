@@ -81,6 +81,7 @@ function NegotiationForm(props) {
         <ShareForm
           data={data}
           errors={errors}
+          template={template.id}
         />
       </Modal>
     </div>
