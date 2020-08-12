@@ -19,6 +19,8 @@ function TextFieldCell(props) {
   const maxLength = schema.maxLength;
   const appliedUiSchemaOptions = _.merge({}, config, uischema.options);
 
+  const onChange = _.debounce(handleChange, 50);
+
   if (!visible) {
     return null;
   }
@@ -30,7 +32,7 @@ function TextFieldCell(props) {
       <Input
         type='text'
         value={data || ''}
-        onChange={ev => handleChange(path, ev.target.value)}
+        onChange={ev => onChange(path, ev.target.value)}
         className={className}
         id={id}
         disabled={!enabled}

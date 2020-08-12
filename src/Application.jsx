@@ -30,7 +30,7 @@ export default function Application() {
             </Switch>
           </Layout.Sider>
           <Layout.Content className="content">
-            <React.Suspense fallback={<Spin />}>
+            <React.Suspense fallback={<Spin size="large" />}>
               <Switch>
                 <Route path="/tools/scene-negotiation" render={routeProps => (
                   <SceneNegotiationEntry {...routeProps} />

@@ -3,8 +3,8 @@ import {Switch, Route} from 'react-router-dom';
 import {Typography, Button, Empty, PageHeader} from 'antd';
 import templates from '../data/templates';
 
-const Contract = React.lazy(() =>
-  import(/* webpackChunkName: "Contract", webpackPrefetch: true */ './Contract')
+const NegotiationForm = React.lazy(() =>
+  import(/* webpackChunkName: "NegotiationForm", webpackPrefetch: true */ './NegotiationForm')
 );
 
 export default function Entry(props) {
@@ -31,7 +31,7 @@ export default function Entry(props) {
             : [];
           if (template) {
             return (
-              <Contract
+              <NegotiationForm
                 {...routeProps}
                 template={template}
               />

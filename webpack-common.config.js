@@ -47,8 +47,7 @@ module.exports = {
          'style-loader',
          'css-loader',
         ],
-      },
-      {
+      }, {
         test: /\.less$/,
         use: [
             {
@@ -69,8 +68,7 @@ module.exports = {
               }
             }
         ],
-      },
-      {
+      }, {
         test: /\.m?jsx?$/,
         exclude: /(node_modules)/,
         use: {
@@ -79,12 +77,30 @@ module.exports = {
             presets: ['@babel/preset-env', "@babel/preset-react"]
           }
         }
+      }, {
+        test: /\.svg$/,
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ['@babel/preset-env', "@babel/preset-react"]
+            }
+          },
+          {
+            loader: "react-svg-loader",
+            options: {
+              jsx: true // true outputs JSX tags
+            }
+          }
+        ]
       }
     ],
   },
 
   plugins: [
     new HtmlWebpackPlugin({
+      title: 'BDSM Tools',
+      favicon: 'favicon.ico',
       base: '/',
     }),
     new CleanWebpackPlugin(),

@@ -21,6 +21,6 @@ module.exports = {
         "css-modules"
     ],
     "rules": {
-        "react/prop-types": ["warn"]
+        "react/prop-types": ["off"]
     }
 };

@@ -1,15 +1,23 @@
 export default [
   {
+    id: 'fQAVUh5x7jEbi00wx8js',
     title: 'Simple Negotiation',
     active: true,
     schema: {
       type: 'object',
+      required: [
+        'name',
+        'experience',
+      ],
       intro: {
         type: 'object',
         name: {
           type: 'string',
         },
         verifyAge: {
+          type: 'boolean',
+        },
+        verifyAge2: {
           type: 'boolean',
         },
         experience: {
@@ -27,7 +35,7 @@ export default [
         verifyPussy: {
           type: 'boolean',
         },
-        acts: {
+        pussyActs: {
           type: 'lookuplist',
         },
       },
@@ -36,7 +44,7 @@ export default [
         verifyBondage: {
           type: 'boolean',
         },
-        acts: {
+        bondageActs: {
           type: 'lookuplist',
         },
       },
@@ -45,7 +53,7 @@ export default [
         verifyRoleplay: {
           type: 'boolean',
         },
-        acts: {
+        roleplayActs: {
           type: 'lookuplist',
         },
       },
@@ -54,7 +62,7 @@ export default [
         verifyDick: {
           type: 'boolean',
         },
-        acts: {
+        dickActs: {
           type: 'lookuplist',
         },
       },
@@ -63,7 +71,7 @@ export default [
         verifyAss: {
           type: 'boolean',
         },
-        acts: {
+        assActs: {
           type: 'lookuplist',
         },
       },
@@ -92,6 +100,17 @@ export default [
                   label: 'Verify I am over the age of 18',
                 }, {
                   type: 'Control',
+                  scope: '#/intro/verifyAge2',
+                  label: 'Verify I am over the age of 21',
+                  rule: {
+                    effect: 'SHOW',
+                    condition: {
+                      scope: '#/intro/verifyAge',
+                      schema: { const: true },
+                    },
+                  },
+                }, {
+                  type: 'Control',
                   scope: '#/intro/experience',
                   label: 'BDSM Experience Level',
                 },
@@ -111,7 +130,7 @@ export default [
                   label: 'Verify I want to be in Bondage',
                 }, {
                   type: 'Control',
-                  scope: '#/bondage/acts',
+                  scope: '#/bondage/bondageActs',
                   label: 'Select an answer for each act',
                   questions: [
                     'Rope Bondage',
@@ -145,7 +164,7 @@ export default [
                   label: 'Verify I want to partake in Role Play',
                 }, {
                   type: 'Control',
-                  scope: '#/roleplay/acts',
+                  scope: '#/roleplay/roleplayActs',
                   label: 'Select an answer for each act',
                   questions: [
                     'Master/Slave',
@@ -185,7 +204,7 @@ export default [
                   label: 'Verify I have a pussy',
                 }, {
                   type: 'Control',
-                  scope: '#/pussy/acts',
+                  scope: '#/pussy/pussyActs',
                   label: 'Select an answer for each act',
                   questions: [
                     'Penetration',
@@ -221,7 +240,7 @@ export default [
                   label: 'Verify I have a Dick',
                 }, {
                   type: 'Control',
-                  scope: '#/dick/acts',
+                  scope: '#/dick/dickActs',
                   label: '',
                   questions: [
                     'Penetration',
@@ -255,7 +274,7 @@ export default [
                   label: 'Verify I have an Ass',
                 }, {
                   type: 'Control',
-                  scope: '#/ass/acts',
+                  scope: '#/ass/assActs',
                   label: '',
                   questions: [
                     'Penetration',

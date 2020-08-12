@@ -12,21 +12,27 @@ const db = admin.firestore();
 exports.doProcess = async (req, res) => {
   console.log('Request:', req);
 
-  res.set('Access-Control-Allow-Origin', '*');
-  switch (req.method) {
-    case 'OPTIONS':
-      res.set('Access-Control-Allow-Methods', 'GET,POST');
-      res.set('Access-Control-Allow-Headers', 'Content-Type');
-      res.set('Access-Control-Max-Age', '3600');
-      res.status(204).send('');
-      return;
-    case 'GET':
-      return await doGet(req, res);
-    case 'POST':
-      return await doPost(req, res);
-    default:
-      res.status(400).send('Invalid method');
-      return;
+  try {
+    res.set('Access-Control-Allow-Origin', '*');
+    switch (req.method) {
+      case 'OPTIONS':
+        res.set('Access-Control-Allow-Methods', 'GET,POST');
+        res.set('Access-Control-Allow-Headers', 'Content-Type');
+        res.set('Access-Control-Max-Age', '3600');
+        res.status(204).send('');
+        return;
+      case 'GET':
+        return await doGet(req, res);
+      case 'POST':
+        return await doPost(req, res);
+      default:
+        res.status(400).send('Invalid method');
+        return;
+    }
+  } catch (error) {
+    res.status(500).json({
+      error,
+    });
   }
 };
 
@@ -53,6 +59,14 @@ async function doGet(req, res) {
 async function doPost(req, res) {
   const { path, query } = req;
   const { id } = query;
+
+  if (path.startsWith('/negotiation')) {
+    if (!id) {
+      if (req.get('content-type') === 'application/json') {
+        return await sceneNegotiation(req, res).save(req.body);
+      }
+    }
+  }
 }
 
 const sceneNegotiationTypes = (req, res) => {
@@ -89,11 +103,14 @@ const sceneNegotiation = (req, res) => {
       res.status(200).json(doc);
     },
     async save(body) {
-      const negotiation = await collection.doc()
-        .set(JSON.parse(body))
+      const ref = await collection.add({
+          ...body,
+          when: new Date(),
+        });
+      const negotiation = await ref.get()
         .then(extract);
 
-      res.status(200).json(negotiation);
+      res.status(200).json({ ...negotiation, id: ref.id });
     }
   });
 };
