@@ -3,18 +3,20 @@ import { useLocation } from 'react-router-dom';
 import {Button, Modal} from "antd";
 import {JsonForms} from '@jsonforms/react';
 import {vanillaRenderers, vanillaCells} from '@jsonforms/vanilla-renderers';
-import antdRenderers from '../jsonforms/AntdRenderers';
-import antdCells from '../jsonforms/AntdCells';
-import customCells from '../jsonforms/CustomCells';
+import AntdRenderers from '../jsonforms/AntdRenderers';
+import AntdCells from '../jsonforms/AntdCells';
+import ReadOnlyCells from '../jsonforms/ReadOnlyCells';
+import CustomCells from '../jsonforms/CustomCells';
 import api from '../services/scene-negotiation-api';
 import ShareForm from "./ShareForm";
 
 function fetchData({ id, setData, setTemplate }) {
-  api.getNegotiation(id).then(({ data, template }) => {
+  return api.getNegotiation(id).then(({ data, template }) => {
     if (data && template) {
+      // api.getNegotiationType(template)
+      //   .then(setTemplate);
+
       setData(data);
-      api.getNegotiationType(template)
-        .then(setTemplate);
     }
   });
 }
@@ -24,7 +26,8 @@ function NegotiationForm(props) {
   const [data, setData] = React.useState({});
   const [errors, setErrors] = React.useState([]);
   const [submit, setSubmit] = React.useState(false);
-  const { search } = useLocation();
+  const [readOnly, setReadOnly] = React.useState(false);
+  const { search } = props.location;
 
   React.useEffect(() => {
     setTemplate(props.template);
@@ -34,15 +37,28 @@ function NegotiationForm(props) {
     const params = new URLSearchParams(search);
     const sourceId = params.get('source');
     const id = params.get('id');
+
     if (id) {
-      fetchData({ id, setData, setTemplate, setErrors });
-    }
-    else if (sourceId) {
+      fetchData({ id, setData, setTemplate })
+        .then(() => setReadOnly(true));
+    } else if (sourceId) {
       api.getNegotiation(sourceId).then(source => {
         setData(source.data);
       });
     }
   }, [search]);
+
+  const readOnlyCells = [
+    ...ReadOnlyCells,
+  ];
+  const editableCells = [
+    ...vanillaCells,
+    ...AntdCells,
+    ...CustomCells,
+  ];
+  if (!template) {
+    return null;
+  }
 
   return (
     <div style={{ marginBottom: '10px', width: '50vw' }}>
@@ -51,28 +67,26 @@ function NegotiationForm(props) {
         uischema={template.uischema || {}}
         renderers={[
           ...vanillaRenderers,
-          ...antdRenderers,
+          ...AntdRenderers,
         ]}
-        cells={[
-          ...vanillaCells,
-          ...antdCells,
-          ...customCells,
-        ]}
+        cells={readOnly ? readOnlyCells : editableCells}
         data={data}
-        onChange={(form) => {
+        onChange={readOnly ? undefined : (form) => {
           setData(form.data);
           setErrors(form.errors);
         }}
       />
-      <Button
-        type="primary"
-        shape="round"
-        size="large"
-        style={{ marginTop: 20, width: '100%' }}
-        onClick={() => setSubmit(true)}
-      >
-        Complete Negotiation
-      </Button>
+      {!readOnly &&
+        <Button
+          type="primary"
+          shape="round"
+          size="large"
+          style={{ marginTop: 20, width: '100%' }}
+          onClick={() => setSubmit(true)}
+        >
+          Complete Negotiation
+        </Button>
+      }
       <Modal
         visible={submit}
         onCancel={() => setSubmit(false)}
