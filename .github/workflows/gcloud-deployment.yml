@@ -35,9 +35,8 @@ jobs:
       run: gsutil web set -m index.html -e index.html gs://bdsm-tools-ui
 
     - name: Add Scene Negotiation API Function
-    - run: cd api/scene-negotiation
-    - run: |-
-        gcloud functions deploy scene-negotiation \
+      run: |-
+        cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
           --entry-point doProcess \
           --runtime nodejs10 \
           --trigger-http \
