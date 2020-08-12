@@ -23,7 +23,7 @@ jobs:
         
     - name: Build
       uses: actions/setup-node@v1
-    - run: npm run build
+    - run: npm ci && npm run build
 
     - name: Clean Bucket
       run: gsutil rm gs://bdsm-tools-ui/**
