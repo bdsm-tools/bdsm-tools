@@ -6,7 +6,7 @@ import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
 const processData = (type) => (data) => {
   switch (type) {
     case 'boolean':
-      return !!data
+      return data
         ? <CheckCircleOutlined style={{ color: 'green'}} />
         : <CloseCircleOutlined style={{ color: 'red'}} />;
     case 'object':

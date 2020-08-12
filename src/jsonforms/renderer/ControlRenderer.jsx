@@ -1,14 +1,14 @@
 import React from 'react';
 import {DispatchCell, withJsonFormsControlProps} from '@jsonforms/react';
-import {computeLabel, isDescriptionHidden, isPlainLabel, NOT_APPLICABLE} from "@jsonforms/core";
+import {computeLabel, isPlainLabel, NOT_APPLICABLE} from "@jsonforms/core";
 import _ from 'lodash';
 
 function ControlRenderer(props) {
   const {
     classNames,
-    description,
+    // description,
     id,
-    errors,
+    // errors,
     label,
     uischema,
     schema,
@@ -19,22 +19,22 @@ function ControlRenderer(props) {
     config
   } = props;
 
-  const [isFocused, setIsFocused] = React.useState(false);
-  const onFocus = () => setIsFocused(true);
-  const onBlur = () => setIsFocused(false);
+  // const [isFocused, setIsFocused] = React.useState(false);
+  // const onFocus = () => setIsFocused(true);
+  // const onBlur = () => setIsFocused(false);
 
-  const isValid = (errors || {}).length === 0;
-  const divClassNames = `validation  ${
-    isValid ? classNames.description : 'validation_error'
-  }`;
+  // const isValid = (errors || {}).length === 0;
+  // const divClassNames = `validation  ${
+  //   isValid ? classNames.description : 'validation_error'
+  // }`;
 
   const appliedUiSchemaOptions = _.merge({}, config, uischema.options);
-  const showDescription = !isDescriptionHidden(
-    visible,
-    description,
-    isFocused,
-    appliedUiSchemaOptions.showUnfocusedDescription
-  );
+  // const showDescription = !isDescriptionHidden(
+  //   visible,
+  //   description,
+  //   isFocused,
+  //   appliedUiSchemaOptions.showUnfocusedDescription
+  // );
   const labelText = computeLabel(
     isPlainLabel(label) ? label : (label || {}).default,
     required,
@@ -49,8 +49,8 @@ function ControlRenderer(props) {
     <div
       className={(classNames || {}).wrapper}
       hidden={!visible}
-      onFocus={onFocus}
-      onBlur={onBlur}
+      // onFocus={onFocus}
+      // onBlur={onBlur}
       id={id}
     >
       <DispatchCell
