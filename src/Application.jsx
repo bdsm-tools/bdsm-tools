@@ -3,6 +3,7 @@ import {Layout, Spin} from 'antd';
 import Header from './Header';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 import NavMenu from "./NavMenu";
+import Analytics from "./services/Analytics";
 import ConsentModal from "./ConsentModal";
 
 const SceneNegotiationEntry = React.lazy(() =>
@@ -17,6 +18,9 @@ export default function Application() {
   return (
     <Router>
       <ConsentModal />
+      <Switch>
+        <Route render={routeProps => (<Analytics {...routeProps} />)}/>
+      </Switch>
       <Layout>
         <Layout.Header className="header">
           <Switch>
