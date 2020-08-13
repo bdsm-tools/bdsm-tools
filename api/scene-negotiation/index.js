@@ -38,13 +38,13 @@ exports.doProcess = async (req, res) => {
 
 async function doGet(req, res) {
   const { path, query } = req;
-  const { id } = query;
+  const { id, all } = query;
 
   if (path.startsWith('/negotiation-types')) {
     if (id) {
       return await sceneNegotiationTypes(req, res).getOne(id);
     } else {
-      return await sceneNegotiationTypes(req, res).getAll();
+      return await sceneNegotiationTypes(req, res).getAll(all === 'true');
     }
   }
   if (path.startsWith('/negotiation')) {
@@ -119,7 +119,7 @@ const sceneNegotiationTypes = (req, res) => {
       return template;
     },
     async activate(id, active) {
-      const ref = await this.getOne(id);
+      const ref = await collection.doc(id);
       await ref.update({
         active,
       });
@@ -130,9 +130,12 @@ const sceneNegotiationTypes = (req, res) => {
       return template;
     },
     async delete(id) {
-      const ref = await this.getOne(id);
-      if (!ref.active) {
-        await collection.doc(id).delete();
+      const ref = await collection.doc(id);
+      const doc = ref.get()
+        .then(extract);
+
+      if (!doc.active) {
+        await ref.delete();
         res.status(200);
       } else {
         res.status(400).sendMessage('Template is active');
