@@ -62,7 +62,7 @@ async function doPost(req, res) {
 
   if (path.startsWith('/negotiation')) {
     if (!id) {
-      if (req.get('content-type') === 'application/json') {
+      if (req.get('Content-Type') === 'application/json') {
         return await sceneNegotiation(req, res).save(body);
       }
     }
@@ -78,7 +78,9 @@ async function doPost(req, res) {
   }
 
   if (path.startsWith('/negotiation-types')) {
-    return await sceneNegotiationTypes(req, res).save(body);
+    if (req.get('Content-Type') === 'application/json') {
+      return await sceneNegotiationTypes(req, res).save(body);
+    }
   }
 }
 
