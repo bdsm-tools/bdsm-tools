@@ -1,7 +1,7 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import {Typography, Button, Empty, PageHeader} from 'antd';
-import templates from '../data/templates';
+import {Typography, Button, Empty, PageHeader, Spin} from 'antd';
+import api from '../services/scene-negotiation-api';
 
 const NegotiationForm = React.lazy(() =>
   import(/* webpackChunkName: "NegotiationForm", webpackPrefetch: true */ './NegotiationForm')
@@ -10,6 +10,16 @@ const NegotiationForm = React.lazy(() =>
 export default function Entry(props) {
   const {match, history} = props;
   const {url} = match;
+  const [loading, setLoading] = React.useState(false);
+  const [templates, setTemplates] = React.useState([]);
+
+  React.useEffect(() => {
+    setLoading(true);
+    api.getNegotiationTypes()
+      .then(setTemplates)
+      .then(() => setLoading(true));
+  }, []);
+
   return (
     <React.Fragment>
       <Switch>
@@ -37,6 +47,9 @@ export default function Entry(props) {
               />
             );
           }
+          if (loading) {
+            return <Spin size="large" />
+          }
           return (
             <React.Fragment>
               <Typography>
@@ -45,10 +58,10 @@ export default function Entry(props) {
                 </Typography.Paragraph>
               </Typography>
               {(!templates || templates.length === 0) &&
-              <Empty
-                description={`There's no contract template with name: ${type}`}
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-              />
+                <Empty
+                  description={`There's no contract template with name: ${type}`}
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                />
               }
               {templates.map(({title}) => (
                 <Button key={title} onClick={() => history.push(`${url}/${title}`)}>

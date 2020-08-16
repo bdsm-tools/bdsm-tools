@@ -175,7 +175,7 @@ const sceneNegotiation = (req, res) => {
 const extract = (querySnapshot) => {
   const mapper = (doc) => ({ id: doc.id, ...doc.data() });
   if (querySnapshot.data) {
-    return querySnapshot.data();
+    return mapper(querySnapshot);
   }
   if (querySnapshot.docs) {
     return querySnapshot.docs.map(mapper);
