@@ -2,8 +2,8 @@
 name: Build and Deploy to Google Cloud Platform
 
 on:
-  push:
-    branches: [ master ]
+  release:
+    types: [published]
 
 jobs:
   setup-build-publish-deploy:
