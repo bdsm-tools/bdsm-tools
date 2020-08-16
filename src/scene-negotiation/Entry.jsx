@@ -17,7 +17,7 @@ export default function Entry(props) {
     setLoading(true);
     api.getNegotiationTypes()
       .then(setTemplates)
-      .then(() => setLoading(true));
+      .then(() => setLoading(false));
   }, []);
 
   return (

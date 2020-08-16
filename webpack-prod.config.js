@@ -29,7 +29,7 @@ module.exports = merge(common, {
       minRatio: 0.8,
     }),
     new webpack.DefinePlugin({
-      'process.env': {
+      env: {
         SCENE_NEGOTIATION_API_ROOT: 'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation',
       },
     }),
