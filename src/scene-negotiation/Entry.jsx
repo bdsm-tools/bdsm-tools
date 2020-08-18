@@ -1,6 +1,6 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import {Typography, Button, Empty, PageHeader, Spin} from 'antd';
+import {Typography, Empty, PageHeader, Spin} from 'antd';
 import api from '../services/scene-negotiation-api';
 import NegotiationCard from "./NegotiationCard";
 
@@ -70,6 +70,7 @@ export default function Entry(props) {
               <div style={{ display: 'flex' }}>
                 {(templates || []).map((template) => (
                   <NegotiationCard
+                    key={template.id}
                     {...template}
                     onClick={() => history.push(`${url}/${template.title}`)}
                   />

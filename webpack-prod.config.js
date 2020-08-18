@@ -32,9 +32,11 @@ module.exports = merge(common, {
       minRatio: 0.8,
     }),
     new webpack.DefinePlugin({
-      SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
-        'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation'
-      ),
+      'process.env': {
+        SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
+          'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation'
+        ),
+      },
     }),
     new WebpackCdnPlugin({
       modules: cdnModules(mode),
