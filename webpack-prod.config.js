@@ -1,10 +1,14 @@
+const webpack = require('webpack');
 const { merge } = require("webpack-merge");
 const CompressionPlugin = require('compression-webpack-plugin');
+const WebpackCdnPlugin = require('webpack-cdn-plugin');
 
 const common = require("./webpack-common.config");
+const cdnModules = require('./webpack-cdn-config');
 
+const mode = 'production';
 module.exports = merge(common, {
-  mode: 'production',
+  mode,
 
   optimization: {
     minimize: true,
@@ -26,6 +30,16 @@ module.exports = merge(common, {
       },
       threshold: 10240,
       minRatio: 0.8,
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
+          'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation'
+        ),
+      },
+    }),
+    new WebpackCdnPlugin({
+      modules: cdnModules(mode),
     }),
   ]
 });

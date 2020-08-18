@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-const baseUrl = 'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation';
+const baseUrl = process.env.SCENE_NEGOTIATION_API_ROOT;
 const get = (url) => fetch(baseUrl + url, {
   method: 'GET',
   headers: {
@@ -12,8 +12,8 @@ const get = (url) => fetch(baseUrl + url, {
 const post = (url, body) => fetch(baseUrl + url, {
   method: 'POST',
   headers: {
-    'accept': 'application/json',
-    'content-type': 'application/json',
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
   },
   body: JSON.stringify(body),
 }).then(res => res.json());
