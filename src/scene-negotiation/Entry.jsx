@@ -2,6 +2,7 @@ import React from 'react';
 import {Switch, Route} from 'react-router-dom';
 import {Typography, Button, Empty, PageHeader, Spin} from 'antd';
 import api from '../services/scene-negotiation-api';
+import NegotiationCard from "./NegotiationCard";
 
 const NegotiationForm = React.lazy(() =>
   import(/* webpackChunkName: "NegotiationForm", webpackPrefetch: true */ './NegotiationForm')
@@ -66,11 +67,14 @@ export default function Entry(props) {
                   Choose a contract to create:
                 </Typography.Paragraph>
               </Typography>
-              {(templates || []).map(({title}) => (
-                <Button key={title} onClick={() => history.push(`${url}/${title}`)}>
-                  {title}
-                </Button>
-              ))}
+              <div style={{ display: 'flex' }}>
+                {(templates || []).map((template) => (
+                  <NegotiationCard
+                    {...template}
+                    onClick={() => history.push(`${url}/${template.title}`)}
+                  />
+                ))}
+              </div>
             </React.Fragment>
           );
         }}/>
