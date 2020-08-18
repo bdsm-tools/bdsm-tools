@@ -97,6 +97,13 @@ module.exports = {
     ],
   },
 
+  // externals: [nodeExternals({
+  //   allowlist: [
+  //     'react',
+  //     'react-dom',
+  //   ],
+  // })],
+
   plugins: [
     new HtmlWebpackPlugin({
       title: 'BDSM Tools',

@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 
-const baseUrl = process.env.SCENE_NEGOTIATION_API_ROOT;
+const baseUrl = SCENE_NEGOTIATION_API_ROOT;
 const get = (url) => fetch(baseUrl + url, {
   method: 'GET',
   headers: {

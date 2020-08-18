@@ -1,10 +1,13 @@
 const webpack = require('webpack');
 const { merge } = require("webpack-merge");
+const WebpackCdnPlugin = require('webpack-cdn-plugin');
 
 const common = require("./webpack-common.config");
+const cdnModules = require('./webpack-cdn-config');
 
+const mode = 'development';
 module.exports = merge(common, {
-  mode: 'development',
+  mode,
 
   devServer: {
     compress: true,
@@ -19,9 +22,12 @@ module.exports = merge(common, {
 
   plugins: [
     new webpack.DefinePlugin({
-      env: {
-        SCENE_NEGOTIATION_API_ROOT: 'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation-test',
-      },
+      SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
+        'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation-test'
+      ),
+    }),
+    new WebpackCdnPlugin({
+      modules: cdnModules(mode),
     }),
   ],
 });
