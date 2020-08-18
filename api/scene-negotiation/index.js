@@ -60,14 +60,6 @@ async function doPost(req, res) {
   const { path, query, body } = req;
   const { id, active } = query;
 
-  if (path.startsWith('/negotiation')) {
-    if (!id) {
-      if (req.get('Content-Type') === 'application/json') {
-        return await sceneNegotiation(req, res).save(body);
-      }
-    }
-  }
-
   if (path.startsWith('/negotiation-types/activate')) {
     return await sceneNegotiationTypes(req, res)
       .activate(id, (active || 'true') === 'true');
@@ -80,6 +72,14 @@ async function doPost(req, res) {
   if (path.startsWith('/negotiation-types')) {
     if (req.get('Content-Type') === 'application/json') {
       return await sceneNegotiationTypes(req, res).save(body);
+    }
+  }
+
+  if (path.startsWith('/negotiation')) {
+    if (!id) {
+      if (req.get('Content-Type') === 'application/json') {
+        return await sceneNegotiation(req, res).save(body);
+      }
     }
   }
 }
@@ -173,12 +173,15 @@ const sceneNegotiation = (req, res) => {
 };
 
 const extract = (querySnapshot) => {
-  const mapper = (doc) => ({ id: doc.id, ...doc.data() });
-  if (querySnapshot.data) {
-    return mapper(querySnapshot);
-  }
   if (querySnapshot.docs) {
-    return querySnapshot.docs.map(mapper);
+    return querySnapshot.docs.map(extract);
+  }
+
+  if (querySnapshot.data) {
+    return ({
+      id: querySnapshot.id,
+      ...querySnapshot.data()
+    });
   }
   return querySnapshot;
 }
