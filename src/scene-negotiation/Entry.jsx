@@ -36,10 +36,11 @@ export default function Entry(props) {
       <Switch>
         <Route path={`${url}/:type?`} render={(routeProps) => {
           const {type} = routeProps.match.params;
-          const [template] = type
-            ? templates.filter(({title}) => type === title)
-            : [];
-          if (template) {
+
+          if (type) {
+            const [template] = type
+              ? (templates || []).filter(({title}) => type === title)
+              : [];
             return (
               <NegotiationForm
                 {...routeProps}
@@ -50,6 +51,14 @@ export default function Entry(props) {
           if (loading) {
             return <Spin size="large" />
           }
+          if (!templates || templates.length === 0) {
+            return (
+              <Empty
+                description="There are no active Scene Negotiation Templates"
+                image={Empty.PRESENTED_IMAGE_SIMPLE}
+              />
+            );
+          }
           return (
             <React.Fragment>
               <Typography>
@@ -57,13 +66,7 @@ export default function Entry(props) {
                   Choose a contract to create:
                 </Typography.Paragraph>
               </Typography>
-              {(!templates || templates.length === 0) &&
-                <Empty
-                  description={`There's no contract template with name: ${type}`}
-                  image={Empty.PRESENTED_IMAGE_SIMPLE}
-                />
-              }
-              {templates.map(({title}) => (
+              {(templates || []).map(({title}) => (
                 <Button key={title} onClick={() => history.push(`${url}/${title}`)}>
                   {title}
                 </Button>
