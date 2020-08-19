@@ -10,6 +10,10 @@ const SceneNegotiationEntry = React.lazy(() =>
   import(/* webpackChunkName: "SceneNegatiation", webpackPrefetch: true */ './scene-negotiation/Entry')
 );
 
+const AboutEntry = React.lazy(() =>
+  import(/* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry')
+);
+
 const Home = React.lazy(() =>
   import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
 );
@@ -38,6 +42,9 @@ export default function Application() {
               <Switch>
                 <Route path="/tools/scene-negotiation" render={routeProps => (
                   <SceneNegotiationEntry {...routeProps} />
+                )}/>
+                <Route path="/about" render={routeProps => (
+                  <AboutEntry {...routeProps} />
                 )}/>
                 <Route path="/" render={routeProps => (
                   <Home {...routeProps} />

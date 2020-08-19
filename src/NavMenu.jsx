@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
 import {Menu, Affix} from "antd";
-import {FileDoneOutlined} from '@ant-design/icons';
+import {FileDoneOutlined, QuestionCircleOutlined} from '@ant-design/icons';
 
 export default function NavMenu({location, vertical}) {
   const {pathname} = location;
@@ -21,6 +21,11 @@ export default function NavMenu({location, vertical}) {
             </Link>
           </Menu.Item>
         </Menu.SubMenu>
+        <Menu.Item key="about" icon={<QuestionCircleOutlined />}>
+          <Link to="/about">
+            About
+          </Link>
+        </Menu.Item>
       </Menu>
     </Affix>
   );
