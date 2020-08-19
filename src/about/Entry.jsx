@@ -1,8 +1,8 @@
 import React from 'react';
 import {PageHeader, Typography, Collapse} from 'antd';
+import IssueLink from "./IssueLink";
 
 export default function Entry(props) {
-
   return (
     <React.Fragment>
       <PageHeader
@@ -25,20 +25,31 @@ export default function Entry(props) {
           </Typography>
         </Collapse.Panel>
         <Collapse.Panel key="datapolicy" header="Data Policy">
+          <Typography>
+            <Typography.Paragraph>
+              Any data stored by this site is not personally identifiable unless the data you enter
+              personally identifies you. If you want any of your data to be removed from the site
+              I am happy to do that. Please raise an issue here: <IssueLink />
+            </Typography.Paragraph>
+            <Typography.Paragraph>
 
+            </Typography.Paragraph>
+          </Typography>
         </Collapse.Panel>
         <Collapse.Panel key="donate" header="Donate">
-
+          <Typography>
+            <Typography.Paragraph>
+              Please consider donating to me if you use any of the tools on this site. I do this
+              in my own time and not paid for it.
+            </Typography.Paragraph>
+          </Typography>
         </Collapse.Panel>
         <Collapse.Panel key="contactus" header="Contact Us">
           <Typography>
             <Typography.Paragraph>
-              {`If you have an idea for a tool that can be added to this site, I'd
+              If you have an idea for a tool that can be added to this site, I'd
               be happy to hear it. Even if it's just an idea. Please raise an issue
-              here: `}
-              <Typography.Link href="https://github.com/keepsafemaster/bdsm-tools/issues">
-                https://github.com/keepsafemaster/bdsm-tools/issues
-              </Typography.Link>
+              here: <IssueLink />
             </Typography.Paragraph>
             <Typography.Paragraph>
               {`If you wish to contact me for any other reason relating to this site
