@@ -90,7 +90,8 @@ export default function Entry(props) {
                 <Typography.Paragraph>
                   This tools facilitates a user in their negotiation with their play partner(s).
                   Based on the chosen template, a selection of questions will be posed. The goal
-                  being to understand the limits and desires of the user.
+                  being to understand the limits and desires of the user. This data can be shared
+                  with others on completion.
                 </Typography.Paragraph>
                 <Typography.Paragraph>
                   Choose a Negotiation Template:
