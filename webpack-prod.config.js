@@ -3,6 +3,7 @@ const { merge } = require("webpack-merge");
 const CompressionPlugin = require('compression-webpack-plugin');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
 
+const { version } = require('./package.json');
 const common = require("./webpack-common.config");
 const cdnModules = require('./webpack-cdn-config');
 
@@ -33,6 +34,7 @@ module.exports = merge(common, {
     }),
     new webpack.DefinePlugin({
       'process.env': {
+        VERSION: JSON.stringify(version),
         SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
           'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation'
         ),

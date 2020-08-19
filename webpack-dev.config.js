@@ -23,6 +23,7 @@ module.exports = merge(common, {
   plugins: [
     new webpack.DefinePlugin({
       'process.env': {
+        VERSION: JSON.stringify('development'),
         SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
           'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation-test'
         ),

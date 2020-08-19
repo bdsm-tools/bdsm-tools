@@ -1,7 +1,6 @@
 import React from 'react';
 import { PageHeader, Tag, Affix } from "antd";
 import { DeploymentUnitOutlined } from '@ant-design/icons';
-import { version } from '../package.json';
 
 export default function Header({location, history}) {
   const {pathname} = location;
@@ -11,7 +10,7 @@ export default function Header({location, history}) {
       <PageHeader
         title="BDSM Tools"
         onBack={pathname !== '/' ? back : undefined}
-        tags={<Tag color="red">{version}</Tag>}
+        tags={<Tag color="red">{process.env.VERSION}</Tag>}
         avatar={{ icon: <DeploymentUnitOutlined /> }}
       />
     </Affix>
