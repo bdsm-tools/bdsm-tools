@@ -18,7 +18,7 @@ export default function ViewingTemplates({ location, history, match, templates, 
             || regex.test(title || '')
             || regex.test(description || '');
         } catch (e) {
-          console.error(e);
+          return false;
         }
       case "including":
         return search === ''
