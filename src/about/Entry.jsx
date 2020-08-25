@@ -2,7 +2,7 @@ import React from 'react';
 import {PageHeader, Typography, Collapse} from 'antd';
 import IssueLink from "./IssueLink";
 
-export default function Entry(props) {
+export default function Entry() {
   return (
     <React.Fragment>
       <PageHeader
@@ -36,14 +36,14 @@ export default function Entry(props) {
             </Typography.Paragraph>
           </Typography>
         </Collapse.Panel>
-        <Collapse.Panel key="donate" header="Donate">
-          <Typography>
-            <Typography.Paragraph>
-              Please consider donating to me if you use any of the tools on this site. I do this
-              in my own time and not paid for it.
-            </Typography.Paragraph>
-          </Typography>
-        </Collapse.Panel>
+        {/*<Collapse.Panel key="donate" header="Donate">*/}
+        {/*  <Typography>*/}
+        {/*    <Typography.Paragraph>*/}
+        {/*      Please consider donating to me if you use any of the tools on this site. I do this*/}
+        {/*      in my own time and not paid for it.*/}
+        {/*    </Typography.Paragraph>*/}
+        {/*  </Typography>*/}
+        {/*</Collapse.Panel>*/}
         <Collapse.Panel key="contactus" header="Contact Us">
           <Typography>
             <Typography.Paragraph>

@@ -22,6 +22,7 @@ module.exports = {
     ],
     "rules": {
         "react/prop-types": ["off"],
-        "react/no-unescaped-entities": ["off"]
+        "react/no-unescaped-entities": ["off"],
+        "no-fallthrough": ["off"],
     }
 };

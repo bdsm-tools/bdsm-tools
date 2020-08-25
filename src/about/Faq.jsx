@@ -21,13 +21,13 @@ export default function Faq() {
             </Typography.Paragraph>
           </Typography>
         </Collapse.Panel>
-        <Collapse.Panel key="3" header="This site is cool, do you accept donations?">
-          <Typography>
-            <Typography.Paragraph>
-              Yes, I graciously accept donations. You can donate to me here:
-            </Typography.Paragraph>
-          </Typography>
-        </Collapse.Panel>
+        {/*<Collapse.Panel key="3" header="This site is cool, do you accept donations?">*/}
+        {/*  <Typography>*/}
+        {/*    <Typography.Paragraph>*/}
+        {/*      Yes, I graciously accept donations. You can donate to me here:*/}
+        {/*    </Typography.Paragraph>*/}
+        {/*  </Typography>*/}
+        {/*</Collapse.Panel>*/}
         <Collapse.Panel key="4" header="Why are there so few tools available?">
           <Typography>
             <Typography.Paragraph>

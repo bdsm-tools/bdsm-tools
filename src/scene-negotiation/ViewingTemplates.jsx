@@ -3,7 +3,7 @@ import { Typography, Empty, Spin, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import NegotiationCard from "./NegotiationCard";
 
-export default function ({ location, history, match, templates, loading }) {
+export default function ViewingTemplates({ location, history, match, templates, loading }) {
   const {url} = match;
   const params = new URLSearchParams(location.search);
   const [search, setSearch] = React.useState(params.get('search') || '');
@@ -17,7 +17,9 @@ export default function ({ location, history, match, templates, loading }) {
           return search === ''
             || regex.test(title || '')
             || regex.test(description || '');
-        } catch (e) {}
+        } catch (e) {
+          console.error(e);
+        }
       case "including":
         return search === ''
           || (title || '').toLowerCase().includes(search.toLowerCase())
