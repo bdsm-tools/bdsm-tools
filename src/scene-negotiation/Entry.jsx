@@ -1,8 +1,8 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import {Typography, Empty, PageHeader, Spin} from 'antd';
+import { PageHeader } from 'antd';
+import ViewingTemplates from "./ViewingTemplates";
 import api from '../services/scene-negotiation-api';
-import NegotiationCard from "./NegotiationCard";
 
 const NegotiationForm = React.lazy(() =>
   import(/* webpackChunkName: "NegotiationForm", webpackPrefetch: true */ './NegotiationForm')
@@ -11,6 +11,7 @@ const NegotiationForm = React.lazy(() =>
 export default function Entry(props) {
   const {match, history} = props;
   const {url} = match;
+
   const [loading, setLoading] = React.useState(false);
   const [templates, setTemplates] = React.useState([]);
 
@@ -35,50 +36,25 @@ export default function Entry(props) {
         )}/>
       </Switch>
       <Switch>
-        <Route path={`${url}/:type?`} render={(routeProps) => {
-          const {type} = routeProps.match.params;
-
-          if (type) {
-            const [template] = type
-              ? (templates || []).filter(({title}) => type === title)
-              : [];
-            return (
-              <NegotiationForm
-                {...routeProps}
-                template={template}
-              />
-            );
-          }
-          if (loading) {
-            return <Spin size="large" />
-          }
-          if (!templates || templates.length === 0) {
-            return (
-              <Empty
-                description="There are no active Scene Negotiation Templates"
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-              />
-            );
-          }
+        <Route path={`${url}/:type`} render={(routeProps) => {
+          const { type } = routeProps.match.params;
+          const [template] = type
+            ? (templates || []).filter(({title}) => type === title)
+            : [];
           return (
-            <React.Fragment>
-              <Typography>
-                <Typography.Paragraph>
-                  Choose a contract to create:
-                </Typography.Paragraph>
-              </Typography>
-              <div style={{ display: 'flex' }}>
-                {(templates || []).map((template) => (
-                  <NegotiationCard
-                    key={template.id}
-                    {...template}
-                    onClick={() => history.push(`${url}/${template.title}`)}
-                  />
-                ))}
-              </div>
-            </React.Fragment>
-          );
+            <NegotiationForm
+              {...routeProps}
+              template={template}
+            />
+          )
         }}/>
+        <Route path={`${url}`} render={(routeProps) => (
+          <ViewingTemplates
+            templates={templates}
+            loading={loading}
+            {...routeProps}
+          />
+        )}/>
       </Switch>
     </React.Fragment>
   )

@@ -38,8 +38,8 @@ export default function ShareForm({ data, errors, template }) {
             <Typography>
               <Typography.Paragraph type="warning">
                 Generating the link will allow anyone with it to view
-                the data you&aposve entered. You will be unable to delete
-                it once you&aposve generated the link.
+                the data you've entered. You will be unable to delete
+                it once you've generated the link.
               </Typography.Paragraph>
             </Typography>
             {!!link &&
