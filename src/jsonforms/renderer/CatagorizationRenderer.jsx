@@ -12,7 +12,7 @@ function CategorizationRenderer(props) {
         <Tabs.TabPane tab={el.label} key={el.label}>
           {(el.elements || []).map((child, index) => (
             <div key={`${path}-${index}`} className="container">
-              <div style={{ overflowY: 'scroll', maxHeight: '60vh', marginBottom: 60 }}>
+              <div style={{ overflowY: 'scroll', height: '57vh', marginBottom: 60 }}>
                 <ResolvedJsonFormsDispatch
                   uischema={child}
                   schema={schema}

@@ -35,31 +35,33 @@ export default function Application() {
             <Route render={routeProps => (<Header {...routeProps} />)}/>
           </Switch>
         </Layout.Header>
-        <Layout>
-          <Layout.Sider width={250} style={{ height: '100%' }}>
-            <Switch>
-              <Route render={routeProps => (<NavMenu {...routeProps} vertical/>)}/>
-            </Switch>
-          </Layout.Sider>
-          <Layout.Content className="content">
-            <React.Suspense fallback={<Spin size="large" />}>
+        <Layout.Content style={{ paddingTop: 64 }}>
+          <Layout>
+            <Layout.Sider width={250} style={{ height: '100%' }}>
               <Switch>
-                <Route path="/tools/scene-negotiation" render={routeProps => (
-                  <SceneNegotiationEntry {...routeProps} />
-                )}/>
-                <Route path="/about/faq" render={routeProps => (
-                  <FaqEntry {...routeProps} />
-                )}/>
-                <Route path="/about/info" render={routeProps => (
-                  <AboutEntry {...routeProps} />
-                )}/>
-                <Route path="/" render={routeProps => (
-                  <Home {...routeProps} />
-                )}/>
+                <Route render={routeProps => (<NavMenu {...routeProps} vertical/>)}/>
               </Switch>
-            </React.Suspense>
-          </Layout.Content>
-        </Layout>
+            </Layout.Sider>
+            <Layout.Content className="content">
+              <React.Suspense fallback={<Spin size="large" />}>
+                <Switch>
+                  <Route path="/tools/scene-negotiation" render={routeProps => (
+                    <SceneNegotiationEntry {...routeProps} />
+                  )}/>
+                  <Route path="/about/faq" render={routeProps => (
+                    <FaqEntry {...routeProps} />
+                  )}/>
+                  <Route path="/about/info" render={routeProps => (
+                    <AboutEntry {...routeProps} />
+                  )}/>
+                  <Route path="/" render={routeProps => (
+                    <Home {...routeProps} />
+                  )}/>
+                </Switch>
+              </React.Suspense>
+            </Layout.Content>
+          </Layout>
+        </Layout.Content>
       </Layout>
     </Router>
   );
