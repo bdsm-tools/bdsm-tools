@@ -1,6 +1,7 @@
 import React from 'react';
 import {DispatchCell, withJsonFormsControlProps} from '@jsonforms/react';
 import {computeLabel, isPlainLabel, NOT_APPLICABLE} from "@jsonforms/core";
+import { Alert } from 'antd';
 import _ from 'lodash';
 
 function ControlRenderer(props) {
@@ -53,15 +54,17 @@ function ControlRenderer(props) {
       // onBlur={onBlur}
       id={id}
     >
-      <DispatchCell
-        uischema={{
-          ...uischema,
-          label: labelText,
-        }}
-        schema={schema}
-        path={path}
-        id={id + '-input'}
-      />
+      <Alert.ErrorBoundary>
+        <DispatchCell
+          uischema={{
+            ...uischema,
+            label: labelText,
+          }}
+          schema={schema}
+          path={path}
+          id={id + '-input'}
+        />
+      </Alert.ErrorBoundary>
       {/*<div className={divClassNames}>*/}
       {/*  {!isValid ? errors : showDescription ? description : null}*/}
       {/*</div>*/}

@@ -24,10 +24,12 @@ export default {
         type: 'string',
       },
       today: {
-        type: 'date',
+        type: 'string',
+        format: 'date',
       },
       production: {
-        type: 'date',
+        type: 'string',
+        format: 'date',
       },
     },
     bdsm: {

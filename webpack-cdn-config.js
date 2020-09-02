@@ -15,9 +15,9 @@ module.exports = (mode) => [
     name: 'react-router-dom',
     var: 'ReactRouterDOM',
     path: `umd/react-router-dom${extra('')}.js`
-  }, {
-    name: 'antd',
-    var: 'antd',
-    path: `dist/antd${extra('')}.js`
+  // }, {
+  //   name: 'antd',
+  //   var: 'antd',
+  //   path: `dist/antd${extra('')}.js`
   },
 ];
