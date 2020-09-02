@@ -1,4 +1,4 @@
-const template = {
+export default {
   title: 'Simple Negotiation',
   active: true,
   schema: {
@@ -297,9 +297,3 @@ const template = {
     ],
   },
 };
-
-console.log(JSON.stringify(template));
-
-// export default [
-//   template,
-// ];

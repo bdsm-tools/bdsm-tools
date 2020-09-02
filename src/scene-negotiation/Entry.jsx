@@ -1,8 +1,10 @@
 import React from 'react';
 import {Switch, Route} from 'react-router-dom';
-import { PageHeader } from 'antd';
+import { PageHeader, Result, Button } from 'antd';
 import ViewingTemplates from "./ViewingTemplates";
 import api from '../services/scene-negotiation-api';
+import testTemplate from '../data/test-template';
+import NegotiationCard from "./NegotiationCard";
 
 const NegotiationForm = React.lazy(() =>
   import(/* webpackChunkName: "NegotiationForm", webpackPrefetch: true */ './NegotiationForm')
@@ -38,13 +40,38 @@ export default function Entry(props) {
       <Switch>
         <Route path={`${url}/:type`} render={(routeProps) => {
           const { type } = routeProps.match.params;
-          const [template] = type
-            ? (templates || []).filter(({title}) => type === title)
-            : [];
+          const [template] = (templates || [])
+            .filter(({ title }) => type === title);
+
+          if (type === '__testing__') {
+            return (
+              <NegotiationForm
+                {...routeProps}
+                template={testTemplate}
+              />
+            );
+          }
+          if (template) {
+            return (
+              <NegotiationForm
+                {...routeProps}
+                template={template}
+              />
+            );
+          }
           return (
-            <NegotiationForm
-              {...routeProps}
-              template={template}
+            <Result
+              status={404}
+              title='Not Found'
+              subTitle={`There is no Scene Negotiation type called: '${type}'`}
+              extra={(
+                <Button
+                  type='primary'
+                  onClick={() => routeProps.history.push(url)}
+                >
+                  Choose a Template
+                </Button>
+              )}
             />
           )
         }}/>
