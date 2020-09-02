@@ -16,9 +16,17 @@ module.exports = (mode) => [
     var: 'ReactRouterDOM',
     path: `umd/react-router-dom${extra('')}.js`
   }, {
+    name: 'react-redux',
+    var: 'ReactRedux',
+    path: `dist/react-redux${extra('')}.js`
+  }, {
+    name: 'lodash',
+    var: '_',
+    path: `lodash${extra('')}.js`,
+  }, {
     name: 'moment',
     var: 'moment',
-    path: 'min/moment.min.js',
+    path: mode === 'production' ? 'min/moment.min.js' : 'moment.js',
   }, {
     name: 'antd',
     var: 'antd',
