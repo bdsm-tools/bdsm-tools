@@ -23,10 +23,6 @@ export default {
       title: {
         type: 'string',
       },
-      today: {
-        type: 'string',
-        format: 'date',
-      },
       production: {
         type: 'string',
         format: 'date',
@@ -104,10 +100,6 @@ export default {
                 type: "Control",
                 scope: "#/intro/title",
                 label: "Production Title (subject to change)",
-              },{
-                type: "Control",
-                scope: "#/intro/today",
-                label: "Today's Date",
               },{
                 type: "Control",
                 scope: "#/intro/production",

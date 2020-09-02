@@ -32,7 +32,7 @@ function DateCell(props) {
         value={date}
         format={format}
         picker={uischema.picker}
-        onChange={date => handleChange(path, date.format(format))}
+        onChange={date => handleChange(path, date ? date.format(format) : null)}
         className={className}
         id={id}
         disabled={!enabled}
