@@ -3,7 +3,7 @@ import {Switch, Route} from 'react-router-dom';
 import { PageHeader, Result, Button } from 'antd';
 import ViewingTemplates from "./ViewingTemplates";
 import api from '../services/scene-negotiation-api';
-import testTemplate from '../data/test-template';
+import testTemplate from '../data/kink-template';
 import NegotiationCard from "./NegotiationCard";
 
 const NegotiationForm = React.lazy(() =>
@@ -44,6 +44,7 @@ export default function Entry(props) {
             .filter(({ title }) => type === title);
 
           if (type === '__testing__') {
+            console.log('Testing Template:', testTemplate,);
             return (
               <NegotiationForm
                 {...routeProps}
