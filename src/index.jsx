@@ -4,9 +4,9 @@ import './style/index.less';
 import Application from './Application';
 
 if (process.env.VERSION !== 'development') {
-  const { replace, protocol, href } = window.location;
+  const { protocol } = window.location;
   if (protocol !== 'https:') {
-    replace(`https:${href.substring(protocol.length)}`);
+    window.location.protocol = 'https:';
   }
 }
 
