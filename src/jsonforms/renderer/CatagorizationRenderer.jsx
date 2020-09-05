@@ -7,12 +7,12 @@ function CategorizationRenderer(props) {
   const { schema, uischema, path } = props;
   const [key, setKey] = React.useState();
   return (
-    <Tabs activeKey={key} onChange={setKey}>
+    <Tabs className="fillable" activeKey={key} onChange={setKey}>
       {(uischema.elements || []).map((el, i) => (
         <Tabs.TabPane tab={el.label} key={el.label}>
           {(el.elements || []).map((child, index) => (
             <div key={`${path}-${index}`} className="container">
-              <div style={{ overflowY: 'scroll', height: '57vh', marginBottom: 60 }}>
+              <div style={{ overflowY: 'scroll', height: '30vh', marginBottom: 60 }}>
                 <ResolvedJsonFormsDispatch
                   uischema={child}
                   schema={schema}

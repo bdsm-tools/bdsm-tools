@@ -29,15 +29,15 @@ export default function Application() {
       <Switch>
         <Route render={routeProps => (<Analytics {...routeProps} />)}/>
       </Switch>
-      <Layout>
+      <Layout className="fullpage hideoverflow">
         <Layout.Header className="header">
           <Switch>
             <Route render={routeProps => (<Header {...routeProps} />)}/>
           </Switch>
         </Layout.Header>
-        <Layout.Content style={{ paddingTop: 64 }}>
+        <Layout.Content className="fullpage-w" style={{ paddingTop: 64 }}>
           <Layout>
-            <Layout.Sider width={250} style={{ height: '100%' }}>
+            <Layout.Sider width={250}>
               <Switch>
                 <Route render={routeProps => (<NavMenu {...routeProps} vertical/>)}/>
               </Switch>

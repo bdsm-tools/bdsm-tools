@@ -32,3 +32,44 @@
     width: 100%;
   }
 }
+
+.fullpage {
+  &:extend(.fullpage-w);
+  &:extend(.fullpage-h);
+}
+
+.fullpage-w {
+  width: 100vw;
+  max-width: 100vw;
+}
+
+.fullpage-h {
+  height: 100vh;
+  max-height: 100vh;
+}
+
+.hideoverflow {
+  overflow: hidden;
+}
+
+main {
+  min-height: calc(100vh - 64px) !important;
+  max-height: calc(100vh - 64px) !important;
+}
+
+div .tool-container {
+  min-height: calc(100% - 72px);
+  max-height: calc(100% - 72px);
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.fillable {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  .fillspace {
+    flex: 1 1 auto;
+  }
+}
