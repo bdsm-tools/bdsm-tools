@@ -3,43 +3,49 @@ import {ResolvedJsonFormsDispatch, withJsonFormsLayoutProps} from '@jsonforms/re
 import { Tabs, Button, Divider } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
+const size = 'calc(100vh - 359px)';
+const contentStyle = {
+  height: size,
+  maxHeight: size,
+};
+
 function CategorizationRenderer(props) {
   const { schema, uischema, path } = props;
   const [key, setKey] = React.useState();
   return (
-    <Tabs activeKey={key} onChange={setKey}>
+    <Tabs className="full" activeKey={key} onChange={setKey}>
       {(uischema.elements || []).map((el, i) => (
         <Tabs.TabPane tab={el.label} key={el.label}>
-          {(el.elements || []).map((child, index) => (
-            <div key={`${path}-${index}`} className="container">
-              <div style={{ overflowY: 'scroll', maxHeight: '60vh', marginBottom: 60 }}>
+          <div className="scroll" style={contentStyle}>
+            {(el.elements || []).map((child, index) => (
+              <div key={`${path}-${index}`}>
                 <ResolvedJsonFormsDispatch
                   uischema={child}
                   schema={schema}
                   path={path}
                 />
               </div>
-              <div className="bottom">
-                <Divider />
-                <div className="action-buttons">
-                  <Button
-                    disabled={i < 1}
-                    onClick={() => setKey(uischema.elements[i - 1].label)}
-                  >
-                    <ArrowLeftOutlined />
-                    Previous Section
-                  </Button>
-                  <Button
-                    disabled={!uischema.elements[i + 1]}
-                    onClick={() => setKey(uischema.elements[i + 1].label)}
-                  >
-                    Next Section
-                    <ArrowRightOutlined />
-                  </Button>
-                </div>
-              </div>
+            ))}
+          </div>
+          <div>
+            <Divider />
+            <div className="action-buttons">
+              <Button
+                disabled={i < 1}
+                onClick={() => setKey(uischema.elements[i - 1].label)}
+              >
+                <ArrowLeftOutlined />
+                Previous Section
+              </Button>
+              <Button
+                disabled={!uischema.elements[i + 1]}
+                onClick={() => setKey(uischema.elements[i + 1].label)}
+              >
+                Next Section
+                <ArrowRightOutlined />
+              </Button>
             </div>
-          ))}
+          </div>
         </Tabs.TabPane>
       ))}
     </Tabs>

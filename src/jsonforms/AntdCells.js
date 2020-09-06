@@ -2,6 +2,7 @@ import {
   rankWith,
   isStringControl,
   isBooleanControl,
+  isDateControl,
   and,
   schemaTypeIs,
   uiTypeIs,
@@ -9,9 +10,13 @@ import {
 import TextFieldCell from './cells/TextFieldCell';
 import CheckboxCell from "./cells/CheckboxCell";
 import SelectionCell from "./cells/SelectionCell";
+import DateCell from "./cells/DateCell";
 
 export default [
   {
+    tester: rankWith(3, isDateControl),
+    cell: DateCell,
+  }, {
     tester: rankWith(3, isStringControl),
     cell: TextFieldCell,
   }, {
@@ -23,5 +28,5 @@ export default [
       schemaTypeIs('enum'),
     )),
     cell: SelectionCell,
-  }
+  },
 ];

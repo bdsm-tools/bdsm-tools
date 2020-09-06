@@ -31,6 +31,14 @@ function NegotiationForm(props) {
   }
 
   React.useEffect(() => {
+    window.sceenNegotiation = {
+      setReadOnly,
+      setLoading,
+    };
+    return () => delete window.sceenNegotiation;
+  }, [setReadOnly]);
+
+  React.useEffect(() => {
     setTemplate(props.template);
   }, [props.template]);
 
@@ -79,27 +87,33 @@ function NegotiationForm(props) {
   }
 
   return (
-    <div style={{ marginBottom: '10px', width: '50vw' }}>
-      <JsonForms
-        schema={template.schema || {}}
-        uischema={template.uischema || {}}
-        renderers={[
-          ...vanillaRenderers,
-          ...AntdRenderers,
-        ]}
-        cells={readOnly ? readOnlyCells : editableCells}
-        data={data}
-        onChange={readOnly ? undefined : (form) => {
-          setData(form.data);
-          setErrors(form.errors);
-        }}
-      />
+    <div
+      id="scene-negotiation-container"
+      className="tool-container fillable"
+      style={{ width: '50vw' }}
+    >
+      <div id="jsonforms-container" className="fillspace">
+        <JsonForms
+          schema={template.schema || {}}
+          uischema={template.uischema || {}}
+          renderers={[
+            ...vanillaRenderers,
+            ...AntdRenderers,
+          ]}
+          cells={readOnly ? readOnlyCells : editableCells}
+          data={data}
+          onChange={readOnly ? undefined : (form) => {
+            setData(form.data);
+            setErrors(form.errors);
+          }}
+        />
+      </div>
       {!readOnly &&
         <Button
           type="primary"
           shape="round"
           size="large"
-          style={{ marginTop: 20, width: '100%' }}
+          style={{ margin: '20px 0px', width: '100%' }}
           onClick={() => setSubmit(true)}
         >
           Complete Negotiation

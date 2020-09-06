@@ -1,6 +1,6 @@
 import React from 'react';
 import {withJsonFormsCellProps} from '@jsonforms/react';
-import {Input, Typography} from 'antd';
+import {Input as Text, Typography} from 'antd';
 import _ from 'lodash';
 
 function TextFieldCell(props) {
@@ -24,6 +24,8 @@ function TextFieldCell(props) {
   if (!visible) {
     return null;
   }
+
+  const Input = uischema.area ? Text.TextArea : Text;
   return (
     <Typography>
       <Typography.Text>
@@ -36,9 +38,11 @@ function TextFieldCell(props) {
         className={className}
         id={id}
         disabled={!enabled}
+        autoSize={{ minRows: 6 }}
         autoFocus={appliedUiSchemaOptions.focus}
         maxLength={appliedUiSchemaOptions.restrict ? maxLength : undefined}
         size={appliedUiSchemaOptions.trim ? maxLength : undefined}
+        style={uischema.style}
       />
     </Typography>
   );

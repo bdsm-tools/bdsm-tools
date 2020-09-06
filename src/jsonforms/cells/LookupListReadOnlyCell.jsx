@@ -12,7 +12,7 @@ function LookupListReadOnlyCell(props) {
           {uischema.label}
         </Typography.Paragraph>
       </Typography>
-      <div style={{ marginLeft: 10 }}>
+      <div style={{ marginLeft: 10, ...uischema.style }}>
         <List
           dataSource={data}
           renderItem={(item, index) => (

@@ -1,4 +1,4 @@
-const template = {
+export default {
   title: 'Simple Negotiation',
   active: true,
   schema: {
@@ -131,7 +131,15 @@ const template = {
                 scope: '#/bondage/bondageActs',
                 label: 'Select an answer for each act',
                 questions: [
+                  'Light Bondage (wrist/leg restraints but nothing too complex or restricting',
+                  'Medium Bondage (whole body restraining, average restrictions)',
+                  'Hard Bondage (whole body restraints with complex binds making it very difficult to move if at all)',
                   'Rope Bondage',
+                  'Metal Cuffs (Police issue handcuffs)',
+                  'Metal Chains',
+                  'Metal Contraptions (stocks, fiddle, etc.)',
+                  'Predicament Bondage (bondage that puts you in a situation where it is uncomfortable for you to move or where you have to choose one pain over another',
+                  'Suspension Bondage (bondage that involves you being bound so you are not touching the floor)'
                 ],
                 answers: [
                   'Accept',
@@ -297,9 +305,3 @@ const template = {
     ],
   },
 };
-
-console.log(JSON.stringify(template));
-
-// export default [
-//   template,
-// ];
