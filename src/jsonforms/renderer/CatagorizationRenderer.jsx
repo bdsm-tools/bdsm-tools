@@ -3,6 +3,12 @@ import {ResolvedJsonFormsDispatch, withJsonFormsLayoutProps} from '@jsonforms/re
 import { Tabs, Button, Divider } from "antd";
 import { ArrowLeftOutlined, ArrowRightOutlined } from '@ant-design/icons';
 
+const size = 'calc(100vh - 359px)';
+const contentStyle = {
+  height: size,
+  maxHeight: size,
+};
+
 function CategorizationRenderer(props) {
   const { schema, uischema, path } = props;
   const [key, setKey] = React.useState();
@@ -10,7 +16,7 @@ function CategorizationRenderer(props) {
     <Tabs className="full" activeKey={key} onChange={setKey}>
       {(uischema.elements || []).map((el, i) => (
         <Tabs.TabPane tab={el.label} key={el.label}>
-          <div className="scroll" style={{ height: 'calc(100vh - 359px)' }}>
+          <div className="scroll" style={contentStyle}>
             {(el.elements || []).map((child, index) => (
               <div key={`${path}-${index}`}>
                 <ResolvedJsonFormsDispatch

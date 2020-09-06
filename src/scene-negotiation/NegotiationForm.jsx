@@ -31,6 +31,14 @@ function NegotiationForm(props) {
   }
 
   React.useEffect(() => {
+    window.sceenNegotiation = {
+      setReadOnly,
+      setLoading,
+    };
+    return () => delete window.sceenNegotiation;
+  }, [setReadOnly]);
+
+  React.useEffect(() => {
     setTemplate(props.template);
   }, [props.template]);
 
