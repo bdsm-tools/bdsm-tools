@@ -10,7 +10,6 @@
 
 .content {
   padding: 0 50px;
-  //margin-top: 30px;
 }
 
 .action-buttons {
@@ -22,15 +21,8 @@
   height: 100%;
 }
 
-.container {
-  position: relative;
-  height: 100%;
-
-  .bottom {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-  }
+.scroll {
+  overflow-y: scroll;
 }
 
 .fullpage {
@@ -50,6 +42,11 @@
 
 .hideoverflow {
   overflow: hidden;
+}
+
+header {
+  min-height: 64px !important;
+  max-height: 64px !important;
 }
 
 main {
