@@ -21,6 +21,7 @@ function CheckboxCell(props) {
       id={id}
       disabled={!enabled}
       autoFocus={uischema.options && uischema.options.focus}
+      style={uischema.style}
     >
       {uischema.label}
     </Checkbox>

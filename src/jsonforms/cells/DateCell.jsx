@@ -36,7 +36,7 @@ function DateCell(props) {
         className={className}
         id={id}
         disabled={!enabled}
-        style={{ minWidth: '50%' }}
+        style={{ minWidth: '50%', ...uischema.style }}
       />
     </React.Fragment>
   );

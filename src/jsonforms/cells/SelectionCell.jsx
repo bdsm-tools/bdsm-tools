@@ -22,7 +22,7 @@ function SelectionCell(props) {
         autoFocus={uischema.options && uischema.options.focus}
         value={data || ''}
         onChange={value => handleChange(path, value)}
-        style={{ width: '100%' }}
+        style={{ width: '100%', ...uischema.style }}
       >
         {/*<Select.Option value="" label="">{''}</Select.Option>*/}
         {(schema.options || []).map(optionValue => (

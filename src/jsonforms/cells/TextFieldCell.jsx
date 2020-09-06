@@ -42,6 +42,7 @@ function TextFieldCell(props) {
         autoFocus={appliedUiSchemaOptions.focus}
         maxLength={appliedUiSchemaOptions.restrict ? maxLength : undefined}
         size={appliedUiSchemaOptions.trim ? maxLength : undefined}
+        style={uischema.style}
       />
     </Typography>
   );
