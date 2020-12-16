@@ -1,6 +1,6 @@
 npm run build &&
 
-export BUCKET_URI="bdsm-tools-ui" &&
+export BUCKET_URI="bdsmtools.org" &&
 
 echo Deploying to: ${BUCKET_URI} &&
 

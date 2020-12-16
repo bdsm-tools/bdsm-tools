@@ -1,5 +1,5 @@
 export default {
-  title: 'Kink.com: BDSM Checklist for Submissives',
+  title: 'Kink.com: BDSM Checklist for Submissive',
   active: true,
   schema: {
     type: 'object',

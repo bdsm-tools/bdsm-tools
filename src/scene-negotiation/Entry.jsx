@@ -3,7 +3,7 @@ import {Switch, Route} from 'react-router-dom';
 import { PageHeader, Result, Button } from 'antd';
 import ViewingTemplates from "./ViewingTemplates";
 import api from '../services/scene-negotiation-api';
-import testTemplate from '../data/test-template';
+import testTemplate from '../data/kink-template';
 
 const NegotiationForm = React.lazy(() =>
   import(/* webpackChunkName: "NegotiationForm", webpackPrefetch: true */ './NegotiationForm')
