@@ -1,6 +1,6 @@
-npm run build &&
+BUCKET_URI="bdsmtools.org" &&
 
-export BUCKET_URI="bdsmtools.org" &&
+npm run build &&
 
 echo Deploying to: ${BUCKET_URI} &&
 
