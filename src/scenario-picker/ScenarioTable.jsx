@@ -1,10 +1,12 @@
 import React from "react";
-import {Checkbox, Table} from 'antd';
+import {Checkbox, Table, Select, Typography} from 'antd';
 import {Link} from "react-router-dom";
 import TagsComponent from '../components/Tags';
 import participantColourFunction from "./participantColourFunction";
 import MyEquipmentSelector from "./MyEquipmentSelector";
 import equipmentFilterFunction from './filters/equipmentFilter';
+import participantFilterFunction from './filters/participantFilter';
+import compatibilityFilterFunction from './filters/compatibilityFilter';
 
 const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction}/>;
 
@@ -42,21 +44,60 @@ export default function ScenarioTable({data}) {
     const dataSource = convert(data);
 
     const [equipmentFilter, setEquipmentFilter] = React.useState(false);
-    const applyEquipmentFilter = React.useCallback(equipmentFilterFunction(), [equipmentFilter]);
+    const applyEquipmentFilter = equipmentFilterFunction();
+
+    const [participantFilter, setParticipantFilter] = React.useState(0);
+    const applyParticipantFilter = participantFilterFunction(participantFilter);
+
+    const [compatibilityFilter, setCompatibilityFilter] = React.useState([]);
+    const applyCompatibilityFilter = compatibilityFilterFunction(compatibilityFilter);
 
     const filteredDataSource = dataSource
-        .filter(scene => equipmentFilter ? applyEquipmentFilter(scene) : true);
+        .filter(scene => equipmentFilter ? applyEquipmentFilter(scene) : true)
+        .filter(scene => participantFilter ? applyParticipantFilter(scene) : true)
+        .filter(scene => compatibilityFilter ? applyCompatibilityFilter(scene) : true);
     return (
         <>
-            <div className='flex' style={{ alignItems: 'center', margin: 10 }}>
-                <MyEquipmentSelector data={data} />
-                <Checkbox
-                    checked={equipmentFilter}
-                    onChange={({ target }) => setEquipmentFilter(target.checked)}
-                    style={{ marginLeft: 20 }}
+            <div style={{marginBottom: 20}}>
+                <div className='flex' style={{alignItems: 'center'}}>
+                    <MyEquipmentSelector data={data}/>
+                    <Checkbox
+                        checked={equipmentFilter}
+                        onChange={({target}) => setEquipmentFilter(target.checked)}
+                        style={{marginLeft: 20}}
+                    >
+                        Filter by equipment I have
+                    </Checkbox>
+                </div>
+                <Select
+                    value={participantFilter}
+                    onChange={(value) => setParticipantFilter(value)}
+                    style={{marginTop: 10}}
                 >
-                    Filter by equipment I have
-                </Checkbox>
+                    <Select.Option value={0}>Any Number of Participants</Select.Option>
+                    <Select.Option value={1}>1 Participant</Select.Option>
+                    <Select.Option value={2}>2 Participants</Select.Option>
+                    <Select.Option value={3}>3 Participants</Select.Option>
+                </Select>
+                <div className='flex' style={{alignItems: 'center', marginTop: 10}}>
+                    <Typography.Text style={{width: 150}}>
+                        Compatible with:
+                    </Typography.Text>
+                    <Select
+                        mode='multiple'
+                        allowClear
+                        placeholder='Any Participants'
+                        value={compatibilityFilter}
+                        onChange={(value) => setCompatibilityFilter(value)}
+                        style={{marginLeft: 10, width: '100%'}}
+                    >
+                        {[...new Set(data.flatMap(scene => scene.participants))].map(participant => (
+                            <Select.Option value={participant}>
+                                {participant}
+                            </Select.Option>
+                        ))}
+                    </Select>
+                </div>
             </div>
             <Table dataSource={filteredDataSource} columns={columns}/>
         </>
