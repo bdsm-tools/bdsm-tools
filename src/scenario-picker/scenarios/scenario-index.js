@@ -29,7 +29,8 @@ export default [
             'Ankle restraints',
             'Spreader Bar',
             'Equipment to punish/pleasure the Slave’s genitals',
-        ]
+        ],
+        author: 'keepsafemaster',
     }, {
         name: 'Automated Denial',
         path: 'automated-denial',
@@ -51,6 +52,7 @@ export default [
             'Blindfold',
             'Extra restraints',
         ],
+        author: 'keepsafemaster',
     }, {
         name: 'Daily Servicing',
         path: 'daily-servicing',
@@ -74,6 +76,7 @@ export default [
             'Nipple clamps',
             'Milking Machine',
         ],
+        author: 'keepsafemaster',
     }, {
         name: 'Follow your Mistress',
         path: 'follow-your-mistress',
@@ -97,6 +100,7 @@ export default [
             'Wrist restraints',
             'Double sided penis gag',
         ],
+        author: 'keepsafemaster',
     }, {
         name: 'Show me how much you want it',
         path: 'show-me-how-much',
@@ -113,7 +117,7 @@ export default [
             'Wrist restraints',
             'Ankle restraints',
             'Open mouth harness gag',
-            'Ass hook',
+            'Ass Hook',
             'Ratchet winch',
         ],
         optionalEquipment: [
@@ -121,5 +125,6 @@ export default [
             'Dominant Outfit',
             'Impact Toys',
         ],
+        author: 'keepsafemaster',
     }
 ].sort(alphabeticalSort(scene => scene.name));

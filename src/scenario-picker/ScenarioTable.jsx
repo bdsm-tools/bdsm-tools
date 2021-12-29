@@ -99,7 +99,16 @@ export default function ScenarioTable({data}) {
                     </Select>
                 </div>
             </div>
-            <Table dataSource={filteredDataSource} columns={columns}/>
+            <Table
+                dataSource={filteredDataSource}
+                columns={columns}
+                pagination={false}
+                footer={() => (
+                    <Typography.Text>
+                        {filteredDataSource.length} out of {dataSource.length} scenarios match the current filters
+                    </Typography.Text>
+                )}
+            />
         </>
     );
 }
