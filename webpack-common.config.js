@@ -11,7 +11,10 @@ module.exports = {
       http: false,
       https: false,
       buffer: false,
-    }
+    },
+    alias: {
+      process: 'process/browser',
+    },
   },
 
   entry: './src/index.jsx',
@@ -120,5 +123,8 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.ids.HashedModuleIdsPlugin(),
+    new webpack.ProvidePlugin({
+      process: 'process/browser',
+    }),
   ],
 }
