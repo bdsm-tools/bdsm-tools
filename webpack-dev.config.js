@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const { merge } = require("webpack-merge");
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
@@ -11,11 +12,16 @@ module.exports = merge(common, {
 
   devServer: {
     compress: true,
-    contentBase: 'www',
+    static: {
+      directory: path.join(__dirname, 'www'),
+      publicPath: '/',
+    },
     host: '0.0.0.0',
     port: '3002',
     hot: true,
-    historyApiFallback: true,
+    historyApiFallback: {
+      index: '/',
+    },
   },
 
   devtool: 'inline-cheap-source-map',

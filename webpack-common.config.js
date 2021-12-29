@@ -6,6 +6,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
+    fallback: {
+      url: false,
+      http: false,
+      https: false,
+      buffer: false,
+    }
   },
 
   entry: './src/index.jsx',
@@ -13,6 +19,7 @@ module.exports = {
     filename: 'bundle/[name]/[hash].bundle.js',
     chunkFilename: 'bundle/[name]/[contenthash].chunk.js',
     path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
 
   optimization: {
@@ -59,6 +66,7 @@ module.exports = {
             {
               loader: 'less-loader',
               options: {
+                implementation: 'less',
                 lessOptions: {
                   modifyVars: {
                     'link-color': '#c41212',
@@ -111,7 +119,6 @@ module.exports = {
       base: '/',
     }),
     new CleanWebpackPlugin(),
-    new webpack.HashedModuleIdsPlugin(),
-    new webpack.NamedChunksPlugin(),
+    new webpack.ids.HashedModuleIdsPlugin(),
   ],
 }

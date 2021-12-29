@@ -7,7 +7,11 @@ import Analytics from "./services/Analytics";
 import ConsentModal from "./ConsentModal";
 
 const SceneNegotiationEntry = React.lazy(() =>
-  import(/* webpackChunkName: "SceneNegatiation", webpackPrefetch: true */ './scene-negotiation/Entry')
+  import(/* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry')
+);
+
+const ScenarioPickerEntry = React.lazy(() =>
+  import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry')
 );
 
 const AboutEntry = React.lazy(() =>
@@ -47,6 +51,9 @@ export default function Application() {
                 <Switch>
                   <Route path="/tools/scene-negotiation" render={routeProps => (
                     <SceneNegotiationEntry {...routeProps} />
+                  )}/>
+                  <Route path="/tools/bdsm-scenarios" render={routeProps => (
+                    <ScenarioPickerEntry {...routeProps} />
                   )}/>
                   <Route path="/about/faq" render={routeProps => (
                     <FaqEntry {...routeProps} />

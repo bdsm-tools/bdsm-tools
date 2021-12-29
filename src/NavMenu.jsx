@@ -32,6 +32,11 @@ export default function NavMenu({location, vertical}) {
               Scene Negotiation
             </Link>
           </Menu.Item>
+          <Menu.Item key="bdsm-scenarios" icon={<FileDoneOutlined/>}>
+            <Link to="/tools/bdsm-scenarios">
+              Scenario Picker
+            </Link>
+          </Menu.Item>
         </Menu.SubMenu>
         <Menu.SubMenu key="about" title="About" icon={<BulbOutlined />}>
           <Menu.Item key="info" icon={<InfoCircleOutlined />}>
