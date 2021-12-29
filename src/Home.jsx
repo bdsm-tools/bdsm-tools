@@ -1,5 +1,5 @@
 import React from 'react';
-import {Typography, Divider, List, Button} from 'antd';
+import {Typography, Divider, Button} from 'antd';
 
 export default function Home({history}) {
     return (
@@ -25,6 +25,7 @@ export default function Home({history}) {
                 </Button>
                 <Button
                     size='large'
+                    style={{ marginRight: 40 }}
                     onClick={() => history.push('/tools/bdsm-scenarios')}
                 >
                     Scenario Picker
