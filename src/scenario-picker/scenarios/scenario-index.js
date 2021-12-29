@@ -1,6 +1,9 @@
 import {alphabeticalSort} from "../../util";
 import HookedToADoor from './hooked-to-a-door';
 import AutomatedDenial from './automated-denial';
+import DailyServicing from './daily-servicing';
+import FollowYourMistress from './follow-your-mistress';
+import ShowMeHowMuch from './show-me-how-much';
 
 export default [
     {
@@ -26,7 +29,6 @@ export default [
             'Ankle restraints',
             'Spreader Bar',
             'Equipment to punish/pleasure the Slave’s genitals',
-
         ]
     }, {
         name: 'Automated Denial',
@@ -40,7 +42,7 @@ export default [
         ],
         requiredEquipment: [
             'Edge-O-Matic (or equivalent), with associated equipment',
-            'Belt or strap',
+            'Belts or straps',
             'Wrist restraints',
             'Ankle restraints',
         ],
@@ -48,6 +50,76 @@ export default [
             'Gag',
             'Blindfold',
             'Extra restraints',
+        ],
+    }, {
+        name: 'Daily Servicing',
+        path: 'daily-servicing',
+        Component: DailyServicing,
+        participantCount: 2,
+        description: 'Your Slave is required to service his Mistress every day. Today, for some reason he has not (forgotten maybe, doesn’t want to). This is unacceptable and must be rectified. You will tie your Slave down and make him service you like a good Slave does, make him learn his lesson.',
+        location: 'Any room with a large enough surface area for the Slave to lay completely straight, still leaving some surrounding space for the Mistress to position herself. Avoid a bed because the uneven surface could be tricky.\n',
+        participants: [
+            'Male Slave',
+            'Mistress',
+        ],
+        requiredEquipment: [
+            'Belts or straps',
+        ],
+        optionalEquipment: [
+            'Blindfold',
+            'Butt plug',
+            'Cock Sling',
+            'Dominant Outfit',
+            'Impact Toys',
+            'Nipple clamps',
+            'Milking Machine',
+        ],
+    }, {
+        name: 'Follow your Mistress',
+        path: 'follow-your-mistress',
+        Component: FollowYourMistress,
+        participantCount: 2,
+        description: 'This scene you will walk your Slave around the house, he must pleasure you in every room.',
+        location: 'A house with several rooms: Living room - a room with a sofa; Kitchen - a room with worktops; Bedroom - a room with a bed; Bathroom - a room with a bathtub or toilet',
+        participants: [
+            'Male Slave',
+            'Mistress',
+        ],
+        requiredEquipment: [
+            'Collar with leash',
+        ],
+        optionalEquipment: [
+            'Blindfold',
+            'Butt plug',
+            'Cock cage',
+            'Dominant Outfit',
+            'Vibrator',
+            'Wrist restraints',
+            'Double sided penis gag',
+        ],
+    }, {
+        name: 'Show me how much you want it',
+        path: 'show-me-how-much',
+        Component: ShowMeHowMuch,
+        participantCount: 2,
+        description: 'This scene will show how badly your Slave wants to lick his Mistress’s pussy.',
+        location: 'A bed with a way to tie a limb to each bed post.',
+        participants: [
+            'Male Slave',
+            'Mistress',
+        ],
+        requiredEquipment: [
+            'Rope',
+            'Wrist restraints',
+            'Ankle restraints',
+            'Open mouth harness gag',
+            'Ass hook',
+            'Ratchet winch',
+        ],
+        optionalEquipment: [
+            'Blindfold',
+            'Dominant Outfit',
+            'Impact Toys',
         ],
     }
 ].sort(alphabeticalSort(scene => scene.name));
