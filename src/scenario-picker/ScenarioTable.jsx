@@ -69,18 +69,8 @@ export default function ScenarioTable({data}) {
                         Filter by equipment I have
                     </Checkbox>
                 </div>
-                <Select
-                    value={participantFilter}
-                    onChange={(value) => setParticipantFilter(value)}
-                    style={{marginTop: 10}}
-                >
-                    <Select.Option value={0}>Any Number of Participants</Select.Option>
-                    <Select.Option value={1}>1 Participant</Select.Option>
-                    <Select.Option value={2}>2 Participants</Select.Option>
-                    <Select.Option value={3}>3 Participants</Select.Option>
-                </Select>
                 <div className='flex' style={{alignItems: 'center', marginTop: 10}}>
-                    <Typography.Text style={{width: 150}}>
+                    <Typography.Text style={{width: 120}}>
                         Compatible with:
                     </Typography.Text>
                     <Select
@@ -89,13 +79,23 @@ export default function ScenarioTable({data}) {
                         placeholder='Any Participants'
                         value={compatibilityFilter}
                         onChange={(value) => setCompatibilityFilter(value)}
-                        style={{marginLeft: 10, width: '100%'}}
+                        style={{marginLeft: 10, width: 450}}
                     >
                         {[...new Set(data.flatMap(scene => scene.participants))].map(participant => (
                             <Select.Option value={participant}>
                                 {participant}
                             </Select.Option>
                         ))}
+                    </Select>
+                    <Typography.Text style={{width: 50, textAlign: 'center'}}>for</Typography.Text>
+                    <Select
+                        value={participantFilter}
+                        onChange={(value) => setParticipantFilter(value)}
+                    >
+                        <Select.Option value={0}>Any Number of Participants</Select.Option>
+                        <Select.Option value={1}>1 Participant</Select.Option>
+                        <Select.Option value={2}>2 Participants</Select.Option>
+                        <Select.Option value={3}>3 Participants</Select.Option>
                     </Select>
                 </div>
             </div>
