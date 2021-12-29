@@ -1,5 +1,6 @@
-import HookedToADoor from './hooked-to-a-door';
 import {alphabeticalSort} from "../../util";
+import HookedToADoor from './hooked-to-a-door';
+import AutomatedDenial from './automated-denial';
 
 export default [
     {
@@ -27,5 +28,26 @@ export default [
             'Equipment to punish/pleasure the Slave’s genitals',
 
         ]
-    },
+    }, {
+        name: 'Automated Denial',
+        path: 'automated-denial',
+        Component: AutomatedDenial,
+        participantCount: 1,
+        description: 'The Slave is to be prepared for use by teasing and denying orgasm, over and over again. This is mainly a solo male scene but does require someone to help setup. The ending does require another person.',
+        location: 'A room with anchor points for feet and hands above the head. A bed works well but is better if the Slave cannot easily move from side to side too.',
+        participants: [
+            'Male Slave'
+        ],
+        requiredEquipment: [
+            'Wrist restraints',
+            'Ankle restraints',
+            'Belt or strap',
+            'Edge-O-Matic (or equivalent), with associated equipment',
+        ],
+        optionalEquipment: [
+            'Gag',
+            'Blindfold',
+            'Extra restraints',
+        ],
+    }
 ].sort(alphabeticalSort(scene => scene.name));

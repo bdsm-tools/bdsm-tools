@@ -7,7 +7,7 @@ export default function ScenarioSpecs({scene}) {
     return (
         <>
             <div className='flex space-between'>
-                <div>
+                <div style={{ marginRight: 100 }}>
                     <Typography.Title level={2}>
                         Scenario
                     </Typography.Title>
@@ -15,7 +15,10 @@ export default function ScenarioSpecs({scene}) {
                         {scene.description || '<No Description>'}
                     </Typography.Paragraph>
                 </div>
-                <Statistic title='Number of Participants' value={scene.participantCount} />
+                <Statistic
+                    title='Number of Participants'
+                    value={scene.participantCount}
+                />
             </div>
 
             <Row style={{marginBottom: 10}}>
