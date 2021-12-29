@@ -26,13 +26,13 @@ jobs:
     - run: npm ci && npm run build
 
     - name: Clean Bucket
-      run: gsutil rm gs://bdsm-tools-ui/**
+      run: gsutil rm gs://www.bdsmtools.org/**
 
     - name: GCP Cloud Storage - Deploy
-      run: gsutil -m cp -r ./dist/* gs://bdsm-tools-ui
+      run: gsutil -m cp -r ./dist/* gs://www.bdsmtools.org
 
     - name: Set Entry Points
-      run: gsutil web set -m index.html -e index.html gs://bdsm-tools-ui
+      run: gsutil web set -m index.html -e index.html gs://www.bdsmtools.org
 
     - name: Add Scene Negotiation API Function
       run: |-
