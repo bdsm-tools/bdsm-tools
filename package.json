@@ -4,14 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --config webpack-dev.config.js --progress --color --bail",
+    "start": "webpack serve --config webpack-dev.config.js --progress --bail",
     "build": "webpack --config webpack-prod.config.js --progress --color --bail",
     "test": "npm run lint && npm run test-compile",
     "test-compile": "webpack --config webpack-common.config.js --color --bail --mode development",
     "lint": "eslint './**/*.{js,jsx}'",
     "lint:fix": "npm run lint -- --fix"
   },
-  "author": "",
+  "author": "keepsafemaster",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "7.16.5",
@@ -53,6 +53,7 @@
     "react-device-detect": "2.1.2",
     "react-dom": "17.0.2",
     "react-ga": "^3.3.0",
+    "react-linkify": "^1.0.0-alpha",
     "react-redux": "7.2.6",
     "react-router-dom": "5.2.1"
   }
