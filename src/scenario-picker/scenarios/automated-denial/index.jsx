@@ -1,5 +1,5 @@
 import React from 'react';
-import {H2, H3, H4, Optional, P, Text} from "../../../components/Text";
+import {H2, H3, Optional, P} from "../../../components/Text";
 
 export default function index() {
     return (
