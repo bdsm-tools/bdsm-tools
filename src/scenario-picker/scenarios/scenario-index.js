@@ -39,10 +39,10 @@ export default [
             'Male Slave'
         ],
         requiredEquipment: [
+            'Edge-O-Matic (or equivalent), with associated equipment',
+            'Belt or strap',
             'Wrist restraints',
             'Ankle restraints',
-            'Belt or strap',
-            'Edge-O-Matic (or equivalent), with associated equipment',
         ],
         optionalEquipment: [
             'Gag',

@@ -1,10 +1,12 @@
 import React from "react";
-import { Table } from 'antd';
+import {Checkbox, Table} from 'antd';
 import {Link} from "react-router-dom";
 import TagsComponent from '../components/Tags';
 import participantColourFunction from "./participantColourFunction";
+import MyEquipmentSelector from "./MyEquipmentSelector";
+import equipmentFilterFunction from './filters/equipmentFilter';
 
-const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction} />;
+const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction}/>;
 
 const columns = [
     {
@@ -36,10 +38,27 @@ const convert = (data = []) => data.map((scene) => ({
     ...scene,
 }));
 
-export default function ScenarioTable({ data }) {
+export default function ScenarioTable({data}) {
     const dataSource = convert(data);
 
+    const [equipmentFilter, setEquipmentFilter] = React.useState(false);
+    const applyEquipmentFilter = React.useCallback(equipmentFilterFunction(), [equipmentFilter]);
+
+    const filteredDataSource = dataSource
+        .filter(scene => equipmentFilter ? applyEquipmentFilter(scene) : true);
     return (
-        <Table dataSource={dataSource} columns={columns} />
+        <>
+            <div className='flex' style={{ alignItems: 'center', margin: 10 }}>
+                <MyEquipmentSelector data={data} />
+                <Checkbox
+                    checked={equipmentFilter}
+                    onChange={({ target }) => setEquipmentFilter(target.checked)}
+                    style={{ marginLeft: 20 }}
+                >
+                    Filter by equipment I have
+                </Checkbox>
+            </div>
+            <Table dataSource={filteredDataSource} columns={columns}/>
+        </>
     );
 }
