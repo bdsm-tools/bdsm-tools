@@ -82,7 +82,7 @@ export default function ScenarioTable({data}) {
                         style={{marginLeft: 10, width: 450}}
                     >
                         {[...new Set(data.flatMap(scene => scene.participants))].map(participant => (
-                            <Select.Option value={participant}>
+                            <Select.Option key={participant} value={participant}>
                                 {participant}
                             </Select.Option>
                         ))}

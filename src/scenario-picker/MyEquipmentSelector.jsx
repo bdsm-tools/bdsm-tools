@@ -66,7 +66,7 @@ export default function MyEquipmentSelector({ data }) {
                 style={{ height: 'calc(100vh - 150px)' }}
                 bodyStyle={{ overflowY: 'scroll' }}
                 footer={[
-                    <Button onClick={() => setOpen(false)}>
+                    <Button key='done' onClick={() => setOpen(false)}>
                         Done
                     </Button>
                 ]}
