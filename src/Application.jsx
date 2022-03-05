@@ -14,6 +14,10 @@ const ScenarioPickerEntry = React.lazy(() =>
   import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry')
 );
 
+const TubePlannerEntry = React.lazy(() =>
+  import(/* webpackChunkName: "TubePlanner", webpackPrefetch: true */ './tube-clamp-planner/Entry')
+);
+
 const AboutEntry = React.lazy(() =>
   import(/* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry')
 );
@@ -54,6 +58,9 @@ export default function Application() {
                   )}/>
                   <Route path="/tools/bdsm-scenarios" render={routeProps => (
                     <ScenarioPickerEntry {...routeProps} />
+                  )}/>
+                  <Route path="/tools/tube-planner" render={routeProps => (
+                    <TubePlannerEntry {...routeProps} />
                   )}/>
                   <Route path="/about/faq" render={routeProps => (
                     <FaqEntry {...routeProps} />

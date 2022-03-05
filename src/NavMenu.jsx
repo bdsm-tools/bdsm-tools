@@ -9,6 +9,7 @@ import {
   InfoCircleOutlined,
   HomeOutlined,
   BulbOutlined,
+  EditOutlined,
 } from '@ant-design/icons';
 
 export default function NavMenu({location, vertical}) {
@@ -35,6 +36,11 @@ export default function NavMenu({location, vertical}) {
           <Menu.Item key="bdsm-scenarios" icon={<FileDoneOutlined/>}>
             <Link to="/tools/bdsm-scenarios">
               Scenario Picker
+            </Link>
+          </Menu.Item>
+          <Menu.Item key="tube-planner" icon={<EditOutlined />}>
+            <Link to="/tools/tube-planner">
+              Tube Clamp Planner
             </Link>
           </Menu.Item>
         </Menu.SubMenu>
