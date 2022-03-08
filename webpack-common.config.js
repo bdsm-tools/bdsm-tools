@@ -52,6 +52,17 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.(tif|png)/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets',
+            },
+          }
+        ]
+      },
+      {
         test: /\.css$/,
         use: [
          'style-loader',
@@ -77,7 +88,7 @@ module.exports = {
                   javascriptEnabled: true,
                 }
               }
-            }
+            },
         ],
       }, {
         test: /\.m?jsx?$/,

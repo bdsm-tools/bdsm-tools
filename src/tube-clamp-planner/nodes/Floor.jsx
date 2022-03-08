@@ -1,12 +1,26 @@
 import React from "react";
+import { useTexture } from "@react-three/drei";
+import floorMap from '../textures/Wood_FloorOak_1K_albedo.png';
+import floorHeight from '../textures/Wood_FloorOak_1K_height.png';
+import floorNormalMap from '../textures/Wood_FloorOak_1K_normal.png';
+import floorRoughness from '../textures/Wood_FloorOak_1K_roughness.png';
 
-export default function Floor() {
+export default function Floor({ length, width }) {
     const ref = React.useRef();
+    const textureProps = useTexture({
+        map: floorMap,
+        displacementMap: floorHeight,
+        normalMap: floorNormalMap,
+        roughnessMap: floorRoughness,
+    });
 
     return (
-        <mesh ref={ref} position={[0, -50, 0]}>
-            <boxGeometry args={[100, 5, 100]} />
-            <meshStandardMaterial color='brown' />
+        <mesh ref={ref} position={[width / 2, 0, length / 2]}>
+            <boxGeometry args={[width, 0, length]} />
+            <meshStandardMaterial
+                color='white'
+                {...textureProps}
+            />
         </mesh>
     );
 }
