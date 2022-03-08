@@ -14,9 +14,11 @@ export default function Floor({ length, width }) {
         roughnessMap: floorRoughness,
     });
 
+    const thickness = 2;
+
     return (
-        <mesh ref={ref} position={[width / 2, 0, length / 2]}>
-            <boxGeometry args={[width, 0, length]} />
+        <mesh ref={ref} position={[width / 2, -thickness, length / 2]}>
+            <boxGeometry args={[width, thickness, length]} />
             <meshStandardMaterial
                 color='white'
                 {...textureProps}

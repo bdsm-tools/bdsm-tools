@@ -13,6 +13,10 @@ import Base from "./components/Base";
 import CameraControls from "./components/CameraControls";
 import Tube from "./nodes/Tube";
 import {B} from "./sizes";
+import Flange from "./nodes/Flange";
+import validateChain from "./validation/validateChain";
+import './connectors/flange';
+import './connectors/crossover';
 
 extend({OrbitControls});
 
@@ -46,7 +50,36 @@ function Loader() {
     return <Html center>{progress} % loaded</Html>
 }
 
+const example = {
+  chains: [
+      {
+          type: 'flange',
+          surfaceConnections: [{
+              surface: 'floor',
+              coords: [50, 50]
+          }],
+          endConnections: [{
+              type: 'tube',
+              length: 30,
+              middleConnections: [{
+                  type: 'crossover',
+                  position: 20,
+                  endConnections: [],
+                  middleConnections: [{
+                      type: 'tube',
+                      position: 20,
+                  }],
+                  surfaceConnections: [],
+              }],
+              endConnection: undefined,
+          }]
+      }
+  ]
+};
+
 export default function Entry() {
+
+    validateChain(example.chains);
 
     if (WebGL.isWebGLAvailable()) {
         return (
@@ -60,7 +93,10 @@ export default function Entry() {
                         <Box position={[0, 0, 0]}/>
                         <Controls/>
                         <CameraControls/>
-                        <Tube length={100} size={B} />
+                        <Tube position={[50, 0, 50]} length={30} size={B} />
+                        <Tube position={[50, 0, 70]} length={30} size={B} />
+                        <Flange position={[50, 0, 50]} size={B} />
+                        <Flange position={[50, 0, 70]} size={B} />
                     </>
                 </React.Suspense>
             </Canvas>

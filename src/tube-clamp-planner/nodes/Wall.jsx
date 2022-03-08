@@ -5,6 +5,7 @@ import wallHeight from "../textures/Wall_BrickPainted_1K_height.png";
 import wallNormalMap from "../textures/Wall_BrickPainted_1K_normal.png";
 import wallRoughness from "../textures/Wall_BrickPainted_1K_roughness.png";
 import wallAo from "../textures/Wall_BrickPainted_1K_ao.png";
+import {DoubleSide} from "three";
 
 export default function Wall({ length, width }) {
     const ref = React.useRef();
@@ -21,12 +22,12 @@ export default function Wall({ length, width }) {
     return (
         <>
             <mesh ref={ref} position={[width / 2, 200, 0]}>
-                <boxGeometry args={[width, 400, 0]} />
-                <meshStandardMaterial {...textureProps} />
+                <boxGeometry args={[width, 400, 5]} />
+                <meshStandardMaterial {...textureProps} side={DoubleSide} />
             </mesh>
-            <mesh ref={sideRef} position={[0, 200, length / 2]}>
-                <boxGeometry args={[0, 400, length]} />
-                <meshStandardMaterial {...textureProps} />
+            <mesh ref={sideRef} position={[1, 200, length / 2]}>
+                <boxGeometry args={[5, 400, length]} />
+                <meshStandardMaterial {...textureProps} side={DoubleSide} />
             </mesh>
         </>
     );
