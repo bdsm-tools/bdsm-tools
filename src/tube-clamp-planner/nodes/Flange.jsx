@@ -7,7 +7,7 @@ import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useFocusNode from "../controls/useFocusNode";
 
-export default function Flange({ position, size }) {
+export default function Flange({ position, size, setEndConnectionPosition }) {
 
     const textureProps = useTexture({
         map: tubeMap,
@@ -17,6 +17,8 @@ export default function Flange({ position, size }) {
     });
 
     const [x,y,z] = position;
+
+    React.useEffect(() => setEndConnectionPosition(0, [x, y, z]), []);
 
     const baseRadius = size * 1.5;
     const baseHeight = 1;

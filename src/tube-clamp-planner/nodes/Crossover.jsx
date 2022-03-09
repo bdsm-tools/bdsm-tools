@@ -6,8 +6,21 @@ import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useFocusNode from "../controls/useFocusNode";
+import {useFrame} from "@react-three/fiber";
+import useRotate from "../controls/useRotate";
 
-export default function Crossover({ position, size }) {
+export default function Crossover({ position, size, rotation, connection, setMiddleConnectionPosition }) {
+    const calculatedRotation = {
+        ...rotation,
+        y: rotation.y + connection.rotation,
+    };
+
+    const groupRef = React.useRef();
+    const startRef = React.useRef();
+    const endRef = React.useRef();
+
+    useRotate(groupRef, calculatedRotation);
+    useRotate(endRef, { x: 90 });
 
     const textureProps = useTexture({
         map: tubeMap,
@@ -16,18 +29,23 @@ export default function Crossover({ position, size }) {
         metalnessMap: tubeMetalic,
     });
 
-    const [x,y,z] = position;
+    const tubeRadius = (size + 1) / 2;
+    const tubeHeight = 4;
+
+    const endPosition = [(tubeRadius * 2) - 0.5, 0, 0];
+
+    React.useEffect(() => setMiddleConnectionPosition(0, endPosition), []);
 
     return (
-        <>
-            <mesh position={[x, y, z]}>
-                <cylinderGeometry args={[baseRadius, baseRadius, baseHeight, 64, 1]}/>
+        <group ref={groupRef} position={position}>
+            <mesh ref={startRef}>
+                <cylinderGeometry args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>
             </mesh>
-            <mesh position={[x, y + (neckHeight / 2), z]}>
-                <cylinderGeometry args={[neckRadius, neckRadius, neckHeight, 64, 1]}/>
+            <mesh ref={endRef} position={endPosition}>
+                <cylinderGeometry args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>
             </mesh>
-        </>
+        </group>
     );
 }
