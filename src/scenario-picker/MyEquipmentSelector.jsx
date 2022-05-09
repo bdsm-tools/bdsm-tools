@@ -10,8 +10,8 @@ export default function MyEquipmentSelector({ data }) {
     const [myEquipment, setMyEquipment] = React.useState((Cookies.get('my-equipment') || '').split('|'));
     const [missingEquipment, setMissingEquipment] = React.useState((Cookies.get('missing-equipment') || '').split('|'));
 
-    React.useEffect(() => Cookies.set('my-equipment', myEquipment.join('|')), [myEquipment]);
-    React.useEffect(() => Cookies.set('missing-equipment', missingEquipment.join('|')), [missingEquipment]);
+    React.useEffect(() => void Cookies.set('my-equipment', myEquipment.join('|')), [myEquipment]);
+    React.useEffect(() => void Cookies.set('missing-equipment', missingEquipment.join('|')), [missingEquipment]);
 
     const add = (value) => {
         setMyEquipment(old => [...old, value]);
