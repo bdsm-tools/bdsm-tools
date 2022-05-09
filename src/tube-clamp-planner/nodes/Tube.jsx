@@ -8,10 +8,18 @@ import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useFocusNode from "../controls/useFocusNode";
 import useRotate from "../controls/useRotate";
 
-export default function Tube({ position, length, size, rotation }) {
+export default function Tube({ position, length, size, rotation, tube, setMiddleConnectionPosition }) {
     const ref = React.useRef();
 
+    const [x,y,z] = position;
+
     useRotate(ref, rotation);
+
+    React.useEffect(() => {
+        tube?.middleConnections?.forEach((c, index) => {
+            setMiddleConnectionPosition(index, [x, y + c.position, z]);
+        });
+    }, []);
 
     const textureProps = useTexture({
         map: tubeMap,
@@ -22,7 +30,6 @@ export default function Tube({ position, length, size, rotation }) {
 
     const focusNode = useFocusNode();
 
-    const [x,y,z] = position;
     const tubeRadius = size / 2;
     return (
         <group ref={ref} position={position}>

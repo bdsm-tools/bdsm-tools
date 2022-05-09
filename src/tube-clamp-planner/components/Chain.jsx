@@ -4,8 +4,15 @@ import {B} from "../sizes";
 import Tube from "../nodes/Tube";
 
 const TubeNode = ({ tube, position, size, rotation }) => {
-
     const [x,y,z] = position;
+
+    const [endPosition] = React.useState([x, y + (tube.endConnection?.position || 0), z]);
+    const [middleConnectionPositions, setMiddleConnectionPositions] = React.useState({});
+
+    const setMiddleConnectionPosition = (index, position) => setMiddleConnectionPositions(old => ({
+        ...old,
+        [index]: position,
+    }));
     return (
         <>
             <Tube
@@ -13,12 +20,13 @@ const TubeNode = ({ tube, position, size, rotation }) => {
                 position={position}
                 rotation={rotation}
                 size={size}
+                setMiddleConnectionPosition={setMiddleConnectionPosition}
             />
-            {tube.middleConnections?.map(middle => (
+            {tube.middleConnections?.map((middle, index) => (
                 <ChainNode
                     key={position.toString()}
                     connection={middle}
-                    position={[x, y + (middle.position || 0), z]}
+                    position={middleConnectionPositions[index] || [x, y + (middle.position || 0), z]}
                     rotation={rotation}
                     size={size}
                 />
@@ -27,7 +35,7 @@ const TubeNode = ({ tube, position, size, rotation }) => {
                 <ChainNode
                     key={position.toString()}
                     connection={tube.endConnection}
-                    position={[x, y + (tube.endConnection.position || 0), z]}
+                    position={endPosition}
                     rotation={rotation}
                     size={size}
                 />

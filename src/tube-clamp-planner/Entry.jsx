@@ -39,11 +39,12 @@ const example = {
                     middleConnections: [{
                         type: 'tube',
                         position: 20,
+                        length: 50,
                     }],
                 }],
-                endConnection: {
-                    type: 'flange'
-                },
+                // endConnection: {
+                //     type: 'flange'
+                // },
             }]
         }
     ]

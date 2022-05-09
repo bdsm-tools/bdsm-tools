@@ -26,15 +26,15 @@ export default function Flange({ position, size, setEndConnectionPosition }) {
     const neckRadius = (size + 1) / 2;
     const neckHeight = 5;
     return (
-        <>
-            <mesh position={[x, y, z]}>
+        <group position={position}>
+            <mesh position={0}>
                 <cylinderGeometry args={[baseRadius, baseRadius, baseHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>
             </mesh>
-            <mesh position={[x, y + (neckHeight / 2), z]}>
+            <mesh position={[0, (neckHeight / 2), 0]}>
                 <cylinderGeometry args={[neckRadius, neckRadius, neckHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>
             </mesh>
-        </>
+        </group>
     );
 }

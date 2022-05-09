@@ -34,7 +34,7 @@ export default function Crossover({ position, size, rotation, connection, setMid
 
     const endPosition = [(tubeRadius * 2) - 0.5, 0, 0];
 
-    React.useEffect(() => setMiddleConnectionPosition(0, endPosition), []);
+    React.useEffect(() => setMiddleConnectionPosition(0, [position[0] + endPosition[0],position[1],position[2]]), []);
 
     return (
         <group ref={groupRef} position={position}>
