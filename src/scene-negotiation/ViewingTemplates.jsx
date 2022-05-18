@@ -27,7 +27,7 @@ export default function ViewingTemplates({ location, history, match, templates, 
       default:
         return false;
     }
-  }
+  };
 
   return (
     <React.Fragment>

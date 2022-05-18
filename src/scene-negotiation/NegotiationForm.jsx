@@ -28,7 +28,7 @@ function NegotiationForm(props) {
         setData(data);
       }
     });
-  }
+  };
 
   React.useEffect(() => {
     window.sceenNegotiation = {

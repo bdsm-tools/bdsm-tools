@@ -1,5 +1,7 @@
 export default {
   title: 'Kink.com: BDSM Checklist for Submissive',
+  description: 'This is a digital version of the checklist found here: ' +
+      'https://cdnp.kink.com/assets/misc/bdsm-checklist-for-submissives.pdf',
   active: true,
   schema: {
     type: 'object',
