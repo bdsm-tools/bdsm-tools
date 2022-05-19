@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from "prop-types";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import {Menu, Affix} from "antd";
 import {
   FileDoneOutlined,
@@ -11,8 +11,8 @@ import {
   BulbOutlined,
 } from '@ant-design/icons';
 
-export default function NavMenu({location, vertical}) {
-  const {pathname} = location;
+export default function NavMenu({vertical}) {
+  const {pathname} = useLocation();
   return (
     <Affix offsetTop={0}>
       <Menu
