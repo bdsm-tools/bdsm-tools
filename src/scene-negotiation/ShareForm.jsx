@@ -1,6 +1,6 @@
 import React from 'react';
 import { Result, Typography, Button, Alert } from 'antd';
-import { useLocation, useHistory, useSearchParams } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import api from '../services/scene-negotiation-api';
 
 export default function ShareForm({ data, errors, template }) {
