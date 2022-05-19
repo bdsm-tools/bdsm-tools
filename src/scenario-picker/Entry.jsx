@@ -18,7 +18,7 @@ export default function Entry() {
                 title={params.type
                     ? scenarioMap[params.type].name || 'Unnamed Scenario'
                     : 'BDSM Scenarios'}
-                onBack={params.type ? () => navigate('./') : undefined}
+                onBack={params.type ? () => navigate('.') : undefined}
             />
             <Outlet/>
         </React.Fragment>

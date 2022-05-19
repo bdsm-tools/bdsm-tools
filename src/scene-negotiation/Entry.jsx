@@ -21,7 +21,7 @@ export default function Entry() {
         <React.Fragment>
             <PageHeader
                 title={params.type || 'Scene Negotiation'}
-                onBack={params.type ? () => navigate('./') : undefined}
+                onBack={params.type ? () => navigate('.') : undefined}
             />
             {loading && <Spin size="large"/>}
             {!loading && <Outlet context={{templates}}/>}

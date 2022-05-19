@@ -34,7 +34,7 @@ export default function NegotiationFormWrapper() {
             extra={(
                 <Button
                     type='primary'
-                    onClick={() => navigate(url)}
+                    onClick={() => navigate('..')}
                 >
                     Choose a Template
                 </Button>

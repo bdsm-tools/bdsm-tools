@@ -2,7 +2,7 @@ import React from 'react';
 import { Typography, Empty, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import NegotiationCard from "./NegotiationCard";
-import {useLocation, useNavigate, useOutletContext, useSearchParams} from "react-router-dom";
+import {useNavigate, useOutletContext, useSearchParams} from "react-router-dom";
 
 export default function ViewingTemplates() {
   const { templates } = useOutletContext();
