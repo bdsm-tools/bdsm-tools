@@ -1,6 +1,6 @@
 {
   "name": "bdsm-tools",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "BDSM Tools Web Application",
   "main": "index.js",
   "scripts": {
