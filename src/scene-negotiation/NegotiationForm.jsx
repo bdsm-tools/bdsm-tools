@@ -38,7 +38,8 @@ function NegotiationForm({template}) {
     }, [setReadOnly]);
 
     React.useEffect(() => {
-        const {id, source: sourceId} = searchParams;
+        const id = searchParams.get('id');
+        const sourceId = searchParams.get('source');
 
         if (id) {
             setLoading(true);
@@ -55,7 +56,7 @@ function NegotiationForm({template}) {
                     setLoading(false);
                 });
         }
-    }, [searchParams]);
+    }, [searchParams.get('id'), searchParams.get('source')]);
 
     const readOnlyCells = [
         ...ReadOnlyCells,
@@ -116,9 +117,9 @@ function NegotiationForm({template}) {
             <Popconfirm
                 title="Are you sure you want to modify? You will not modify this data, only copy it to a new form"
                 placement="top"
-                onConfirm={() => setSearchParams((old) => ({
-                    source: old.id,
-                }))}
+                onConfirm={() => setSearchParams({
+                    source: searchParams.get('id'),
+                })}
             >
                 <Button
                     type="primary"

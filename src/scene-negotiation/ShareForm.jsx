@@ -4,12 +4,11 @@ import {useLocation, useSearchParams} from 'react-router-dom';
 import api from '../services/scene-negotiation-api';
 
 export default function ShareForm({ data, errors, template }) {
-  const { pathname, search } = useLocation();
+  const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const [saving, setSaving] = React.useState(false);
 
-  const params = new URLSearchParams(search);
-  const linkParam = params.get('id');
+  const linkParam = searchParams.get('id');
   const link = linkParam && `${document.location.origin}${pathname}?id=${linkParam}`;
 
   const save = () => {

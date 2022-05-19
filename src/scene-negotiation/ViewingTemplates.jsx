@@ -2,15 +2,14 @@ import React from 'react';
 import { Typography, Empty, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import NegotiationCard from "./NegotiationCard";
-import {useLocation, useNavigate, useOutletContext} from "react-router-dom";
+import {useLocation, useNavigate, useOutletContext, useSearchParams} from "react-router-dom";
 
 export default function ViewingTemplates() {
   const { templates } = useOutletContext();
   const navigate = useNavigate();
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-  const [search, setSearch] = React.useState(params.get('search') || '');
-  const [searchType, setSearchType] = React.useState(params.get('searchType') || 'including');
+  const [searchParams] = useSearchParams();
+  const [search, setSearch] = React.useState(searchParams.get('search') || '');
+  const [searchType, setSearchType] = React.useState(searchParams.get('searchType') || 'including');
   const applySearch = e => setSearch(e.target.value);
   const filterTemplates = ({ title, description }) => {
     switch (searchType) {
