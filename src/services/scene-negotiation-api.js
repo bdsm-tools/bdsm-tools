@@ -23,10 +23,14 @@ const getNegotiationType = (id) => get(`/negotiation-types?${queryString.stringi
 const getNegotiation = (id) => get(`/negotiation?${queryString.stringify({ id })}`);
 
 const saveNegotiation = (data) => post('/negotiation', data);
+const saveNegotiationTypes = (type) => post('/negotiation-types', type);
+const activateNegotiationType = (typeId) => post(`/negotiation-types/activate?id=${typeId}&active=true`);
 
 export default {
   getNegotiationTypes,
   getNegotiationType,
   getNegotiation,
   saveNegotiation,
+  saveNegotiationTypes,
+  activateNegotiationType,
 }

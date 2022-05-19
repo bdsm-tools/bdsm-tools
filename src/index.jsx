@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 import './style/index.less';
 import Application from './Application';
 
@@ -15,7 +15,6 @@ rootElement.id = 'application-root-node';
 rootElement.className = 'app-root';
 document.body.appendChild(rootElement);
 
-ReactDOM.render(
-  <Application/>,
-  rootElement,
-);
+const root = ReactDOM.createRoot(rootElement);
+
+root.render(<Application/>);
