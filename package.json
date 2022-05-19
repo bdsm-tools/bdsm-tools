@@ -55,6 +55,6 @@
     "react-dom": "18.1.0",
     "react-ga": "3.3.0",
     "react-linkify": "1.0.0-alpha",
-    "react-router-dom": "5.3.1"
+    "react-router-dom": "6.3.0"
   }
 }

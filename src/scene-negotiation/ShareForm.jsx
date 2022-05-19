@@ -1,11 +1,11 @@
 import React from 'react';
 import { Result, Typography, Button, Alert } from 'antd';
-import { useLocation, useHistory } from 'react-router-dom';
+import {useLocation, useSearchParams} from 'react-router-dom';
 import api from '../services/scene-negotiation-api';
 
 export default function ShareForm({ data, errors, template }) {
   const { pathname, search } = useLocation();
-  const { replace } = useHistory();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [saving, setSaving] = React.useState(false);
 
   const params = new URLSearchParams(search);
@@ -16,8 +16,8 @@ export default function ShareForm({ data, errors, template }) {
     setSaving(true);
     api.saveNegotiation({ data, template }).then(res => {
       setSaving(false);
-      replace({
-        search: `?id=${res.id}`,
+      setSearchParams({
+        id: res.id,
       });
     }).catch(() => {
       setSaving(false);

@@ -1,14 +1,11 @@
 import React from 'react';
-import {PageHeader, Row, Col} from 'antd';
-import ScenarioTable from "./ScenarioTable";
+import {PageHeader} from 'antd';
+import {useMatch, useNavigate, Outlet} from 'react-router-dom';
 import scenarioData from './scenarios/scenario-index';
-import {Route, Switch} from "react-router-dom";
-import ScenarioSpecs from "./ScenarioSpecs";
-import ScenarioAuthor from "./ScenarioAuthor";
 
-export default function Entry(props) {
-    const {match, history} = props;
-    const {url} = match;
+export default function Entry() {
+    const navigate = useNavigate();
+    const {params} = useMatch('/tools/bdsm-scenarios/:type') || {params: {}};
 
     const scenarioMap = {};
     scenarioData.forEach(value => {
@@ -17,37 +14,13 @@ export default function Entry(props) {
 
     return (
         <React.Fragment>
-            <Switch>
-                <Route path={`${url}/:type?`} render={(routeProps) => (
-                    <PageHeader
-                        title={routeProps.match.params.type
-                            ? scenarioMap[routeProps.match.params.type].name || 'Unnamed Scenario'
-                            : 'BDSM Scenarios'}
-                        onBack={routeProps.match.params.type
-                            ? () => history.push(url)
-                            : undefined
-                        }
-                    />
-                )}/>
-            </Switch>
-            <Switch>
-                <Route path={`${url}/:type`} render={(routeProps) => {
-                    const {type} = routeProps.match.params;
-                    const {Component, ...scene} = scenarioMap[type];
-                    return (
-                        <>
-                            <ScenarioSpecs scene={scene} {...routeProps} />
-                            <Row><Col xs={24} md={16}>
-                            <Component scene={scene} {...routeProps} />
-                            </Col></Row>
-                            <ScenarioAuthor scene={scene} {...routeProps} />
-                        </>
-                    );
-                }}/>
-                <Route path={`${url}`} render={(routeProps) => (
-                    <ScenarioTable data={scenarioData} {...routeProps} />
-                )}/>
-            </Switch>
+            <PageHeader
+                title={params.type
+                    ? scenarioMap[params.type].name || 'Unnamed Scenario'
+                    : 'BDSM Scenarios'}
+                onBack={params.type ? () => navigate('./') : undefined}
+            />
+            <Outlet/>
         </React.Fragment>
     )
 }

@@ -1,10 +1,13 @@
 import React from 'react';
-import { Typography, Empty, Spin, Input, Select } from 'antd';
+import { Typography, Empty, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import NegotiationCard from "./NegotiationCard";
+import {useLocation, useNavigate, useOutletContext} from "react-router-dom";
 
-export default function ViewingTemplates({ location, history, match, templates, loading }) {
-  const {url} = match;
+export default function ViewingTemplates() {
+  const { templates } = useOutletContext();
+  const navigate = useNavigate();
+  const location = useLocation();
   const params = new URLSearchParams(location.search);
   const [search, setSearch] = React.useState(params.get('search') || '');
   const [searchType, setSearchType] = React.useState(params.get('searchType') || 'including');
@@ -42,14 +45,13 @@ export default function ViewingTemplates({ location, history, match, templates, 
           Choose a Negotiation Template:
         </Typography.Paragraph>
       </Typography>
-      {loading && <Spin size="large" />}
-      {!loading && (!templates || templates.length === 0) && (
+      {(!templates || templates.length === 0) && (
         <Empty
           description="There are no active Scene Negotiation Templates"
           image={Empty.PRESENTED_IMAGE_SIMPLE}
         />
       )}
-      {!loading && templates && templates.length > 10 &&
+      {templates && templates.length > 10 &&
         <Input
           placeholder="Search for templates"
           prefix={<SearchOutlined />}
@@ -73,7 +75,7 @@ export default function ViewingTemplates({ location, history, match, templates, 
           <NegotiationCard
             key={template.id}
             {...template}
-            onClick={() => history.push(`${url}/${template.title}`)}
+            onClick={() => navigate(template.title)}
           />
         ))}
       </div>
