@@ -7,6 +7,7 @@ import MyEquipmentSelector from "./MyEquipmentSelector";
 import equipmentFilterFunction from './filters/equipmentFilter';
 import participantFilterFunction from './filters/participantFilter';
 import compatibilityFilterFunction from './filters/compatibilityFilter';
+import scenarioData from "./scenarios/scenario-index";
 
 const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction}/>;
 
@@ -40,7 +41,7 @@ const convert = (data = []) => data.map((scene) => ({
     ...scene,
 }));
 
-export default function ScenarioTable({data}) {
+export default function ScenarioTable({data = scenarioData}) {
     const dataSource = convert(data);
 
     const [equipmentFilter, setEquipmentFilter] = React.useState(false);

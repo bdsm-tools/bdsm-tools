@@ -14,7 +14,7 @@ module.exports = (mode) => [
   }, {
     name: 'react-router-dom',
     var: 'ReactRouterDOM',
-    path: `umd/react-router-dom${extra('')}.js`
+    path: `umd/react-router-dom.${extra(mode)}.js`
   }, {
     name: 'react-redux',
     var: 'ReactRedux',
