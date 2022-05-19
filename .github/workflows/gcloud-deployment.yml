@@ -38,7 +38,7 @@ jobs:
       run: |-
         cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
           --entry-point doProcess \
-          --runtime nodejs10 \
+          --runtime nodejs14 \
           --trigger-http \
           --allow-unauthenticated \
           --memory 512MB \
