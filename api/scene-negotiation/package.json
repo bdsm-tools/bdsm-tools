@@ -8,6 +8,6 @@
     "deploy": "./deploy.sh"
   },
   "dependencies": {
-    "firebase-admin": "10.2.0"
+    "firebase-admin": "11.4.1"
   }
 }
