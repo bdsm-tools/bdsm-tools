@@ -1,6 +1,6 @@
 import React from 'react';
 import {DispatchCell, withJsonFormsControlProps} from '@jsonforms/react';
-import {computeLabel, isPlainLabel, NOT_APPLICABLE} from "@jsonforms/core";
+import {computeLabel, NOT_APPLICABLE} from "@jsonforms/core";
 import { Alert } from 'antd';
 import _ from 'lodash';
 
@@ -37,7 +37,7 @@ function ControlRenderer(props) {
   //   appliedUiSchemaOptions.showUnfocusedDescription
   // );
   const labelText = computeLabel(
-    isPlainLabel(label) ? label : (label || {}).default,
+    label,
     required,
     appliedUiSchemaOptions.hideRequiredAsterisk
   );

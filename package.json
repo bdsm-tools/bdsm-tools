@@ -41,9 +41,9 @@
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
     "@babel/runtime": "7.22.6",
-    "@jsonforms/core": "2.5.2",
-    "@jsonforms/react": "2.5.2",
-    "@jsonforms/vanilla-renderers": "2.5.2",
+    "@jsonforms/core": "3.1.0",
+    "@jsonforms/react": "3.1.0",
+    "@jsonforms/vanilla-renderers": "3.1.0",
     "antd": "^4.24.12",
     "js-cookie": "3.0.5",
     "lodash": "4.17.21",
