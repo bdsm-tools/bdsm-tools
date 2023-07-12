@@ -132,7 +132,7 @@ function NegotiationForm({template}) {
             </Popconfirm>
             }
             <Modal
-                visible={submit}
+                open={submit}
                 onCancel={() => setSubmit(false)}
                 footer={null}
             >
