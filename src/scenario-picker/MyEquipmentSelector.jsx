@@ -62,7 +62,7 @@ export default function MyEquipmentSelector({ data }) {
             <Modal
                 title='My Equipment'
                 width='75%'
-                visible={open}
+                open={open}
                 style={{ height: 'calc(100vh - 150px)' }}
                 bodyStyle={{ overflowY: 'scroll' }}
                 footer={[

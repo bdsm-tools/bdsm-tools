@@ -20,6 +20,7 @@ export default function NavMenu({vertical}) {
         selectedKeys={pathname === '/' ? '/' : pathname.split('/')}
         defaultOpenKeys={['tools', ...pathname.split('/')]}
         style={{ paddingBottom: 'auto' }}
+        // items={[]}
       >
         <Menu.Item key="/" icon={<HomeOutlined />}>
           <Link to="/">

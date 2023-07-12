@@ -12,7 +12,7 @@ export default function ConsentModal() {
   return (
     <Modal
       title="Content Warning"
-      visible={!consent}
+      open={!consent}
       okText="I Agree"
       cancelText="I Do Not Agree"
       onOk={onConsent}
