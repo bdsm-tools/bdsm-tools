@@ -10,7 +10,7 @@ module.exports = {
       url: false,
       http: false,
       https: false,
-      buffer: false,
+      buffer: require.resolve('buffer'),
     },
     alias: {
       process: 'process/browser',
@@ -125,6 +125,7 @@ module.exports = {
     new webpack.ids.HashedModuleIdsPlugin(),
     new webpack.ProvidePlugin({
       process: 'process/browser',
+      Buffer: ['buffer', 'Buffer'],
     }),
   ],
 }

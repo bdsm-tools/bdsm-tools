@@ -38,6 +38,11 @@ export default function NavMenu({vertical}) {
               Scenario Picker
             </Link>
           </Menu.Item>
+          <Menu.Item key="scene-planner" icon={<FileDoneOutlined/>}>
+            <Link to="/tools/scene-planner">
+              Scene Planner
+            </Link>
+          </Menu.Item>
         </Menu.SubMenu>
         <Menu.SubMenu key="about" title="About" icon={<BulbOutlined />}>
           <Menu.Item key="info" icon={<InfoCircleOutlined />}>

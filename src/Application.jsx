@@ -9,6 +9,8 @@ import ScenarioTable from "./scenario-picker/ScenarioTable";
 import ScenarioEntry from "./scenario-picker/ScenarioEntry";
 import NegotiationFormWrapper from "./scene-negotiation/NegotiationFormWrapper";
 import ViewingTemplates from "./scene-negotiation/ViewingTemplates";
+import ScenePlannerDashboard from './scene-planner/ScenePlannerDashboard'
+import ScenePlanViewer from './scene-planner/ScenePlanViewer'
 
 const SceneNegotiationEntry = React.lazy(() =>
     import(/* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry')
@@ -16,6 +18,10 @@ const SceneNegotiationEntry = React.lazy(() =>
 
 const ScenarioPickerEntry = React.lazy(() =>
     import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry')
+);
+
+const ScenePlannerEntry = React.lazy(() =>
+    import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scene-planner/Entry')
 );
 
 const AboutEntry = React.lazy(() =>
@@ -51,6 +57,10 @@ export default function Application() {
                     <Route path="tools/bdsm-scenarios" element={<ScenarioPickerEntry/>}>
                         <Route index element={<ScenarioTable />}/>
                         <Route path=':type' element={<ScenarioEntry/>} />
+                    </Route>
+                    <Route path="tools/scene-planner" element={<ScenePlannerEntry/>}>
+                        <Route index element={<ScenePlannerDashboard />}/>
+                        <Route path=':sceneId' element={<ScenePlanViewer />} />
                     </Route>
                 </Route>
             </Routing>
