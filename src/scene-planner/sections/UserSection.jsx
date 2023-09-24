@@ -1,6 +1,6 @@
+import React from 'react'
 import { Button, Input, List, Select } from 'antd'
 import UserOutlined from '@ant-design/icons/lib/icons/UserOutlined'
-import React from 'react'
 import { byRole, dList, sList } from '../util'
 
 export default function UserSection({ users, onUpdate }) {
@@ -26,7 +26,13 @@ export default function UserSection({ users, onUpdate }) {
             <List.Item.Meta
               avatar={<UserOutlined />}
               title={listUser.name}
-              description={`Role: ${listUser.role}`}
+              description={[{
+                label: 'Role',
+                value: listUser.role,
+              }, {
+                label: 'Outfit',
+                value: listUser.outfit,
+              }].filter(({ value }) => !!value).map(({ label, value }) => `${label}: ${value}`).join(', ')}
             />
           </List.Item>
         )}
@@ -42,19 +48,33 @@ export default function UserSection({ users, onUpdate }) {
           }))}
           status={existingUser(user) ? "error" : undefined}
         />
-        <Select
-          style={{ width: '25%' }}
-          value={user.role}
-          onChange={(value) => setUser((oldUser) => ({
-            ...oldUser,
-            role: value,
-          }))}
-        >
-          <Select.Option value='(No role)'>(No role)</Select.Option>
-          {[...dList, ...sList].map((role) => (
-            <Select.Option key={role} value={role}>{role}</Select.Option>
-          ))}
-        </Select>
+        {user.customRole ? (
+          <Input
+            style={{ width: '25%' }}
+            value={user.role}
+            onChange={({ target }) => setUser((oldUser) => ({
+              ...oldUser,
+              role: target.value,
+            }))}
+            autoFocus
+          />
+        ) : (
+          <Select
+            style={{ width: '25%' }}
+            value={user.role}
+            onChange={(value) => setUser((oldUser) => ({
+              ...oldUser,
+              role: value,
+              customRole: value === 'Other',
+            }))}
+          >
+            <Select.Option value='(No role)'>(No role)</Select.Option>
+            {[...dList, ...sList].map((role) => (
+              <Select.Option key={role} value={role}>{role}</Select.Option>
+            ))}
+            <Select.Option value='Other'>Other...</Select.Option>
+          </Select>
+        )}
         <Button
           style={{ width: '25%' }}
           type="primary"
@@ -64,7 +84,7 @@ export default function UserSection({ users, onUpdate }) {
               ...users,
               user,
             ]);
-            setUser({ role: '(No role)'});
+            setUser({ role: '(No role)' });
           }}
         >
           Add

@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button, Card, Tooltip, Typography } from 'antd'
-import { DeleteOutlined, DiffOutlined } from '@ant-design/icons'
+import { DeleteOutlined, DownloadOutlined, DiffOutlined } from '@ant-design/icons'
 import { useLocalStorageState } from 'ahooks';
 import { useNavigate } from 'react-router'
 import { extractPlanData } from './util'
+import { downloadJSON } from '../util'
 
 export default function ScenePlanCard(props) {
   const navigate = useNavigate();
@@ -15,7 +16,12 @@ export default function ScenePlanCard(props) {
       style={{ margin: 15, width: '30%', minWidth: 300 }}
       title={scenePlan.title || 'Untitled Plan'}
       extra={(
-        <Tooltip title='Delete'>
+        <Tooltip title='Download'>
+          <Button
+            shape="circle"
+            icon={<DownloadOutlined />}
+            onClick={() => downloadJSON(scenePlan, `${scenePlan.title}.json`)}
+          />
           <Button
             shape="circle"
             icon={<DeleteOutlined />}

@@ -2,24 +2,28 @@ import React from "react";
 import {Modal, Button, Typography, List} from "antd";
 import { PlusSquareOutlined, MinusSquareOutlined } from "@ant-design/icons";
 import {alphabeticalSort} from "../util";
-import Cookies from "js-cookie";
+import { useDebounceFn, useLocalStorageState } from 'ahooks'
 
 export default function MyEquipmentSelector({ data }) {
     const [open, setOpen] = React.useState(false);
 
-    const [myEquipment, setMyEquipment] = React.useState((Cookies.get('my-equipment') || '').split('|'));
-    const [missingEquipment, setMissingEquipment] = React.useState((Cookies.get('missing-equipment') || '').split('|'));
+    const [myEquipment, setMyEquipmentRaw] = useLocalStorageState('my-equipment', {
+        defaultValue: [],
+    });
+    const [missingEquipment, setMissingEquipmentRaw] = useLocalStorageState('missing-equipment', {
+        defaultValue: [],
+    });
 
-    React.useEffect(() => void Cookies.set('my-equipment', myEquipment.join('|')), [myEquipment]);
-    React.useEffect(() => void Cookies.set('missing-equipment', missingEquipment.join('|')), [missingEquipment]);
+    const { run: setMyEquipment } = useDebounceFn(setMyEquipmentRaw, { wait: 250 });
+    const { run: setMissingEquipment } = useDebounceFn(setMissingEquipmentRaw, { wait: 250 });
 
     const add = (value) => {
-        setMyEquipment(old => [...old, value]);
-        setMissingEquipment(old => old.filter((a) => a !== value));
+        setMyEquipment(old => [...old, value].filter(o => !!o));
+        setMissingEquipment(old => old.filter((a) => a !== value).filter(o => !!o));
     };
     const remove = (value) => {
-        setMyEquipment(old => old.filter((a) => a !== value));
-        setMissingEquipment(old => [...old, value]);
+        setMyEquipment(old => old.filter((a) => a !== value).filter(o => !!o));
+        setMissingEquipment(old => [...old, value].filter(o => !!o));
     };
 
     const equipment = [...new Set(data.flatMap(scene => scene.requiredEquipment))]

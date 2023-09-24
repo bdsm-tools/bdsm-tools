@@ -1,5 +1,5 @@
 export const dList = ['Dominant', 'Master', 'Mistress', 'Owner'];
-export const sList = ['Submissive', 'Slave', '', 'Pet'];
+export const sList = ['Submissive', 'Slave', 'Toy', 'Pet'];
 export const isDominant = (role) => dList.includes(role);
 export const isSubmissive = (role) => sList.includes(role);
 export const byRole = (u1, u2) => {

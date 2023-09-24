@@ -8,6 +8,7 @@ import equipmentFilterFunction from './filters/equipmentFilter';
 import participantFilterFunction from './filters/participantFilter';
 import compatibilityFilterFunction from './filters/compatibilityFilter';
 import scenarioData from "./scenarios/scenario-index";
+import { useLocalStorageState } from 'ahooks'
 
 const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction}/>;
 
@@ -42,10 +43,14 @@ const convert = (data = []) => data.map((scene) => ({
 }));
 
 export default function ScenarioTable({data = scenarioData}) {
+    const [myEquipment] = useLocalStorageState('my-equipment', {
+        defaultValue: [],
+    });
+
     const dataSource = convert(data);
 
     const [equipmentFilter, setEquipmentFilter] = React.useState(false);
-    const applyEquipmentFilter = equipmentFilterFunction();
+    const applyEquipmentFilter = equipmentFilterFunction(myEquipment);
 
     const [participantFilter, setParticipantFilter] = React.useState(0);
     const applyParticipantFilter = participantFilterFunction(participantFilter);
