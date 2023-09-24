@@ -1,6 +1,6 @@
 import React from 'react';
-import {Alert, Spin} from 'antd';
-import {Canvas, extend, useFrame, useThree} from '@react-three/fiber'
+import {Alert} from 'antd';
+import {Canvas, extend} from '@react-three/fiber'
 import WebGL from 'three/examples/jsm/capabilities/WebGL.js';
 import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
 import {Html, useProgress} from "@react-three/drei";
@@ -19,33 +19,55 @@ function Loader() {
     return <Html center>{Math.floor(progress)} % loaded</Html>
 }
 
+const exampleChain = {
+    type: 'flange',
+    endConnections: [{
+        type: 'tube',
+        length: 30,
+        middleConnections: [{
+            type: 'crossover',
+            position: 20,
+            rotation: 45,
+            middleConnections: [{
+                type: 'tube',
+                position: 20,
+                length: 50,
+                startConnection: {
+                    type: 'flange'
+                },
+                endConnection: {
+                    type: 'flange'
+                }
+            }],
+        }],
+        endConnection: {
+            type: 'flange'
+        },
+    }]
+}
+
 const example = {
     length: 202,
     width: 152,
     chains: [
         {
-            type: 'flange',
+            ...exampleChain,
             surfaceConnections: [{
                 surface: 'floor',
                 coords: [100, 50]
             }],
-            endConnections: [{
-                type: 'tube',
-                length: 30,
-                middleConnections: [{
-                    type: 'crossover',
-                    position: 20,
-                    rotation: 45,
-                    middleConnections: [{
-                        type: 'tube',
-                        position: 20,
-                        length: 50,
-                    }],
-                }],
-                // endConnection: {
-                //     type: 'flange'
-                // },
-            }]
+        }, {
+            ...exampleChain,
+            surfaceConnections: [{
+                surface: 'side-wall',
+                coords: [100, 50]
+            }],
+        }, {
+            ...exampleChain,
+            surfaceConnections: [{
+                surface: 'back-wall',
+                coords: [100, 50]
+            }],
         }
     ]
 };
@@ -65,7 +87,9 @@ export default function Entry() {
                         <Base length={example.length} width={example.width}/>
                         <Controls/>
                         <CameraControls/>
-                        <Chain chain={example.chains[0]}/>
+                        {example.chains.map(((chain, index) => (
+                          <Chain key={index} chain={chain}/>
+                        )))}
                     </>
                 </React.Suspense>
             </Canvas>

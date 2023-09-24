@@ -1,5 +1,5 @@
 import React from "react";
-import {Math, Vector3} from 'three';
+import {MathUtils} from 'three';
 
 // obj - your object (THREE.Object3D or derived)
 // point - the point of rotation (THREE.Vector3)
@@ -24,18 +24,18 @@ function rotateAboutPoint(obj, point, axis, theta, pointIsWorld){
     obj.rotateOnAxis(axis, theta); // rotate the OBJECT
 }
 
-export default function useRotate(ref, {x,y,z}) {
+export default function useRotate(ref, { x = 0, y = 0, z = 0 }) {
     React.useEffect(() => {
         if (ref.current) {
 
             if (x) {
-                ref.current.rotation.x = Math.degToRad(x);
+                ref.current.rotation.x = MathUtils.degToRad(x % 360);
             }
             if (y) {
-                ref.current.rotation.y = Math.degToRad(y);
+                ref.current.rotation.y = MathUtils.degToRad(y % 360);
             }
             if (z) {
-                ref.current.rotation.z = Math.degToRad(z);
+                ref.current.rotation.z = MathUtils.degToRad(z % 360);
             }
 
         }

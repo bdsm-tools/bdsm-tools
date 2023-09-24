@@ -1,25 +1,18 @@
 import React from "react";
-import {DoubleSide, RepeatWrapping} from "three";
 import {useTexture} from "@react-three/drei";
 import tubeMap from "../textures/Metal_Galvanized_1K_albedo.png";
 import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
-import useFocusNode from "../controls/useFocusNode";
-import {useFrame} from "@react-three/fiber";
 import useRotate from "../controls/useRotate";
 
-export default function Crossover({ position, size, rotation, connection, setMiddleConnectionPosition }) {
-    const calculatedRotation = {
-        ...rotation,
-        y: rotation.y + connection.rotation,
-    };
+export default function Crossover({ size, connection, setMiddleConnectionPosition, setMiddleConnectionRotation }) {
+    const [connectedTube] = connection.middleConnections;
 
     const groupRef = React.useRef();
     const startRef = React.useRef();
     const endRef = React.useRef();
 
-    useRotate(groupRef, calculatedRotation);
     useRotate(endRef, { x: 90 });
 
     const textureProps = useTexture({
@@ -34,10 +27,15 @@ export default function Crossover({ position, size, rotation, connection, setMid
 
     const endPosition = [(tubeRadius * 2) - 0.5, 0, 0];
 
-    React.useEffect(() => setMiddleConnectionPosition(0, [position[0] + endPosition[0],position[1],position[2]]), []);
+    React.useEffect(() => setMiddleConnectionPosition(0, [
+        endPosition[0],
+        0,
+        -connectedTube.position,
+    ]), []);
+    React.useEffect(() => setMiddleConnectionRotation(0, { x: 90 }), []);
 
     return (
-        <group ref={groupRef} position={position}>
+        <group ref={groupRef} >
             <mesh ref={startRef}>
                 <cylinderGeometry args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>

@@ -1,7 +1,6 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { Vector3} from "three";
 import {useFrame, useThree} from "@react-three/fiber";
-import {useKeyPress} from "ahooks";
 import { update } from "@tweenjs/tween.js";
 
 

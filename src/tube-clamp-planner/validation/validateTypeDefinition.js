@@ -1,4 +1,3 @@
-import {getTypeDefinition} from "../connectors/types";
 import validateTube from "./validateTube";
 
 export default function validateTypeDefinition(typeDefinition, { surfaceConnections = [], middleConnections = [], endConnections = [] }, joinedFrom) {

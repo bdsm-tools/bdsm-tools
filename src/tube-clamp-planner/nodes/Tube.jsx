@@ -6,20 +6,9 @@ import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useFocusNode from "../controls/useFocusNode";
-import useRotate from "../controls/useRotate";
 
-export default function Tube({ position, length, size, rotation, tube, setMiddleConnectionPosition }) {
+export default function Tube({ length, size }) {
     const ref = React.useRef();
-
-    const [x,y,z] = position;
-
-    useRotate(ref, rotation);
-
-    React.useEffect(() => {
-        tube?.middleConnections?.forEach((c, index) => {
-            setMiddleConnectionPosition(index, [x, y + c.position, z]);
-        });
-    }, []);
 
     const textureProps = useTexture({
         map: tubeMap,
@@ -32,7 +21,7 @@ export default function Tube({ position, length, size, rotation, tube, setMiddle
 
     const tubeRadius = size / 2;
     return (
-        <group ref={ref} position={position}>
+        <group ref={ref}>
             <mesh position={[0, (length / 2), 0]} onClick={focusNode}>
                 <cylinderGeometry args={[tubeRadius, tubeRadius, length, 64, 1, true]}/>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
