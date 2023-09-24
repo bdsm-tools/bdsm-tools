@@ -1,5 +1,6 @@
 export default {
   title: 'Simple Negotiation',
+  description: 'This is an example negotiation with some basic questions on a few areas of interest.',
   active: true,
   schema: {
     type: 'object',
@@ -252,7 +253,7 @@ export default {
                   'Penetration',
                 ],
                 answers: [
-                  '',
+                  'Accept',
                   'Soft Limit',
                   'Hard Limit',
                 ],
@@ -286,7 +287,7 @@ export default {
                   'Penetration',
                 ],
                 answers: [
-                  '',
+                  'Accept',
                   'Soft Limit',
                   'Hard Limit',
                 ],

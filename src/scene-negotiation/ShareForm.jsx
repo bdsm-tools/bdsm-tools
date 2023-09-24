@@ -1,35 +1,34 @@
 import React from 'react';
 import { Result, Typography, Button, Alert } from 'antd';
-import { useLocation, useHistory } from 'react-router-dom';
+import {useLocation, useSearchParams} from 'react-router-dom';
 import api from '../services/scene-negotiation-api';
 
 export default function ShareForm({ data, errors, template }) {
   const { pathname } = useLocation();
-  const { replace } = useHistory();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [saving, setSaving] = React.useState(false);
-  const [link, setLink] = React.useState(undefined);
 
-  const generateLink = (id) =>
-    `${document.location.origin}${pathname}?id=${id}`;
+  const linkParam = searchParams.get('id');
+  const link = linkParam && `${document.location.origin}${pathname}?id=${linkParam}`;
 
   const save = () => {
     setSaving(true);
     api.saveNegotiation({ data, template }).then(res => {
-      setLink(generateLink(res.id));
       setSaving(false);
-      replace({
-        search: `?id=${res.id}`,
+      setSearchParams({
+        id: res.id,
       });
     }).catch(() => {
       setSaving(false);
     });
-  }
+  };
+
   if (!errors || errors.length < 1) {
     return (
       <Result
         title="You've completed the Negotiation. Time to Share!"
         subTitle={
-          "If you want to save your Negotiation you must click" +
+          "If you want to save your Negotiation you must click " +
           "the button to generate the sharable link."
         }
         status="success"

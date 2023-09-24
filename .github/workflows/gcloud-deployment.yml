@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup - gcloud / gsutil
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@main
       with:
         service_account_key: ${{ secrets.GC_KEY }}
         project_id: bdsm-tools
@@ -38,7 +38,7 @@ jobs:
       run: |-
         cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
           --entry-point doProcess \
-          --runtime nodejs10 \
+          --runtime nodejs14 \
           --trigger-http \
           --allow-unauthenticated \
           --memory 512MB \

@@ -1,17 +1,21 @@
 import React from 'react';
 import {Layout, Spin} from 'antd';
 import Header from './Header';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
+import {BrowserRouter as Router, Routes as Routing, Route, Outlet} from 'react-router-dom';
 import NavMenu from "./NavMenu";
 import Analytics from "./services/Analytics";
 import ConsentModal from "./ConsentModal";
+import ScenarioTable from "./scenario-picker/ScenarioTable";
+import ScenarioEntry from "./scenario-picker/ScenarioEntry";
+import NegotiationFormWrapper from "./scene-negotiation/NegotiationFormWrapper";
+import ViewingTemplates from "./scene-negotiation/ViewingTemplates";
 
 const SceneNegotiationEntry = React.lazy(() =>
-  import(/* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry')
+    import(/* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry')
 );
 
 const ScenarioPickerEntry = React.lazy(() =>
-  import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry')
+    import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry')
 );
 
 const TubePlannerEntry = React.lazy(() =>
@@ -19,64 +23,65 @@ const TubePlannerEntry = React.lazy(() =>
 );
 
 const AboutEntry = React.lazy(() =>
-  import(/* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry')
+    import(/* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry')
 );
 
 const FaqEntry = React.lazy(() =>
-  import(/* webpackChunkName: "FAQ", webpackPrefetch: true */ './about/Faq')
+    import(/* webpackChunkName: "FAQ", webpackPrefetch: true */ './about/Faq')
 );
 
 const Home = React.lazy(() =>
-  import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
+    import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
 );
 
 export default function Application() {
-  return (
-    <Router>
-      <ConsentModal />
-      <Switch>
-        <Route render={routeProps => (<Analytics {...routeProps} />)}/>
-      </Switch>
-      <Layout className="fullpage hideoverflow">
-        <Layout.Header className="header">
-          <Switch>
-            <Route render={routeProps => (<Header {...routeProps} />)}/>
-          </Switch>
-        </Layout.Header>
-        <Layout.Content className="fullpage-w" style={{ paddingTop: 64 }}>
-          <Layout>
-            <Layout.Sider width={250}>
-              <Switch>
-                <Route render={routeProps => (<NavMenu {...routeProps} vertical/>)}/>
-              </Switch>
-            </Layout.Sider>
-            <Layout.Content className="content">
-              <React.Suspense fallback={<Spin size="large" />}>
-                <Switch>
-                  <Route path="/tools/scene-negotiation" render={routeProps => (
-                    <SceneNegotiationEntry {...routeProps} />
-                  )}/>
-                  <Route path="/tools/bdsm-scenarios" render={routeProps => (
-                    <ScenarioPickerEntry {...routeProps} />
-                  )}/>
-                  <Route path="/tools/tube-planner" render={routeProps => (
-                    <TubePlannerEntry {...routeProps} />
-                  )}/>
-                  <Route path="/about/faq" render={routeProps => (
-                    <FaqEntry {...routeProps} />
-                  )}/>
-                  <Route path="/about/info" render={routeProps => (
-                    <AboutEntry {...routeProps} />
-                  )}/>
-                  <Route path="/" render={routeProps => (
-                    <Home {...routeProps} />
-                  )}/>
-                </Switch>
-              </React.Suspense>
+    return (
+        <Router>
+            <Routing>
+                <Route path='/' element={<ConsentModal/>}/>
+            </Routing>
+            <Routing>
+                <Route path='/' element={<Analytics/>}/>
+            </Routing>
+            <Routing>
+                <Route path='/' element={<AppLayout/>}>
+                    <Route index element={<Home/>}/>
+                    <Route path="about/faq" element={<FaqEntry/>}/>
+                    <Route path="about/info" element={<AboutEntry/>}/>
+                    <Route path="tools/scene-negotiation" element={<SceneNegotiationEntry/>}>
+                        <Route index element={<ViewingTemplates />} />
+                        <Route path=':type' element={<NegotiationFormWrapper/>} />
+                    </Route>
+                    <Route path="tools/bdsm-scenarios" element={<ScenarioPickerEntry/>}>
+                        <Route index element={<ScenarioTable />}/>
+                        <Route path=':type' element={<ScenarioEntry/>} />
+                    </Route>
+                    <Route path="tools/tube-planner" element={<TubePlannerEntry/>}>
+                    </Route>
+                </Route>
+            </Routing>
+        </Router>
+    );
+}
+
+function AppLayout() {
+    return (
+        <Layout className="fullpage hideoverflow">
+            <Layout.Header className="header">
+                <Header/>
+            </Layout.Header>
+            <Layout.Content className="fullpage-w" style={{paddingTop: 64}}>
+                <Layout>
+                    <Layout.Sider width={250}>
+                        <NavMenu vertical/>
+                    </Layout.Sider>
+                    <Layout.Content className="content">
+                        <React.Suspense fallback={<Spin size="large"/>}>
+                            <Outlet/>
+                        </React.Suspense>
+                    </Layout.Content>
+                </Layout>
             </Layout.Content>
-          </Layout>
-        </Layout.Content>
-      </Layout>
-    </Router>
-  );
+        </Layout>
+    );
 }
