@@ -22,7 +22,9 @@ jobs:
         export_default_credentials: true
         
     - name: Build
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
     - run: npm ci && npm run build
 
     - name: Clean Bucket
