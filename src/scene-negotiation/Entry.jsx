@@ -2,8 +2,10 @@ import React from 'react';
 import {Outlet, useNavigate, useMatch} from 'react-router-dom';
 import {PageHeader, Spin} from 'antd';
 import api from '../services/scene-negotiation-api';
+import useAnalytics from '../hooks/useAnalytics'
 
 export default function Entry() {
+    useAnalytics('Scene Negotiation');
     const navigate = useNavigate();
     const {params} = useMatch('/tools/scene-negotiation/:type') || {params: {}};
 
