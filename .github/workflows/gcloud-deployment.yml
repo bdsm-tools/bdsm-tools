@@ -9,17 +9,32 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Setup - gcloud / gsutil
-      uses: google-github-actions/setup-gcloud@main
+    - id: Authenticate with the Cloud SDK
+      uses: google-github-actions/auth@v1
       with:
-        service_account_key: ${{ secrets.GC_KEY }}
-        project_id: bdsm-tools
-        export_default_credentials: true
+        credentials_json: ${{ secrets.GC_KEY }}
+
+    - name: Set up the Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        version: '>= 363.0.0'
+
+#    - name: Setup - gcloud / gsutil
+#      uses: google-github-actions/setup-gcloud@main
+#      with:
+#        service_account_key: ${{ secrets.GC_KEY }}
+#        project_id: bdsm-tools
+#        export_default_credentials: true
         
     - name: Build
       uses: actions/setup-node@v3
