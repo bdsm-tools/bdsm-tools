@@ -21,7 +21,7 @@ export default function Flange({ size }) {
     const neckRadius = (size + 1) / 2;
     const neckHeight = 5;
     return (
-        <group ref={groupRef}>
+        <group ref={groupRef} name='flange' layers={1}>
             <mesh position={0}>
                 <cylinderGeometry args={[baseRadius, baseRadius, baseHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>

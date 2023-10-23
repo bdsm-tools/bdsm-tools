@@ -17,7 +17,7 @@ export default function Floor({ length, width }) {
     const thickness = 2;
 
     return (
-        <mesh ref={ref} position={[width / 2, -thickness, length / 2]}>
+        <mesh ref={ref} name='floor' position={[width / 2, -thickness, length / 2]}>
             <boxGeometry args={[width, thickness, length]} />
             <meshStandardMaterial
                 color='white'

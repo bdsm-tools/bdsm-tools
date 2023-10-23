@@ -11,6 +11,7 @@ const TubeNode = ({ tube, position, size, rotation }) => {
     return (
         <group ref={groupRef} position={position}>
             <Tube
+                tube={tube}
                 length={tube.length}
                 size={size}
             />

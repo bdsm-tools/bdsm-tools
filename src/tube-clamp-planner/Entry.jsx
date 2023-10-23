@@ -2,17 +2,18 @@ import React from 'react';
 import {Alert} from 'antd';
 import {Canvas, extend} from '@react-three/fiber'
 import WebGL from 'three/examples/jsm/capabilities/WebGL.js';
-import {OrbitControls} from "three/examples/jsm/controls/OrbitControls";
-import {Html, useProgress} from "@react-three/drei";
+import { Html, useProgress, OrbitControls, Select } from '@react-three/drei'
 import Controls from "./components/Controls";
 import Base from "./components/Base";
 import CameraControls from "./components/CameraControls";
 import validateChain from "./validation/validateChain";
 import './connectors/flange';
 import './connectors/crossover';
+import './connectors/tee';
 import Chain from "./components/Chain";
+import { Object3D } from 'three'
 
-extend({OrbitControls});
+extend({ OrbitControls });
 
 function Loader() {
     const {progress} = useProgress();
@@ -41,7 +42,7 @@ const exampleChain = {
             }],
         }],
         endConnection: {
-            type: 'flange'
+            type: 'tee'
         },
     }]
 }
@@ -72,6 +73,16 @@ const example = {
     ]
 };
 
+const ControlsEnum = {
+    forward: 'forward',
+      back:'back',
+      left: 'left',
+      right: 'right',
+      jump: 'jump',
+}
+
+const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (!!s?.userData?.selectable ? s : getSelectable(s.parent));
+
 export default function Entry() {
 
     validateChain(example.chains);
@@ -80,17 +91,19 @@ export default function Entry() {
         return (
             <Canvas>
                 <React.Suspense fallback={<Loader/>}>
-                    <>
+                    <Select filter={(s) => s.map(getSelectable).filter((s) => !!s)}>
                         <ambientLight intensity={0.5}/>
                         {/*<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />*/}
                         <pointLight position={[-10, -10, -10]}/>
+
                         <Base length={example.length} width={example.width}/>
-                        <Controls/>
-                        <CameraControls/>
                         {example.chains.map(((chain, index) => (
                           <Chain key={index} chain={chain}/>
                         )))}
-                    </>
+
+                        <Controls/>
+                        <CameraControls/>
+                    </Select>
                 </React.Suspense>
             </Canvas>
         );

@@ -21,11 +21,11 @@ export default function Wall({ length, width }) {
 
     return (
         <>
-            <mesh ref={ref} position={[width / 2, 200, -2.5]}>
+            <mesh ref={ref} name='wall' position={[width / 2, 200, -2.5]}>
                 <boxGeometry args={[width, 400, 5]} />
                 <meshStandardMaterial {...textureProps} side={DoubleSide} />
             </mesh>
-            <mesh ref={sideRef} position={[-2.5, 200, length / 2]}>
+            <mesh ref={sideRef} name='wall' position={[-2.5, 200, length / 2]}>
                 <boxGeometry args={[5, 400, length]} />
                 <meshStandardMaterial {...textureProps} side={DoubleSide} />
             </mesh>
