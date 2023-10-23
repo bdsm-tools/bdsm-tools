@@ -19,7 +19,8 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
-    - id: Authenticate with the Cloud SDK
+    - id: auth
+      name: Authenticate with the Cloud SDK
       uses: google-github-actions/auth@v1
       with:
         credentials_json: ${{ secrets.GC_KEY }}
