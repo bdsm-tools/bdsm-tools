@@ -1,14 +1,16 @@
 import React from 'react';
 import {Layout, Spin} from 'antd';
-import Header from './Header';
 import {BrowserRouter as Router, Routes as Routing, Route, Outlet} from 'react-router-dom';
+import ReactGA from 'react-ga4'
+import Header from './Header';
 import NavMenu from "./NavMenu";
-import Analytics from "./services/Analytics";
 import ConsentModal from "./ConsentModal";
 import ScenarioTable from "./scenario-picker/ScenarioTable";
 import ScenarioEntry from "./scenario-picker/ScenarioEntry";
 import NegotiationFormWrapper from "./scene-negotiation/NegotiationFormWrapper";
 import ViewingTemplates from "./scene-negotiation/ViewingTemplates";
+
+ReactGA.initialize('G-SKBSEEBLCP');
 
 const SceneNegotiationEntry = React.lazy(() =>
     import(/* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry')
@@ -35,9 +37,6 @@ export default function Application() {
         <Router>
             <Routing>
                 <Route path='/' element={<ConsentModal/>}/>
-            </Routing>
-            <Routing>
-                <Route path='/' element={<Analytics/>}/>
             </Routing>
             <Routing>
                 <Route path='/' element={<AppLayout/>}>

@@ -1,8 +1,10 @@
 import React from 'react';
 import {PageHeader, Typography, Collapse} from 'antd';
 import IssueLink from "./IssueLink";
+import useAnalytics from '../hooks/useAnalytics'
 
 export default function Faq() {
+  useAnalytics('FAQ');
   return (
     <React.Fragment>
       <PageHeader title="FAQ"/>
