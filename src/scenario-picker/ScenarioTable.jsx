@@ -8,6 +8,7 @@ import equipmentFilterFunction from './filters/equipmentFilter';
 import participantFilterFunction from './filters/participantFilter';
 import compatibilityFilterFunction from './filters/compatibilityFilter';
 import scenarioData from "./scenarios/scenario-index";
+import ReactGA from 'react-ga4'
 
 const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction}/>;
 
@@ -57,6 +58,15 @@ export default function ScenarioTable({data = scenarioData}) {
         .filter(scene => equipmentFilter ? applyEquipmentFilter(scene) : true)
         .filter(scene => participantFilter ? applyParticipantFilter(scene) : true)
         .filter(scene => compatibilityFilter ? applyCompatibilityFilter(scene) : true);
+
+    React.useEffect(() => {
+        ReactGA.event('filter', {
+            equipment: equipmentFilter,
+            participants: participantFilter,
+            compatibility: compatibilityFilter,
+        });
+    }, [equipmentFilter, participantFilter, compatibilityFilter]);
+
     return (
         <>
             <div style={{marginBottom: 20}}>

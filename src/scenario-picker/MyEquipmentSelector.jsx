@@ -3,9 +3,16 @@ import {Modal, Button, Typography, List} from "antd";
 import { PlusSquareOutlined, MinusSquareOutlined } from "@ant-design/icons";
 import {alphabeticalSort} from "../util";
 import Cookies from "js-cookie";
+import ReactGA from 'react-ga4'
 
 export default function MyEquipmentSelector({ data }) {
     const [open, setOpen] = React.useState(false);
+
+    React.useEffect(() => {
+        if (open) {
+            ReactGA.event('view_my_equipment');
+        }
+    }, [open]);
 
     const [myEquipment, setMyEquipment] = React.useState((Cookies.get('my-equipment') || '').split('|'));
     const [missingEquipment, setMissingEquipment] = React.useState((Cookies.get('missing-equipment') || '').split('|'));
@@ -14,10 +21,12 @@ export default function MyEquipmentSelector({ data }) {
     React.useEffect(() => void Cookies.set('missing-equipment', missingEquipment.join('|')), [missingEquipment]);
 
     const add = (value) => {
+        ReactGA.event('add_equipment', { value });
         setMyEquipment(old => [...old, value]);
         setMissingEquipment(old => old.filter((a) => a !== value));
     };
     const remove = (value) => {
+        ReactGA.event('remove_equipment', { value });
         setMyEquipment(old => old.filter((a) => a !== value));
         setMissingEquipment(old => [...old, value]);
     };
