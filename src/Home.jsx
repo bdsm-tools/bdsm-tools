@@ -1,7 +1,11 @@
 import React from 'react';
 import {Typography, Divider, Button} from 'antd';
+import { useNavigate } from 'react-router-dom';
+import useAnalytics from './hooks/useAnalytics'
 
-export default function Home({history}) {
+export default function Home() {
+    useAnalytics('Home');
+    const navigate = useNavigate();
     return (
         <div style={{marginTop: 30}}>
             <Typography>
@@ -19,14 +23,14 @@ export default function Home({history}) {
                 <Button
                     size='large'
                     style={{ marginRight: 40 }}
-                    onClick={() => history.push('/tools/scene-negotiation')}
+                    onClick={() => navigate('/tools/scene-negotiation')}
                 >
                     Scene Negotiations
                 </Button>
                 <Button
                     size='large'
                     style={{ marginRight: 40 }}
-                    onClick={() => history.push('/tools/bdsm-scenarios')}
+                    onClick={() => navigate('/tools/bdsm-scenarios')}
                 >
                     Scenario Picker
                 </Button>
