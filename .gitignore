@@ -2,3 +2,7 @@ node_modules/
 dist/
 .DS_Store
 gha-creds-*.json
+*.lock.hcl
+.terraform/
+*.tfstate.backup
+*.tfstate.lock.info
