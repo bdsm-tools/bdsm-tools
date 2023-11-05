@@ -72,13 +72,12 @@ export default function MyEquipmentSelector({ data }) {
                 title='My Equipment'
                 width='75%'
                 open={open}
+                okText='Done'
+                onOk={() => setOpen(false)}
+                onCancel={() => setOpen(false)}
+                cancelButtonProps={{ style: { display: 'none' } }}
                 style={{ height: 'calc(100vh - 150px)' }}
                 bodyStyle={{ overflowY: 'scroll' }}
-                footer={[
-                    <Button key='done' onClick={() => setOpen(false)}>
-                        Done
-                    </Button>
-                ]}
             >
                 <Typography.Paragraph>
                     Let us know what equipment you have so we can tailor the scenarios to what you have.

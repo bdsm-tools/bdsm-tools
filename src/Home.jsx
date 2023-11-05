@@ -12,7 +12,7 @@ export default function Home() {
                 <Typography.Title level={2}>BDSM Tools</Typography.Title>
                 <Typography.Paragraph style={{maxWidth: 500}}>
                     This is a site with a bunch of tools for people who enjoy BDSM.
-                    Unfortunately there is currently only one tool available, please
+                    Unfortunately there are limited tools available, please
                     get in touch if you have any ideas for more.
                 </Typography.Paragraph>
             </Typography>
