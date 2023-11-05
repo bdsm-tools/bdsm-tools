@@ -7,4 +7,3 @@ gcloud functions deploy scene-negotiation-test \
   --memory 512MB \
   --timeout 10s \
   --region europe-west2
-
