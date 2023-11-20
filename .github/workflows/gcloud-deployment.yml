@@ -29,13 +29,6 @@ jobs:
       uses: google-github-actions/setup-gcloud@v1
       with:
         version: '>= 363.0.0'
-
-#    - name: Setup - gcloud / gsutil
-#      uses: google-github-actions/setup-gcloud@main
-#      with:
-#        service_account_key: ${{ secrets.GC_KEY }}
-#        project_id: bdsm-tools
-#        export_default_credentials: true
         
     - name: Build
       uses: actions/setup-node@v3
