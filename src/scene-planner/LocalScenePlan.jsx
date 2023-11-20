@@ -4,6 +4,8 @@ import { useDebounceFn, useLocalStorageState } from 'ahooks'
 import UserSection from './sections/UserSection'
 import SetupSection from './sections/SetupSection'
 import { keyUpdater } from '../util'
+import RoleplaySection from './sections/RoleplaySection'
+import EquipmentSection from './sections/EquipmentSection'
 
 export default function LocalScenePlan({ id }) {
   const [plan, setLocalStoragePlan] = useLocalStorageState(`scene-plan-${id}`, {
@@ -13,6 +15,10 @@ export default function LocalScenePlan({ id }) {
       users: [],
       sceneLevels: [],
       locationDescription: undefined,
+      roleplay: {
+        general: {},
+        userSpecific: {}
+      }
     },
   });
 
@@ -82,6 +88,11 @@ export default function LocalScenePlan({ id }) {
               <Typography.Title level={5} style={{ marginTop: 8 }}>
                 Role Play
               </Typography.Title>
+              <RoleplaySection
+                plan={plan}
+                onUpdateGeneral={onUpdateX('roleplay.general')}
+                onUpdateUserSpecific={(ref) => onUpdateX(`roleplay.userSpecific.${ref}`)}
+              />
             </>
           ),
         },{
@@ -92,9 +103,10 @@ export default function LocalScenePlan({ id }) {
               <Typography.Title level={5} style={{ marginTop: 8 }}>
                 Equipment
               </Typography.Title>
+              <EquipmentSection plan={plan} />
             </>
           ),
-        }].filter(({ key }) => [plan.enabledFeatures, 'setup', 'users'].includes(key))}
+        }].filter(({ key }) => [...plan.enabledFeatures, 'setup', 'users'].includes(key))}
       />
     </>
   )

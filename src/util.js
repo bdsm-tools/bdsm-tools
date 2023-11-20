@@ -2,30 +2,39 @@ export const alphabeticalSort = (propertyAccessorFunc = ((value) => value)) =>
   (a, b) => propertyAccessorFunc(a).localeCompare(propertyAccessorFunc(b))
 
 export const ellipse = (text, { limit = 20 } = {}) => text.length > limit
-  ? text.substring(0, limit - 3).concat('...') : text
+  ? text.substring(0, limit - 3).concat('...') : text;
+
+const combine = (existingObject, updateObject) => {
+  const obj = { ...existingObject };
+  Object.keys(updateObject).forEach(key => {
+    obj[key] = typeof updateObject[key] === 'object' ? combine(existingObject[key], updateObject[key]) : updateObject[key];
+  })
+  return obj;
+}
 
 export const createNestedObject = (key, existingObject = {}) => (value) => {
-  const [key1, remainingKeys] = key.split('.', 2)
+  const [key1, ...extraKeys] = key.split('.');
 
-  if (!remainingKeys) {
+  if (extraKeys.length === 0) {
     const actualValue = typeof value === 'function' ? value(existingObject[key1]) : value
     return Array.isArray(existingObject)
       ? existingObject.map((item, index) => (index === parseInt(key1) ? actualValue : item))
       : {
         ...existingObject,
-        [key1]: actualValue
-      }
+        [key1]: typeof actualValue === 'object' ? combine(existingObject[key1], actualValue) : actualValue,
+      };
   }
 
+  const remainingKeys = extraKeys.join('.');
   if (Array.isArray(existingObject)) {
-    const index = parseInt(key1)
-    existingObject[index] = createNestedObject(remainingKeys, existingObject[index])(value)
-    return existingObject
+    const index = parseInt(key1);
+    existingObject[index] = createNestedObject(remainingKeys, existingObject[index])(value);
+    return existingObject;
   } else {
     return {
       ...existingObject,
       [key1]: createNestedObject(remainingKeys, existingObject[key1])(value),
-    }
+    };
   }
 }
 

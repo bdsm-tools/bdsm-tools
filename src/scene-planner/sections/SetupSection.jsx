@@ -2,27 +2,40 @@ import React from 'react'
 import { Button, Checkbox, Input, List, Typography } from 'antd'
 import { stringifyNumber } from '../../util'
 
+const options = [
+  {
+    label: 'Role Play',
+    value: 'role-play',
+  },{
+    label: 'Use Equipment',
+    value: 'equipment',
+  },{
+    label: 'Set Outfits',
+    value: 'outfits',
+  },
+];
+
 export default function SetupSection({ plan, onUpdateLocation, onUpdateSceneLevels, onUpdateSceneLevel, onUpdateEnabledFeatures }) {
   const { sceneLevels, locationDescription } = plan;
+
+  const indeterminate = plan.enabledFeatures.length > 0 && plan.enabledFeatures.length < options.length;
+  const checkAll = options.length === plan.enabledFeatures.length;
+
   return (
     <>
       <Typography style={{ marginTop: 8 }}>
         Enable Features
       </Typography>
+      <Checkbox
+        indeterminate={indeterminate}
+        onChange={({ target }) => onUpdateEnabledFeatures(target.checked ? options.map(({ value }) => value) : [])}
+        checked={checkAll}
+      >
+        (Enable all)
+      </Checkbox>
       <Checkbox.Group
-        options={[
-          {
-            label: 'Role Play',
-            value: 'role-play',
-          },{
-            label: 'Use Equipment',
-            value: 'equipment',
-          },{
-            label: 'Set Outfits',
-            value: 'outfits',
-          },
-        ]}
-        defaultValue={plan.enabledFeatures}
+        options={options}
+        value={plan.enabledFeatures}
         onChange={onUpdateEnabledFeatures}
       />
       <Typography style={{ marginTop: 8 }}>

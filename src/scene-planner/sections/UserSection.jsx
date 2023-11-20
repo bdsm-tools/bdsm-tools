@@ -1,11 +1,13 @@
 import React from 'react'
 import { Button, Input, List, Select } from 'antd'
+import { v4 as uuid} from 'uuid';
 import UserOutlined from '@ant-design/icons/lib/icons/UserOutlined'
 import { byRole, dList, sList } from '../util'
 
 export default function UserSection({ users, onUpdate }) {
-  const [user, setUser] = React.useState({ name: undefined, role: '(No role)' });
+  const [user, setUser] = React.useState({ ref: uuid(), name: undefined, role: '(No role)' });
   const existingUser = ({ name = '' }) => users.filter(({ name: name2 = '' }) => name.toUpperCase() === name2.toUpperCase()).length > 0;
+
   return (
     <>
       <List
@@ -84,7 +86,7 @@ export default function UserSection({ users, onUpdate }) {
               ...users,
               user,
             ]);
-            setUser({ role: '(No role)' });
+            setUser({ ref: uuid(), role: '(No role)' });
           }}
         >
           Add
