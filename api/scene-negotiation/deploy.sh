@@ -1,5 +1,6 @@
 gcloud config set project bdsm-tools &&
 gcloud functions deploy scene-negotiation-test \
+  --gen2 \
   --entry-point doProcess \
   --runtime nodejs18 \
   --trigger-http \

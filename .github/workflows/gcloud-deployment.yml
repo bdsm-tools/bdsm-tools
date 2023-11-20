@@ -45,6 +45,7 @@ jobs:
     - name: Add Scene Negotiation API Function
       run: |-
         cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
+          --gen2 \
           --entry-point doProcess \
           --runtime nodejs18 \
           --trigger-http \
