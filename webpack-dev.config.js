@@ -33,6 +33,9 @@ module.exports = merge(common, {
         SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
           'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation-test'
         ),
+        FEATURE_FLAG_API_ROOT: JSON.stringify(
+          'https://europe-west2-bdsm-tools.cloudfunctions.net/feature-flag-test'
+        ),
       },
     }),
     new WebpackCdnPlugin({

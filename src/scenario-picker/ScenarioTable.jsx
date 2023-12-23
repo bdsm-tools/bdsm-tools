@@ -1,6 +1,8 @@
 import React from "react";
 import {Checkbox, Table, Select, Typography} from 'antd';
 import {Link} from "react-router-dom";
+import ReactGA from 'react-ga4'
+import { useLocalStorageState } from 'ahooks'
 import TagsComponent from '../components/Tags';
 import participantColourFunction from "./participantColourFunction";
 import MyEquipmentSelector from "./MyEquipmentSelector";
@@ -8,7 +10,6 @@ import equipmentFilterFunction from './filters/equipmentFilter';
 import participantFilterFunction from './filters/participantFilter';
 import compatibilityFilterFunction from './filters/compatibilityFilter';
 import scenarioData from "./scenarios/scenario-index";
-import { useLocalStorageState } from 'ahooks'
 
 const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction}/>;
 
@@ -62,6 +63,15 @@ export default function ScenarioTable({data = scenarioData}) {
         .filter(scene => equipmentFilter ? applyEquipmentFilter(scene) : true)
         .filter(scene => participantFilter ? applyParticipantFilter(scene) : true)
         .filter(scene => compatibilityFilter ? applyCompatibilityFilter(scene) : true);
+
+    React.useEffect(() => {
+        ReactGA.event('filter', {
+            equipment: equipmentFilter,
+            participants: participantFilter,
+            compatibility: compatibilityFilter,
+        });
+    }, [equipmentFilter, participantFilter, compatibilityFilter]);
+
     return (
         <>
             <div style={{marginBottom: 20}}>

@@ -13,6 +13,7 @@ import {
 
 export default function NavMenu({vertical}) {
   const {pathname} = useLocation();
+
   return (
     <Affix offsetTop={0}>
       <Menu

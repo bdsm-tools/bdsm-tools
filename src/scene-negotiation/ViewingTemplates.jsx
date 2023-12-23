@@ -3,6 +3,7 @@ import { Typography, Empty, Input, Select } from 'antd';
 import { SearchOutlined } from '@ant-design/icons';
 import NegotiationCard from "./NegotiationCard";
 import {useNavigate, useOutletContext, useSearchParams} from "react-router-dom";
+import ReactGA from 'react-ga4'
 
 export default function ViewingTemplates() {
   const { templates } = useOutletContext();
@@ -10,7 +11,10 @@ export default function ViewingTemplates() {
   const [searchParams] = useSearchParams();
   const [search, setSearch] = React.useState(searchParams.get('search') || '');
   const [searchType, setSearchType] = React.useState(searchParams.get('searchType') || 'including');
-  const applySearch = e => setSearch(e.target.value);
+  const applySearch = e => {
+    ReactGA.event('search', { search_term: e.target.value });
+    setSearch(e.target.value);
+  };
   const filterTemplates = ({ title, description }) => {
     switch (searchType) {
       case 'regex':
@@ -74,7 +78,10 @@ export default function ViewingTemplates() {
           <NegotiationCard
             key={template.id}
             {...template}
-            onClick={() => navigate(template.title)}
+            onClick={() => {
+              ReactGA.event('create_negotiation', { title: template.title });
+              navigate(template.title)
+            }}
           />
         ))}
       </div>
