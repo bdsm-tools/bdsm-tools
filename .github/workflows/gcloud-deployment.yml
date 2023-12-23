@@ -50,6 +50,18 @@ jobs:
           --runtime nodejs18 \
           --trigger-http \
           --allow-unauthenticated \
-          --memory 512MB \
+          --memory 128Mi \
           --timeout 10s \
+          --region europe-west2
+
+    - name: Add Feature Flag API Function
+      run: |-
+        cd api/feature-flags && gcloud functions deploy feature-flag \
+          --gen2 \
+          --entry-point doProcess \
+          --runtime nodejs18 \
+          --trigger-http \
+          --allow-unauthenticated \
+          --memory 128Mi \
+          --timeout 5s \
           --region europe-west2
