@@ -1,5 +1,5 @@
 import React from 'react'
-import { Layout, Spin, Button, Result } from 'antd'
+import { Layout, Spin, Button, Result, Alert } from 'antd'
 import moment from 'moment'
 import { useLocalStorageState } from 'ahooks';
 import { BrowserRouter as Router, Routes as Routing, Route, Outlet, useMatch } from 'react-router-dom'
@@ -76,7 +76,9 @@ function AppLayout () {
           </Layout.Sider>
           <Layout.Content className="content">
             <React.Suspense fallback={<Spin size="large"/>}>
-              <Outlet/>
+              <Alert.ErrorBoundary>
+                <Outlet/>
+              </Alert.ErrorBoundary>
             </React.Suspense>
           </Layout.Content>
         </Layout>
@@ -106,6 +108,7 @@ function FeatureFlagLayout() {
   };
 
   const check = (cache) => {
+    setFlag(null);
     if (cache) {
       return api.getFeatureFlag(params.id)
         .then(setFlag)
@@ -118,7 +121,6 @@ function FeatureFlagLayout() {
 
   React.useEffect(() => {
     setId(null);
-    setFlag(null);
     check(true)
       .then(() => setId(params.id));
   }, [params.id]);
