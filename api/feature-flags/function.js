@@ -35,10 +35,10 @@ app.get('/flag/:id', async (req, res) => {
   }
 });
 
-app.get('/flag', async (req, res) => {
+app.get('/flag/enabled', async (req, res) => {
   const collection = await db.collection('feature-flags');
-  const documents = await collection.limit(100).get().docs;
-  const result = documents.map((doc) => doc.data());
+  const documents = await collection.limit(100).where('enabled', '==', true).get().docs;
+  const result = documents.map((doc) => doc.id);
 
   res.status(200).json(result);
 });

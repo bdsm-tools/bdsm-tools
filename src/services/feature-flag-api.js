@@ -8,14 +8,14 @@ const get = (url, headers = {}) => fetch(baseUrl + url, {
   },
 }).then(res => res.json());
 
-const getFeatureFlags = () => get(`/flag`);
+const getEnabledFeatures = () => get(`/flag/enabled`);
 const getFeatureFlag = (id) => get(`/flag/${id}`);
 const getFeatureFlagNoCache = (id) => get(`/flag/${id}`, {
   'Cache-Control': 'no-cache'
 });
 
 export default {
-  getFeatureFlags,
+  getEnabledFeatures,
   getFeatureFlag,
   getFeatureFlagNoCache,
 }
