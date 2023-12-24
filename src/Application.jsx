@@ -88,7 +88,7 @@ function AppLayout () {
 }
 
 function FeatureFlagLayout() {
-  const { params } = useMatch('/tools/:id');
+  const { params } = useMatch('/tools/:id*');
 
   const [id, setId] = React.useState(null);
   const [flag, setFlag] = React.useState(null);
