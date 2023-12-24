@@ -9,20 +9,31 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      id-token: write
+
     steps:
 
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
 
-    - name: Setup - gcloud / gsutil
-      uses: google-github-actions/setup-gcloud@main
+    - id: auth
+      name: Authenticate with the Cloud SDK
+      uses: google-github-actions/auth@v1
       with:
-        service_account_key: ${{ secrets.GC_KEY }}
-        project_id: bdsm-tools
-        export_default_credentials: true
+        credentials_json: ${{ secrets.GC_KEY }}
+
+    - name: Set up the Cloud SDK
+      uses: google-github-actions/setup-gcloud@v1
+      with:
+        version: '>= 363.0.0'
         
     - name: Build
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
+      with:
+        node-version: 18.x
     - run: npm ci && npm run build
 
     - name: Clean Bucket
@@ -31,16 +42,26 @@ jobs:
     - name: GCP Cloud Storage - Deploy
       run: gsutil -m cp -r ./dist/* gs://www.bdsmtools.org
 
-    - name: Set Entry Points
-      run: gsutil web set -m index.html -e index.html gs://www.bdsmtools.org
-
     - name: Add Scene Negotiation API Function
       run: |-
         cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
+          --gen2 \
           --entry-point doProcess \
-          --runtime nodejs14 \
+          --runtime nodejs18 \
           --trigger-http \
           --allow-unauthenticated \
-          --memory 512MB \
+          --memory 128Mi \
           --timeout 10s \
+          --region europe-west2
+
+    - name: Add Feature Flag API Function
+      run: |-
+        cd api/feature-flags && gcloud functions deploy feature-flag \
+          --gen2 \
+          --entry-point doProcess \
+          --runtime nodejs18 \
+          --trigger-http \
+          --allow-unauthenticated \
+          --memory 128Mi \
+          --timeout 5s \
           --region europe-west2

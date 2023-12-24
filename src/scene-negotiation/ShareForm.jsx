@@ -2,6 +2,7 @@ import React from 'react';
 import { Result, Typography, Button, Alert } from 'antd';
 import {useLocation, useSearchParams} from 'react-router-dom';
 import api from '../services/scene-negotiation-api';
+import ReactGA from 'react-ga4'
 
 export default function ShareForm({ data, errors, template }) {
   const { pathname } = useLocation();
@@ -14,6 +15,7 @@ export default function ShareForm({ data, errors, template }) {
   const save = () => {
     setSaving(true);
     api.saveNegotiation({ data, template }).then(res => {
+      ReactGA.event('save_scene_negotiation', { id: res.id });
       setSaving(false);
       setSearchParams({
         id: res.id,

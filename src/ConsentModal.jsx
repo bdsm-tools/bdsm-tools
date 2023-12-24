@@ -1,11 +1,13 @@
 import React from 'react';
 import Cookies from "js-cookie";
 import {Typography, Modal} from 'antd';
+import ReactGA from 'react-ga4';
 
 const cookieName = 'consent';
 export default function ConsentModal() {
   const [consent, setConsent] = React.useState(Cookies.get(cookieName));
   const onConsent = () => {
+    ReactGA.event('consent');
     Cookies.set(cookieName, true);
     setConsent(true);
   };
@@ -17,6 +19,7 @@ export default function ConsentModal() {
       cancelText="I Do Not Agree"
       onOk={onConsent}
       onCancel={() => {
+        ReactGA.event('non_consent');
         window.location = 'https://google.com';
       }}
       centered

@@ -9,6 +9,7 @@ import CustomCells from '../jsonforms/CustomCells';
 import api from '../services/scene-negotiation-api';
 import ShareForm from "./ShareForm";
 import {useSearchParams} from "react-router-dom";
+import ReactGA from 'react-ga4'
 
 function NegotiationForm({template}) {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -45,6 +46,7 @@ function NegotiationForm({template}) {
             setLoading(true);
             fetchData(id)
                 .then(() => {
+                    ReactGA.event('load_negotiation', { readOnly: true });
                     setReadOnly(true);
                     setLoading(false);
                 });
@@ -52,6 +54,7 @@ function NegotiationForm({template}) {
             setLoading(true);
             fetchData(sourceId)
                 .then(() => {
+                    ReactGA.event('load_negotiation', { readOnly: false });
                     setReadOnly(false);
                     setLoading(false);
                 });
@@ -97,40 +100,44 @@ function NegotiationForm({template}) {
                     cells={readOnly ? readOnlyCells : editableCells}
                     data={data}
                     onChange={readOnly ? undefined : (form) => {
+                        ReactGA.event('negotiation_interaction');
                         setData(form.data);
                         setErrors(form.errors);
                     }}
                 />
             </div>
-            {!readOnly &&
-            <Button
-                type="primary"
-                shape="round"
-                size="large"
-                style={{margin: '20px 0px', width: '100%'}}
-                onClick={() => setSubmit(true)}
-            >
-                Complete Negotiation
-            </Button>
-            }
-            {readOnly &&
-            <Popconfirm
-                title="Are you sure you want to modify? You will not modify this data, only copy it to a new form"
-                placement="top"
-                onConfirm={() => setSearchParams({
-                    source: searchParams.get('id'),
-                })}
-            >
+            {!readOnly && (
                 <Button
                     type="primary"
                     shape="round"
                     size="large"
-                    style={{marginTop: 20, width: '100%'}}
+                    style={{margin: '20px 0px', width: '100%'}}
+                    onClick={() => {
+                        ReactGA.event('complete_negotiation');
+                        setSubmit(true);
+                    }}
                 >
-                    Modify Negotiation
+                    Complete Negotiation
                 </Button>
-            </Popconfirm>
-            }
+            )}
+            {readOnly && (
+                <Popconfirm
+                    title="Are you sure you want to modify? You will not modify this data, only copy it to a new form"
+                    placement="top"
+                    onConfirm={() => setSearchParams({
+                        source: searchParams.get('id'),
+                    })}
+                >
+                    <Button
+                        type="primary"
+                        shape="round"
+                        size="large"
+                        style={{marginTop: 20, width: '100%'}}
+                    >
+                        Modify Negotiation
+                    </Button>
+                </Popconfirm>
+            )}
             <Modal
                 open={submit}
                 onCancel={() => setSubmit(false)}
