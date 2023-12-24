@@ -61,12 +61,12 @@ export default function Application () {
               <Route index element={<ScenarioTable/>}/>
               <Route path=':type' element={<ScenarioEntry/>}/>
             </Route>
+            <Route path="scene-planner" element={<ScenePlannerEntry/>}>
+              <Route index element={<ScenePlannerDashboard />}/>
+              <Route path=':sceneId' element={<ScenePlanViewer />} />
+            </Route>
           </Route>
-                    <Route path="tools/scene-planner" element={<ScenePlannerEntry/>}>
-                        <Route index element={<ScenePlannerDashboard />}/>
-                        <Route path=':sceneId' element={<ScenePlanViewer />} />
-                    </Route>
-                </Route>
+        </Route>
       </Routing>
     </Router>
   )
