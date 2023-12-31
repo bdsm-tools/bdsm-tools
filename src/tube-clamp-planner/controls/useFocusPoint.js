@@ -11,6 +11,7 @@ export default function useFocusPoint () {
     if (selection) {
       setFocusPoint(selection.getWorldPosition(new Vector3()));
     }
+    console.log(selection)
   }, [selection]);
 
   return [focusPoint, setFocusPoint];

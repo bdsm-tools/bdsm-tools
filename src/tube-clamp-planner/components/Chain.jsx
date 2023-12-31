@@ -4,38 +4,44 @@ import {B} from "../sizes";
 import Tube from "../nodes/Tube";
 import useRotate from '../controls/useRotate'
 
-const TubeNode = ({ tube, position, size, rotation }) => {
+const TubeNode = ({ chain, tube, position, size, rotation }) => {
     const groupRef = React.useRef();
     useRotate(groupRef, rotation);
+
+    const [end1, end2] = tube.children.end;
 
     return (
         <group ref={groupRef} position={position}>
             <Tube
-                tube={tube}
-                length={tube.length}
+                id={tube.id}
+                tube={tube.node}
+                length={tube.node.length}
                 size={size}
             />
-            {tube.middleConnections?.map((middle, index) => (
+            {tube.children.middle?.map(id => chain[id]).map((middle, index) => (
                 <ChainNode
-                    key={middle.key || index}
+                    chain={chain}
+                    key={middle.id}
                     connection={middle}
-                    position={[0, middle.position, 0]}
-                    rotation={{ y: middle.rotation }}
+                    position={[0, middle.node.position, 0]}
+                    rotation={{ y: middle.node.rotation }}
                     size={size}
                 />
             ))}
-            {tube.startConnection && (
+            {end1 && (
                 <ChainNode
-                    connection={tube.startConnection}
+                    chain={chain}
+                    connection={chain[end1]}
                     position={[0, 0, 0]}
                     rotation={{ x: 0 }}
                     size={size}
                 />
             )}
-            {tube.endConnection && (
+            {end2 && (
                 <ChainNode
-                    connection={tube.endConnection}
-                    position={[0, tube.length, 0]}
+                    chain={chain}
+                    connection={chain[end2]}
+                    position={[0, tube.node.length, 0]}
                     rotation={{ x: 180 }}
                     size={size}
                 />
@@ -44,11 +50,11 @@ const TubeNode = ({ tube, position, size, rotation }) => {
     )
 };
 
-const ChainNode = ({ connection, size, position, rotation }) => {
+const ChainNode = ({ chain, connection, size, position, rotation }) => {
     const groupRef = React.useRef();
     useRotate(groupRef, rotation);
 
-    const { Node } = getTypeDefinition(connection.type);
+    const { Node } = getTypeDefinition(connection.node.type);
 
     const [endConnectionPositions, setEndConnectionPositions] = React.useState({});
     const [middleConnectionPositions, setMiddleConnectionPositions] = React.useState({});
@@ -75,25 +81,31 @@ const ChainNode = ({ connection, size, position, rotation }) => {
     return (
         <group ref={groupRef} position={position}>
             <Node
-                connection={connection}
+                id={connection.id}
+                connection={connection.node}
+                parentConnection={chain[connection.parent]}
+                middleConnections={connection.children.middle.map(id => chain[id])}
+                endConnections={connection.children.middle.map(id => chain[id])}
                 size={size}
                 setEndConnectionPosition={setEndConnectionPosition}
                 setMiddleConnectionPosition={setMiddleConnectionPosition}
                 setEndConnectionRotation={setEndConnectionRotation}
                 setMiddleConnectionRotation={setMiddleConnectionRotation}
             />
-            {connection.endConnections?.map((end, index) => (
+            {connection.children.end?.map((id) => chain[id]).map((end, index) => (
                 <TubeNode
-                    key={end.key || index}
+                    chain={chain}
+                    key={end.id}
                     position={endConnectionPositions[index] || position}
                     rotation={endConnectionRotations[index] || rotation}
                     size={size}
                     tube={end}
                 />
             ))}
-            {connection.middleConnections?.map((middle, index) => (
+            {connection.children.middle?.map((id) => chain[id]).map((middle, index) => (
                 <TubeNode
-                    key={middle.key || index}
+                    chain={chain}
+                    key={middle.id}
                     position={middleConnectionPositions[index] || position}
                     rotation={middleConnectionRotations[index] || rotation}
                     size={size}
@@ -105,7 +117,8 @@ const ChainNode = ({ connection, size, position, rotation }) => {
 };
 
 export default function Chain({ chain }) {
-    const [connection] = chain.surfaceConnections; // Just take the first surface for now
+    const firstNode = Object.values(chain).find((node) => !node.parent);
+    const [connection] = firstNode.node.surfaceConnections; // Just take the first surface for now
 
     let position;
     let rotation;
@@ -127,7 +140,8 @@ export default function Chain({ chain }) {
     return (
       <group ref={groupRef} position={position}>
         <ChainNode
-            connection={chain}
+            chain={chain}
+            connection={firstNode}
             size={B}
             position={[0,0,0]}
             rotation={{x:0,y:0,z:0}}

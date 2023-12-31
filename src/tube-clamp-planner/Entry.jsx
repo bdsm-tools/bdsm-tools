@@ -12,6 +12,8 @@ import './connectors/crossover';
 import './connectors/tee';
 import Chain from "./components/Chain";
 import { Object3D } from 'three'
+import { exportChain, importChain } from './data/chain'
+import GuiControls from './controls/GuiControls'
 
 extend({ OrbitControls });
 
@@ -24,6 +26,7 @@ const exampleChain = {
     type: 'flange',
     endConnections: [{
         type: 'tube',
+        num: 1,
         length: 30,
         middleConnections: [{
             type: 'crossover',
@@ -31,19 +34,19 @@ const exampleChain = {
             rotation: 45,
             middleConnections: [{
                 type: 'tube',
+                num: 2,
                 position: 20,
                 length: 50,
-                startConnection: {
+                endConnections: [{
                     type: 'flange'
-                },
-                endConnection: {
+                }, {
                     type: 'flange'
-                }
+                }]
             }],
         }],
-        endConnection: {
+        endConnections: [{
             type: 'tee'
-        },
+        }],
     }]
 }
 
@@ -81,11 +84,12 @@ const ControlsEnum = {
       jump: 'jump',
 }
 
-const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (!!s?.userData?.selectable ? s : getSelectable(s.parent));
+const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent));
 
 export default function Entry() {
 
     validateChain(example.chains);
+    const chains = example.chains.map(importChain);
 
     if (WebGL.isWebGLAvailable()) {
         return (
@@ -97,12 +101,13 @@ export default function Entry() {
                         <pointLight position={[-10, -10, -10]}/>
 
                         <Base length={example.length} width={example.width}/>
-                        {example.chains.map(((chain, index) => (
+                        {chains.map(((chain, index) => (
                           <Chain key={index} chain={chain}/>
                         )))}
 
-                        <Controls/>
+                        <Controls />
                         <CameraControls/>
+                        <GuiControls chains={chains} />
                     </Select>
                 </React.Suspense>
             </Canvas>

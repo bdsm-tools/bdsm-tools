@@ -6,8 +6,8 @@ import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useRotate from "../controls/useRotate";
 
-export default function Crossover({ size, connection, setMiddleConnectionPosition, setMiddleConnectionRotation }) {
-    const [connectedTube] = connection.middleConnections;
+export default function Crossover({ id, size, connection, middleConnections, setMiddleConnectionPosition, setMiddleConnectionRotation }) {
+    const [connectedTube] = middleConnections;
 
     const groupRef = React.useRef();
     const startRef = React.useRef();
@@ -30,12 +30,16 @@ export default function Crossover({ size, connection, setMiddleConnectionPositio
     React.useEffect(() => setMiddleConnectionPosition(0, [
         endPosition[0],
         0,
-        -connectedTube.position,
+        -connectedTube.node.position,
     ]), []);
     React.useEffect(() => setMiddleConnectionRotation(0, { x: 90 }), []);
 
     return (
-        <group ref={groupRef} name='crossover' layers={1}>
+        <group
+          ref={groupRef}
+          name='crossover' layers={1}
+          userData={{ id, selectable: true }}
+        >
             <mesh ref={startRef}>
                 <cylinderGeometry args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>

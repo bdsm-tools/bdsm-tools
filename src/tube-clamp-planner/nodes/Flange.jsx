@@ -5,7 +5,7 @@ import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 
-export default function Flange({ size }) {
+export default function Flange({ id, connection, size }) {
     const groupRef = React.useRef();
 
     const textureProps = useTexture({
@@ -21,7 +21,11 @@ export default function Flange({ size }) {
     const neckRadius = (size + 1) / 2;
     const neckHeight = 5;
     return (
-        <group ref={groupRef} name='flange' layers={1}>
+        <group
+          ref={groupRef}
+          name='flange' layers={1}
+          userData={{ id, selectable: true }}
+        >
             <mesh position={0}>
                 <cylinderGeometry args={[baseRadius, baseRadius, baseHeight, 64, 1]}/>
                 <meshStandardMaterial {...textureProps}/>
