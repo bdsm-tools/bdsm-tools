@@ -28,16 +28,16 @@ export default function useRotate(ref, { x = 0, y = 0, z = 0 }) {
     React.useEffect(() => {
         if (ref.current) {
 
-            if (x) {
+            if (x > -1) {
                 ref.current.rotation.x = MathUtils.degToRad(x % 360);
             }
-            if (y) {
+            if (y > -1) {
                 ref.current.rotation.y = MathUtils.degToRad(y % 360);
             }
-            if (z) {
+            if (z > -1) {
                 ref.current.rotation.z = MathUtils.degToRad(z % 360);
             }
 
         }
-    }, [ref.current]);
+    }, [ref.current, x, y, z]);
 }

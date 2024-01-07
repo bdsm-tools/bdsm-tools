@@ -76,7 +76,7 @@ function AppLayout () {
       <Layout.Content className="fullpage-w" style={{ paddingTop: 64 }}>
         <Layout>
           <Layout.Sider width={250}>
-            <NavMenu vertical/>
+            <NavMenu vertical />
           </Layout.Sider>
           <Layout.Content className="content">
             <React.Suspense fallback={<Spin size="large"/>}>
@@ -92,7 +92,7 @@ function AppLayout () {
 }
 
 function FeatureFlagLayout() {
-  const { params } = useMatch('/tools/:id*');
+  const { params } = useMatch('/tools/:id/*');
 
   const [id, setId] = React.useState(null);
   const [flag, setFlag] = React.useState(null);

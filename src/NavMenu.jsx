@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from "prop-types";
 import {Link, useLocation} from "react-router-dom";
-import {Menu, Affix} from "antd";
+import { Menu, Affix, Button } from 'antd'
 import {
   FileDoneOutlined,
   QuestionCircleOutlined,
@@ -11,9 +11,12 @@ import {
   BulbOutlined,
   EditOutlined,
 } from '@ant-design/icons';
+import MenuUnfoldOutlined from '@ant-design/icons/lib/icons/MenuUnfoldOutlined'
+import MenuFoldOutlined from '@ant-design/icons/lib/icons/MenuFoldOutlined'
 
 export default function NavMenu({vertical}) {
   const {pathname} = useLocation();
+  const [collapsed, setCollapsed] = React.useState(false);
 
   return (
     <Affix offsetTop={0}>
@@ -21,7 +24,8 @@ export default function NavMenu({vertical}) {
         mode={vertical ? 'inline' : 'horizontal'}
         selectedKeys={pathname === '/' ? '/' : pathname.split('/')}
         defaultOpenKeys={['tools', ...pathname.split('/')]}
-        style={{ paddingBottom: 'auto' }}
+        style={{ paddingBottom: 'auto', minWidth: 10 }}
+        inlineCollapsed={collapsed}
         // items={[]}
       >
         <Menu.Item key="/" icon={<HomeOutlined />}>
@@ -59,6 +63,13 @@ export default function NavMenu({vertical}) {
           </Menu.Item>
         </Menu.SubMenu>
       </Menu>
+      <Button
+        style={{ position: 'absolute', width: '100%', bottom: 0 }}
+        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        onClick={() => setCollapsed(old => !old)}
+      >
+        {collapsed ? '' : 'Collapse'}
+      </Button>
     </Affix>
   );
 }

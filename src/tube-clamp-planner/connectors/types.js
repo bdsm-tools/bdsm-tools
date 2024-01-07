@@ -13,3 +13,8 @@ export const getTypeDefinition = (type) => {
     }
     throw `Unknown type '${type}'`;
 };
+
+export const getTypeDefinitionsAsOptions = (filterFn = () => true) => Object.values(types).filter(filterFn).map((def) => ({
+    label: def.name,
+    value: def.type,
+}));

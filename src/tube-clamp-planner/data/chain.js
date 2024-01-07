@@ -1,4 +1,5 @@
 import { v4 as uuid} from 'uuid';
+import validateChain from '../validation/validateChain'
 
 export function exportChain(normalisedChain) {
   const entryChain = Object.values(normalisedChain).find(value => !value.parent);
@@ -19,6 +20,7 @@ export function exportChain(normalisedChain) {
 }
 
 export function importChain(chain) {
+  validateChain(chain);
 
   const chainMap = {};
 

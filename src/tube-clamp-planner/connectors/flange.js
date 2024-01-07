@@ -6,5 +6,6 @@ export default registerTypeDefinition({
     endConnections: 1,
     middleConnections: 0,
     surfaceConnections: 1,
+    name: 'Flange',
     Node: Flange,
 })

@@ -13,7 +13,8 @@ import './connectors/tee';
 import Chain from "./components/Chain";
 import { Object3D } from 'three'
 import { exportChain, importChain } from './data/chain'
-import GuiControls from './controls/GuiControls'
+import GuiControls, { CanvasDataCapture } from './controls/GuiControls'
+import { useThrottleFn } from 'ahooks'
 
 extend({ OrbitControls });
 
@@ -32,17 +33,17 @@ const exampleChain = {
             type: 'crossover',
             position: 20,
             rotation: 45,
-            middleConnections: [{
-                type: 'tube',
-                num: 2,
-                position: 20,
-                length: 50,
-                endConnections: [{
-                    type: 'flange'
-                }, {
-                    type: 'flange'
-                }]
-            }],
+            // middleConnections: [{
+            //     type: 'tube',
+            //     num: 2,
+            //     position: 20,
+            //     length: 50,
+            //     endConnections: [{
+            //         type: 'flange'
+            //     }, {
+            //         type: 'flange'
+            //     }]
+            // }],
         }],
         endConnections: [{
             type: 'tee'
@@ -87,12 +88,53 @@ const ControlsEnum = {
 const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent));
 
 export default function Entry() {
+    const [scene, setScene] = React.useState(example);
+    const [chains, setChains] = React.useState(() => scene.chains.map(importChain));
+    const [canvasData, setData] = React.useState({});
 
-    validateChain(example.chains);
-    const chains = example.chains.map(importChain);
+    const { run: setChainNodeThrottled } = useThrottleFn((id, node) => {
+        setChains((old) => old.map(chain => {
+            if (chain[id]) {
+                return ({
+                    ...chain,
+                    [id]: {
+                        ...chain[id],
+                        node: {
+                            ...chain[id].node,
+                            ...node,
+                        },
+                    },
+                });
+            }
+            return chain;
+        }))
+    }, { wait: 50 });
+
+    const getNode = (id) => chains.find(chain => chain[id])[id];
+    const setChainNode = (id) => (node) => setChainNodeThrottled(id, node);
+    const addChainNode = (node) => setChains((old) => old.map(chain => {
+        if (chain[node.parent]) {
+            return ({
+                ...chain,
+                [node.id]: node,
+                [node.parent]: {
+                    ...chain[node.parent],
+                    children: {
+                        ...chain[node.parent].children,
+                        [node.parentSlot]: [
+                            ...chain[node.parent].children[node.parentSlot],
+                            node.id,
+                        ],
+                    },
+                },
+            });
+        }
+        return chain;
+    }));
 
     if (WebGL.isWebGLAvailable()) {
         return (
+          <div style={{ display: 'flex', height: '100%', marginLeft: -50, marginRight: -50 }}>
             <Canvas>
                 <React.Suspense fallback={<Loader/>}>
                     <Select filter={(s) => s.map(getSelectable).filter((s) => !!s)}>
@@ -100,17 +142,27 @@ export default function Entry() {
                         {/*<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />*/}
                         <pointLight position={[-10, -10, -10]}/>
 
-                        <Base length={example.length} width={example.width}/>
+                        <Base length={scene.length} width={scene.width}/>
                         {chains.map(((chain, index) => (
                           <Chain key={index} chain={chain}/>
                         )))}
 
                         <Controls />
                         <CameraControls/>
-                        <GuiControls chains={chains} />
+
+                        <CanvasDataCapture setData={setData} />
                     </Select>
                 </React.Suspense>
             </Canvas>
+            <GuiControls
+              canvasData={canvasData}
+              scene={scene}
+              chains={chains}
+              getNode={getNode}
+              setChainNode={setChainNode}
+              addChainNode={addChainNode}
+            />
+          </div>
         );
     }
     return (
