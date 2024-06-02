@@ -10,7 +10,9 @@ const tubeDefinition = {
 export default function SelectionControls({ canvasData, scene, getNode, setChainNode, addChainNode }) {
   const [selection, setSelection] = React.useState();
   React.useEffect(() => {
-    setSelection(canvasData?.selection?.userData?.id)
+    if (canvasData.selection) {
+      setSelection(canvasData?.selection?.userData?.id);
+    }
   }, [canvasData?.selection?.userData?.id]);
 
   if (!selection) {
@@ -35,6 +37,7 @@ export default function SelectionControls({ canvasData, scene, getNode, setChain
         addChainNode={addChainNode}
         getNode={getNode}
         connection={node}
+        onDeselect={() => setSelection(undefined)}
         NodeSelector={({ id }) => (
           <Typography>
             {getNodeDefinition(getNode(id)).name}
@@ -43,8 +46,4 @@ export default function SelectionControls({ canvasData, scene, getNode, setChain
       />
     </>
   );
-}
-
-export const NodeEditor = () => {
-
 }

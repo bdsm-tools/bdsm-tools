@@ -15,6 +15,7 @@ import { Object3D } from 'three'
 import { exportChain, importChain } from './data/chain'
 import GuiControls, { CanvasDataCapture } from './controls/GuiControls'
 import { useThrottleFn } from 'ahooks'
+import useChainStore from './state/useChainStore'
 
 extend({ OrbitControls });
 
@@ -89,85 +90,84 @@ const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.us
 
 export default function Entry() {
     const [scene, setScene] = React.useState(example);
-    const [chains, setChains] = React.useState(() => scene.chains.map(importChain));
+    // const [chains, setChains] = React.useState(() => scene.chains.map(importChain));
     const [canvasData, setData] = React.useState({});
 
-    const { run: setChainNodeThrottled } = useThrottleFn((id, node) => {
-        setChains((old) => old.map(chain => {
-            if (chain[id]) {
-                return ({
-                    ...chain,
-                    [id]: {
-                        ...chain[id],
-                        node: {
-                            ...chain[id].node,
-                            ...node,
-                        },
-                    },
-                });
-            }
-            return chain;
-        }))
-    }, { wait: 50 });
+    const { chains, getNode, setChainNode, addChainNode, importChains } = useChainStore();
+    React.useEffect(() => {
+        importChains(...example.chains);
+    }, []);
 
-    const getNode = (id) => chains.find(chain => chain[id])[id];
-    const setChainNode = (id) => (node) => setChainNodeThrottled(id, node);
-    const addChainNode = (node) => setChains((old) => old.map(chain => {
-        if (chain[node.parent]) {
-            return ({
-                ...chain,
-                [node.id]: node,
-                [node.parent]: {
-                    ...chain[node.parent],
-                    children: {
-                        ...chain[node.parent].children,
-                        [node.parentSlot]: [
-                            ...chain[node.parent].children[node.parentSlot],
-                            node.id,
-                        ],
-                    },
-                },
-            });
-        }
-        return chain;
-    }));
+    // const { run: setChainNodeThrottled } = useThrottleFn((id, node) => {
+    //     setChains((old) => old.map(chain => {
+    //         if (chain[id]) {
+    //             return ({
+    //                 ...chain,
+    //                 [id]: {
+    //                     ...chain[id],
+    //                     node: {
+    //                         ...chain[id].node,
+    //                         ...node,
+    //                     },
+    //                 },
+    //             });
+    //         }
+    //         return chain;
+    //     }))
+    // }, { wait: 50 });
 
-    if (WebGL.isWebGLAvailable()) {
-        return (
-          <div style={{ display: 'flex', height: '100%', marginLeft: -50, marginRight: -50 }}>
-            <Canvas>
-                <React.Suspense fallback={<Loader/>}>
-                    <Select filter={(s) => s.map(getSelectable).filter((s) => !!s)}>
-                        <ambientLight intensity={0.5}/>
-                        {/*<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />*/}
-                        <pointLight position={[-10, -10, -10]}/>
+    // const getNode = (id) => chains.find(chain => chain[id])[id];
+    // const setChainNode = (id) => (node) => setChainNodeThrottled(id, node);
+    // const addChainNode = (node) => setChains((old) => old.map(chain => {
+    //     if (chain[node.parent]) {
+    //         return ({
+    //             ...chain,
+    //             [node.id]: node,
+    //             [node.parent]: {
+    //                 ...chain[node.parent],
+    //                 children: {
+    //                     ...chain[node.parent].children,
+    //                     [node.parentSlot]: [
+    //                         ...chain[node.parent].children[node.parentSlot],
+    //                         node.id,
+    //                     ],
+    //                 },
+    //             },
+    //         });
+    //     }
+    //     return chain;
+    // }));
 
-                        <Base length={scene.length} width={scene.width}/>
-                        {chains.map(((chain, index) => (
-                          <Chain key={index} chain={chain}/>
-                        )))}
-
-                        <Controls />
-                        <CameraControls/>
-
-                        <CanvasDataCapture setData={setData} />
-                    </Select>
-                </React.Suspense>
-            </Canvas>
-            <GuiControls
-              canvasData={canvasData}
-              scene={scene}
-              chains={chains}
-              getNode={getNode}
-              setChainNode={setChainNode}
-              addChainNode={addChainNode}
-            />
-          </div>
-        );
-    }
+    if (!WebGL.isWebGLAvailable()) return <Alert>The browser you are using in unable to display this content</Alert>;
     return (
-        <Alert>
-            The browser you are using in unable to display this content
-        </Alert>
+      <div style={{ display: 'flex', height: '100%', marginLeft: -50, marginRight: -50 }}>
+        <Canvas>
+            <React.Suspense fallback={<Loader/>}>
+                <Select filter={(s) => s.map(getSelectable).filter((s) => !!s)}>
+                    <ambientLight intensity={0.5}/>
+                    {/*<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />*/}
+                    <pointLight position={[-10, -10, -10]}/>
+
+                    <Base length={scene.length} width={scene.width}/>
+                    {chains.map(((chain, index) => (
+                      <Chain key={index} chain={chain}/>
+                    )))}
+
+                    <Controls />
+                    <CameraControls/>
+
+                    <CanvasDataCapture setData={setData} />
+                </Select>
+            </React.Suspense>
+        </Canvas>
+        <GuiControls
+          canvasData={canvasData}
+          scene={scene}
+          chains={chains}
+          getNode={getNode}
+          setChainNode={setChainNode}
+          addChainNode={addChainNode}
+        />
+      </div>
     );
 }

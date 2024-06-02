@@ -1,8 +1,9 @@
 import React from 'react';
 import { Html, useSelect } from '@react-three/drei'
-import { Card, Divider, InputNumber, Segmented, Typography } from 'antd'
+import { Button, Card, Divider, InputNumber, Segmented, Typography } from 'antd'
 import SceneControls from './SceneControls'
 import SelectionControls from './SelectionControls'
+import ControlsDialog from './ControlsDialog'
 
 export default function GuiControls({ canvasData, scene, getNode, setChainNode, addChainNode }) {
   const { selection } = canvasData;
@@ -26,7 +27,7 @@ export default function GuiControls({ canvasData, scene, getNode, setChainNode, 
         onChange={(value) => setTab(value)}
       />
 
-      <div style={{ padding: 10, height: 'calc(100% - 32px)', overflowY: 'scroll' }}>
+      <div style={{ padding: 10, height: 'calc(100% - 64px)', overflowY: 'scroll' }}>
         {tab === 'Scene' && (
           <SceneControls scene={scene} />
         )}
@@ -40,6 +41,7 @@ export default function GuiControls({ canvasData, scene, getNode, setChainNode, 
           />
         )}
       </div>
+      <ControlsDialog />
     </Card>
   );
 }
