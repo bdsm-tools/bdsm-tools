@@ -1,5 +1,5 @@
 import React from 'react';
-import { Descriptions, InputNumber, Slider } from 'antd'
+import { InputNumber } from 'antd'
 
 export default function LengthEditorInput({ node, setNode }) {
   return (

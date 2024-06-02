@@ -6,7 +6,7 @@ import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useRotate from "../controls/useRotate";
 
-export default function Crossover({ id, size, connection, middleConnections, setMiddleConnectionPosition, setMiddleConnectionRotation }) {
+export default function Crossover({ id, size, middleConnections, setMiddleConnectionPosition, setMiddleConnectionRotation }) {
     const [connectedTube] = middleConnections;
 
     const groupRef = React.useRef();

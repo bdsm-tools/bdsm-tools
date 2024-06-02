@@ -1,5 +1,5 @@
 import React from 'react';
-import { Descriptions, InputNumber, Slider } from 'antd'
+import { Slider } from 'antd'
 
 export default function RotationEditorInput({ node, setNode }) {
   return (

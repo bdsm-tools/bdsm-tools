@@ -5,7 +5,7 @@ import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 
-export default function Flange({ id, connection, size }) {
+export default function Flange({ id, size }) {
     const groupRef = React.useRef();
 
     const textureProps = useTexture({

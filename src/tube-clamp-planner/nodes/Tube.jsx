@@ -6,7 +6,7 @@ import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 
-export default function Tube({ id, tube, length, size }) {
+export default function Tube({ id, length, size }) {
     const ref = React.useRef();
 
     const textureProps = useTexture({

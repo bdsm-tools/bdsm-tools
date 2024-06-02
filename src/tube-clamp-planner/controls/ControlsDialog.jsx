@@ -86,7 +86,7 @@ export default function ControlsDialog () {
                     avatar={(
                       <div className='flex' style={{ alignItems: 'center' }}>
                         {intersperse(item.key.split('+').map(key => (
-                          <Avatar shape='square'>
+                          <Avatar key={key} shape='square'>
                             {key.trim()}
                           </Avatar>
                         )), <Typography style={{ margin: 5 }}>+</Typography>)}

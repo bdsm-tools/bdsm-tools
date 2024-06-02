@@ -47,7 +47,7 @@ export default function TubeEditor({ node, setNode, connection, onDeselect, addC
       <Collapse ghost>
         <Collapse.Panel key={1} header='Middle Connections'>
           {connection.children.middle.map(node => (
-            <NodeSelector id={node} />
+            <NodeSelector id={node} key={node} />
           ))}
           {connection.parent && connection.parentSlot === 'middle' && (
             <NodeSelector id={connection.parent} />
@@ -55,7 +55,7 @@ export default function TubeEditor({ node, setNode, connection, onDeselect, addC
         </Collapse.Panel>
         <Collapse.Panel key={2} header='End Connections'>
           {connection.children.end.map(node => (
-            <NodeSelector id={node} />
+            <NodeSelector id={node} key={node} />
           ))}
           {connection.parent && connection.parentSlot === 'end' && (
             <NodeSelector id={connection.parent} />
