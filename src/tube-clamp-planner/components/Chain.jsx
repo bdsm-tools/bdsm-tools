@@ -3,6 +3,8 @@ import {getTypeDefinition} from "../connectors/types";
 import {B} from "../sizes";
 import Tube from "../nodes/Tube";
 import useRotate from '../controls/useRotate'
+import useSelectionStore from '../state/useSelectionStore'
+import { Select } from '@react-three/postprocessing'
 
 const TubeNode = ({ chain, tube, position, size, rotation }) => {
     const groupRef = React.useRef();
@@ -53,6 +55,7 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
 const ChainNode = ({ chain, connection, size, position, rotation }) => {
     const groupRef = React.useRef();
     useRotate(groupRef, rotation);
+    const selectedNodeId = useSelectionStore((state) => state.selectedNodeId);
 
     const { Node } = getTypeDefinition(connection.node.type);
 
@@ -80,18 +83,20 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
 
     return (
         <group ref={groupRef} position={position}>
-            <Node
-                id={connection.id}
-                connection={connection.node}
-                parentConnection={chain[connection.parent]}
-                middleConnections={connection.children.middle.map(id => chain[id])}
-                endConnections={connection.children.middle.map(id => chain[id])}
-                size={size}
-                setEndConnectionPosition={setEndConnectionPosition}
-                setMiddleConnectionPosition={setMiddleConnectionPosition}
-                setEndConnectionRotation={setEndConnectionRotation}
-                setMiddleConnectionRotation={setMiddleConnectionRotation}
-            />
+            <Select enabled={connection.id === selectedNodeId}>
+                <Node
+                    id={connection.id}
+                    connection={connection.node}
+                    parentConnection={chain[connection.parent]}
+                    middleConnections={connection.children.middle.map(id => chain[id])}
+                    endConnections={connection.children.middle.map(id => chain[id])}
+                    size={size}
+                    setEndConnectionPosition={setEndConnectionPosition}
+                    setMiddleConnectionPosition={setMiddleConnectionPosition}
+                    setEndConnectionRotation={setEndConnectionRotation}
+                    setMiddleConnectionRotation={setMiddleConnectionRotation}
+                />
+            </Select>
             {connection.children.end?.map((id) => chain[id]).map((end, index) => (
                 <TubeNode
                     chain={chain}

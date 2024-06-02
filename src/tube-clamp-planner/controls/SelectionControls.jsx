@@ -2,20 +2,16 @@ import React from 'react'
 import { Typography } from 'antd'
 import { getTypeDefinition } from '../connectors/types'
 import TubeEditor from '../editor/TubeEditor'
+import useSelectionStore from '../state/useSelectionStore'
 
 const tubeDefinition = {
   Editor: TubeEditor,
 }
 
 export default function SelectionControls({ canvasData, scene, getNode, setChainNode, addChainNode }) {
-  const [selection, setSelection] = React.useState();
-  React.useEffect(() => {
-    if (canvasData.selection) {
-      setSelection(canvasData?.selection?.userData?.id);
-    }
-  }, [canvasData?.selection?.userData?.id]);
+  const selectionStore = useSelectionStore();
 
-  if (!selection) {
+  if (!selectionStore.selectedNodeId) {
     return (
       <Typography>
         Nothing selected
@@ -23,8 +19,8 @@ export default function SelectionControls({ canvasData, scene, getNode, setChain
     );
   }
 
-  const node = getNode(selection);
-  const setNode = setChainNode(selection);
+  const node = getNode(selectionStore.selectedNodeId);
+  const setNode = setChainNode(selectionStore.selectedNodeId);
 
   const getNodeDefinition = (node) => node.node.type === 'tube' ? tubeDefinition : getTypeDefinition(node.node.type);
   const { Editor = () => null } = getNodeDefinition(node);
@@ -37,7 +33,7 @@ export default function SelectionControls({ canvasData, scene, getNode, setChain
         addChainNode={addChainNode}
         getNode={getNode}
         connection={node}
-        onDeselect={() => setSelection(undefined)}
+        onDeselect={() => selectionStore.setSelectedNode(undefined)}
         NodeSelector={({ id }) => (
           <Typography>
             {getNodeDefinition(getNode(id)).name}

@@ -42,6 +42,12 @@ const controls = [{
     }, {
       key: 'alt + E',
       description: 'Rotate the camera up around the focus point',
+    }, {
+      key: '+',
+      description: 'Zoom the camera in to the focus point',
+    }, {
+      key: '-',
+      description: 'Zoom the camera out from the focus point',
     }
   ]
 }, {
@@ -70,7 +76,7 @@ export default function ControlsDialog () {
         width={640}
       >
         {controls.map(controlGroup => (
-          <>
+          <React.Fragment key={controlGroup.title}>
             <Typography>
               {controlGroup.title}
             </Typography>
@@ -103,7 +109,7 @@ export default function ControlsDialog () {
                 </List.Item>
               )}
             />
-          </>
+          </React.Fragment>
         ))}
       </Modal>
     </>

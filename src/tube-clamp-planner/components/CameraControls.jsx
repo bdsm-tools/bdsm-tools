@@ -14,7 +14,6 @@ export default function CameraControls() {
         const direction = camera.getWorldDirection(new Vector3());
 
         camera.position.add(direction.multiplyScalar(speed / 2));
-        setFocusPoint(old => old.add(direction.multiplyScalar(- (speed / 2))));
     }
 
     function moveCamera(speed, direction, rotate = false) {
@@ -79,8 +78,8 @@ export default function CameraControls() {
         else if (orbitRight && orbitRight.altKey) moveCamera(speed * modifier(orbitRight), 'up', true);
         if (orbitLeft && !orbitLeft.altKey) moveCamera(speed * modifier(orbitLeft), 'left', true);
         else if (orbitLeft && orbitLeft.altKey) moveCamera(speed * modifier(orbitLeft), 'down', true);
-        if (zoomIn) zoomCamera(speed);
-        if (zoomOut) zoomCamera(-speed);
+        if (zoomIn) zoomCamera(speed * modifier(zoomIn));
+        if (zoomOut) zoomCamera(-speed * modifier(zoomOut));
 
         // controls.current.update();
     });

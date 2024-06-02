@@ -1,11 +1,12 @@
 import React from 'react';
-import { Html, useSelect } from '@react-three/drei'
-import { Button, Card, Divider, InputNumber, Segmented, Typography } from 'antd'
+import { useSelect } from '@react-three/drei'
+import { Card, Segmented } from 'antd'
 import SceneControls from './SceneControls'
 import SelectionControls from './SelectionControls'
 import ControlsDialog from './ControlsDialog'
+import useSelectionStore from '../state/useSelectionStore'
 
-export default function GuiControls({ canvasData, scene, getNode, setChainNode, addChainNode }) {
+export default function GuiControls({ canvasData, scene, setScene, getNode, setChainNode, addChainNode }) {
   const { selection } = canvasData;
   const [tab, setTab] = React.useState('Scene');
 
@@ -29,7 +30,7 @@ export default function GuiControls({ canvasData, scene, getNode, setChainNode, 
 
       <div style={{ padding: 10, height: 'calc(100% - 64px)', overflowY: 'scroll' }}>
         {tab === 'Scene' && (
-          <SceneControls scene={scene} />
+          <SceneControls scene={scene} setScene={setScene} />
         )}
         {tab === 'Selection' && (
           <SelectionControls
@@ -48,12 +49,14 @@ export default function GuiControls({ canvasData, scene, getNode, setChainNode, 
 
 export function CanvasDataCapture({ setData }) {
   const [selection, ...extraSelections] = useSelect();
+  const selectionStore = useSelectionStore();
 
   React.useEffect(() => {
     setData({
       selection,
       extraSelections,
     });
+    selectionStore.setSelectedNode(selection?.userData?.id);
   }, [selection]);
   return null;
 }

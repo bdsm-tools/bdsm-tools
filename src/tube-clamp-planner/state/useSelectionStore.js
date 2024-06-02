@@ -4,5 +4,7 @@ import { immer } from 'zustand/middleware/immer';
 export default create(immer(set => ({
   selectedNodeId: undefined,
 
-  setSelectedNode: (selectedNodeId) => set({ selectedNodeId }),
+  setSelectedNode: (_selectedNodeId) => set((state) => {
+    state.selectedNodeId = _selectedNodeId;
+  }),
 })));

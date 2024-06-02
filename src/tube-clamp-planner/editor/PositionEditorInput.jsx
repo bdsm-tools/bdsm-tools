@@ -16,7 +16,9 @@ export default function PositionEditorInput({ node, setNode, max }) {
         onChange={(value) => setNode({
           position: value,
         })}
-        tipFormatter={(value) => `${value}cm`}
+        tooltip={{
+          formatter: (value) => `${value}cm`,
+        }}
         style={{ width: '100%' }}
       />
     </div>

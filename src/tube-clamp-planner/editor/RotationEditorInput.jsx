@@ -22,7 +22,9 @@ export default function RotationEditorInput({ node, setNode }) {
         onChange={(value) => setNode({
           rotation: value,
         })}
-        tipFormatter={(value) => `${value}°`}
+        tooltip={{
+          formatter: (value) => `${value}°`,
+        }}
         style={{ width: '100%' }}
       />
     </div>

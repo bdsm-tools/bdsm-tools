@@ -18,8 +18,8 @@ const useStore = create(immer((set) => ({
   setChainNode: (id, node) => set((state) => {
     const chain = state.chains.find(chain => chain[id]);
 
-    chain[id] = {
-      ...chain[id],
+    chain[id].node = {
+      ...chain[id].node,
       ...node,
     };
   }),

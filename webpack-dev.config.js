@@ -22,6 +22,9 @@ module.exports = merge(common, {
     historyApiFallback: {
       index: '/',
     },
+    client: {
+      overlay: false,
+    },
   },
 
   devtool: 'inline-cheap-source-map',
