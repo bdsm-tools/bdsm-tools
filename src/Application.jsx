@@ -132,7 +132,7 @@ function FeatureFlagLayout() {
   if (!flag || id !== params.id) return <Spin size="large"/>
   if (flag.enabled) return <Outlet/>
 
-  const time = moment(moment.duration(flag.lastChanged._seconds, 's'))
+  const time = moment.utc(flag.lastChanged._seconds * 1000)
     .format('Do MMMM YYYY [at] hh:mm:ss')
   return (
     <Result
