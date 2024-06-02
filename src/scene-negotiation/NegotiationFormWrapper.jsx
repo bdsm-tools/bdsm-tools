@@ -13,7 +13,7 @@ export default function NegotiationFormWrapper() {
     const { params } = useMatch('/tools/scene-negotiation/:type');
     const { type } = params;
     const [template] = (templates || [])
-        .filter(({ title }) => type === title);
+        .filter(({ title }) => decodeURIComponent(type) === title);
 
     if (type === '__testing__') {
         console.log('Testing Template:', testTemplate);
@@ -30,7 +30,7 @@ export default function NegotiationFormWrapper() {
         <Result
             status={404}
             title='Not Found'
-            subTitle={`There is no Scene Negotiation type called: '${type}'`}
+            subTitle={`There is no Scene Negotiation type called: '${decodeURIComponent(type)}'`}
             extra={(
                 <Button
                     type='primary'

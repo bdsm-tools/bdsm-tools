@@ -22,7 +22,7 @@ export default function Entry() {
     return (
         <React.Fragment>
             <PageHeader
-                title={params.type || 'Scene Negotiation'}
+                title={decodeURIComponent(params.type || 'Scene Negotiation')}
                 onBack={params.type ? () => navigate('.') : undefined}
             />
             {loading && <Spin size="large"/>}

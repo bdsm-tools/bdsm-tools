@@ -13,7 +13,7 @@ export default function ScenarioEntry() {
 
     const {params} = useMatch('tools/bdsm-scenarios/:type');
     const {type} = params;
-    const {Component, ...scene} = scenarioMap[type];
+    const {Component, ...scene} = scenarioMap[decodeURIComponent(type)];
 
     return (
         <>
