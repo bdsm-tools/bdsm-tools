@@ -48,7 +48,8 @@ export default function Crossover({ id, size, middleConnections, setMiddleConnec
     return (
         <group
           ref={ref}
-          name='crossover' layers={1}
+          layers={1}
+          name='crossover'
           userData={{ id, selectable: true }}
         >
             <mesh position={[0, 0, 0]}>

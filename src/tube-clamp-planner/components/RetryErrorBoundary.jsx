@@ -1,41 +1,43 @@
-import React from 'react';
-import { Alert, Spin, notification } from 'antd';
+import React from 'react'
+import { Alert, Spin, notification, Collapse } from 'antd'
 
 class RetryErrorBoundary extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { hasError: false, retry: false };
+  constructor (props) {
+    super(props)
+    this.state = { error: undefined, retry: false }
   }
 
-  componentDidCatch(error, info) {
-    console.error(error);
-    this.setState({ hasError: true, retry: true });
+  componentDidCatch (error, info) {
+    console.error(error)
+    this.setState({ error, retry: true })
     notification.error({
       message: 'Oops...',
       description: 'We\'ve encountered a problem and had to rerender.',
       maxCount: 1,
       duration: 10000,
-    });
+    })
   }
 
-  render() {
-    if (this.state.hasError) {
+  render () {
+    if (this.state.error) {
       if (this.props.count > 3) {
         return (
-          <Alert message={this.props.message} type="error" />
-        );
+          <div style={{ margin: 20 }}>
+            <Alert message={this.props.message + ': See logs for details'} type="error"/>
+          </div>
+        )
       }
-      if (!this.state.retry ) {
-        return <Spin />;
+      if (!this.state.retry) {
+        return <Spin/>
       }
       return (
-        <RetryErrorBoundary count={(this.props.count || 0) + 1}>
+        <RetryErrorBoundary message={this.props.message} count={(this.props.count || 0) + 1}>
           {this.props.children}
         </RetryErrorBoundary>
       )
     }
-    return this.props.children;
+    return this.props.children
   }
 }
 
-export default RetryErrorBoundary;
+export default RetryErrorBoundary

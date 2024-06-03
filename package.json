@@ -45,6 +45,7 @@
     "@jsonforms/core": "3.3.0",
     "@jsonforms/react": "3.3.0",
     "@jsonforms/vanilla-renderers": "3.3.0",
+    "@react-three/csg": "^3.2.0",
     "@react-three/drei": "9.106.0",
     "@react-three/fiber": "8.16.7",
     "@react-three/postprocessing": "^2.16.2",

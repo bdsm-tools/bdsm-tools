@@ -34,8 +34,8 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
                 <ChainNode
                     chain={chain}
                     connection={chain[end1]}
-                    position={[0, 0, 0]}
-                    rotation={{ x: 0 }}
+                    position={[0, tube.node.length, 0]}
+                    rotation={{ x: 180 }}
                     size={size}
                 />
             )}
@@ -43,8 +43,8 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
                 <ChainNode
                     chain={chain}
                     connection={chain[end2]}
-                    position={[0, tube.node.length, 0]}
-                    rotation={{ x: 180 }}
+                    position={[0, 0, 0]}
+                    rotation={{ x: 0 }}
                     size={size}
                 />
             )}

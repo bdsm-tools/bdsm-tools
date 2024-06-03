@@ -27,12 +27,19 @@ export default function Tube({ id, length, size }) {
     useRotate(startRingRef, { x: 90, y: 180 });
     useRotate(endRingRef, { x: 90 });
 
+    // React.useEffect(() => setMiddleConnectionPosition(0, [
+    //     endPosition[0],
+    //     0,
+    //     -connectedTube?.node.position,
+    // ]), [connectedTube?.node.position]);
+
     const tubeRadius = size / 2;
     return (
       <Select enabled={isSelected}>
         <group
           ref={ref}
           name='tube'
+          layers={1}
           userData={{ id, selectable: true }}
         >
             <mesh position={[0, (length / 2), 0]}>
