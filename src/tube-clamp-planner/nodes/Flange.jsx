@@ -39,28 +39,28 @@ export default function Flange({ id, size }) {
           name='flange' layers={1}
           userData={{ id, selectable: true }}
         >
-            <mesh position={[0, baseHeight / 2, 0]}>
+            <mesh position={[0, baseHeight / 2, 0]} castShadow={true}>
                 <cylinderGeometry args={[baseRadius, baseRadius, baseHeight, 64, 1, true]}/>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
             </mesh>
-            <mesh ref={baseRingStartRef} position={[0, baseHeight, 0]}>
-                <ringGeometry args={[baseRadius, neckRadius, 64]}/>
+            <mesh ref={baseRingStartRef} position={[0, baseHeight, 0]} castShadow={true}>
+                <ringGeometry args={[baseRadius, neckRadius - 1, 64]}/>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
             </mesh>
-            <mesh ref={baseRingEndRef} position={[0, 0, 0]}>
-                <ringGeometry args={[baseRadius, neckRadius, 64]}/>
+            <mesh ref={baseRingEndRef} position={[0, 0, 0]} castShadow={true}>
+                <ringGeometry args={[baseRadius, neckRadius - 1, 64]}/>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
             </mesh>
 
-            <mesh position={[0, (neckHeight / 2) + baseHeight, 0]}>
+            <mesh position={[0, (neckHeight / 2) + baseHeight, 0]} castShadow={true}>
                 <cylinderGeometry args={[neckRadius, neckRadius, neckHeight, 64, 1, true]}/>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
             </mesh>
-            <mesh position={[0, (neckHeight / 2) + baseHeight, 0]}>
+            <mesh position={[0, (neckHeight / 2) + baseHeight, 0]} castShadow={true}>
                 <cylinderGeometry args={[neckRadius - .2, neckRadius - .2, neckHeight, 64, 1, true]}/>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
             </mesh>
-            <mesh ref={neckRingRef} position={[0, neckHeight + baseHeight, 0]}>
+            <mesh ref={neckRingRef} position={[0, neckHeight + baseHeight, 0]} castShadow={true}>
                 <ringGeometry args={[neckRadius, neckRadius - .2, 64]}/>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
             </mesh>

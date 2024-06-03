@@ -129,22 +129,28 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
   )
 }
 
-export default function Chain ({ chain }) {
-  const firstNode = Object.values(chain).find((node) => !node.parent)
-  const [connection] = firstNode.node.surfaceConnections // Just take the first surface for now
+export default function Chain ({ chain, scene }) {
+  const firstNode = Object.values(chain).find((node) => !node.parent);
+  const [connection] = firstNode.node.surfaceConnections; // Just take the first surface for now
 
-  let position
-  let rotation
-  const [x, y] = connection.coords
+  let position;
+  let rotation;
+  const [x, y] = connection.coords;
   if (connection.surface === 'floor') {
-    position = [x, 0, y]
-    rotation = { x: 0, y: 0, z: 0 }
+    position = [scene.width - x, 0, scene.length - y];
+    rotation = { x: 0, y: 0, z: 0 };
   } else if (connection.surface === 'side-wall') {
-    position = [0, y, x]
-    rotation = { x: 0, y: 0, z: 270 }
+    position = [0, y, x];
+    rotation = { x: 0, y: 0, z: 270 };
   } else if (connection.surface === 'back-wall') {
-    position = [x, y, 0]
-    rotation = { x: 90, y: 0, z: 0 }
+    position = [x, y, 0];
+    rotation = { x: 90, y: 0, z: 0 };
+  } else if (connection.surface === 'side-wall2') {
+    position = [scene.width, y, x];
+    rotation = { x: 0, y: 0, z: 90 };
+  } else if (connection.surface === 'back-wall2') {
+    position = [scene.width - x, y, scene.length];
+    rotation = { x: 270, y: 0, z: 0 };
   }
 
   const groupRef = React.useRef()

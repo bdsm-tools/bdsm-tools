@@ -156,6 +156,7 @@ const exampleChain = {
 const example = {
   length: 202,
   width: 152,
+  height: 240,
   brightness: .75,
   chains: [
     {
@@ -176,6 +177,18 @@ const example = {
         surface: 'back-wall',
         coords: [100, 50]
       }],
+    }, {
+      ...exampleChain,
+      surfaceConnections: [{
+        surface: 'side-wall2',
+        coords: [100, 50]
+      }],
+    }, {
+      ...exampleChain,
+      surfaceConnections: [{
+        surface: 'back-wall2',
+        coords: [100, 50]
+      }],
     }
   ]
 }
@@ -191,13 +204,15 @@ const ControlsEnum = {
 const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent))
 
 export default function Entry () {
-  const [scene, setScene] = React.useState(example)
-  const [canvasData, setData] = React.useState({})
+  const [scene, setSceneNow] = React.useState(example);
+  const [canvasData, setData] = React.useState({});
+
+  const { run: setScene } = useThrottleFn(setSceneNow, { wait: 50 });
 
   const { chains, getNode, setChainNode, addChainNode, importChains } = useChainStore()
   React.useEffect(() => {
     importChains(...example.chains)
-  }, [])
+  }, []);
 
   // const { run: setChainNodeThrottled } = useThrottleFn((id, node) => {
   //     setChains((old) => old.map(chain => {
@@ -247,13 +262,12 @@ export default function Entry () {
           <React.Suspense fallback={<Loader/>}>
             <Select filter={(s) => s.map(getSelectable).filter((s) => !!s)}>
               <ambientLight intensity={scene.brightness}/>
-              {/*<spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />*/}
-              <pointLight position={[-10, -10, -10]}/>
+              <pointLight position={[scene.width / 2, scene.height - 20, scene.length / 2]} power={1000000 * scene.brightness} castShadow={true} />
 
               <Selection enabled>
-                <Base length={scene.length} width={scene.width}/>
+                <Base length={scene.length} width={scene.width} height={scene.height} />
                 {chains.map(((chain, index) => (
-                  <Chain key={index} chain={chain}/>
+                  <Chain key={index} chain={chain} scene={scene}/>
                 )))}
 
                 <EffectComposer autoClear={false} multisampling={16}>

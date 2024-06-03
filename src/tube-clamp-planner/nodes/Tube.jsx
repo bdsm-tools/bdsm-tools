@@ -46,19 +46,19 @@ export default function Tube({ id, length, size }) {
           layers={1}
           userData={{ id, selectable: true }}
         >
-            <mesh position={[0, (length / 2), 0]}>
+            <mesh position={[0, (length / 2), 0]} castShadow={true}>
                 <cylinderGeometry args={[tubeRadius, tubeRadius, length, 64, 1, true]}/>
                 <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
-            <mesh position={[0, (length / 2), 0]}>
+            <mesh position={[0, (length / 2), 0]} castShadow={true}>
                 <cylinderGeometry args={[tubeRadius - .2, tubeRadius - .2, length, 64, 1, true]}/>
                 <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
-            <mesh ref={startRingRef} position={[0, 0, 0]}>
+            <mesh ref={startRingRef} position={[0, 0, 0]} castShadow={true}>
                 <ringGeometry args={[tubeRadius, tubeRadius - .2, 64]}/>
                 <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
-            <mesh ref={endRingRef} position={[0, length, 0]}>
+            <mesh ref={endRingRef} position={[0, length, 0]} castShadow={true}>
                 <ringGeometry args={[tubeRadius, tubeRadius - .2, 64]}/>
                 <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
