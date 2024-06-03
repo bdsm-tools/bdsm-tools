@@ -42,20 +42,113 @@ const exampleChain = {
       type: 'crossover',
       position: 20,
       rotation: 45,
-      // middleConnections: [{
-      //     type: 'tube',
-      //     num: 2,
-      //     position: 20,
-      //     length: 50,
-      //     endConnections: [{
-      //         type: 'flange'
-      //     }, {
-      //         type: 'flange'
-      //     }]
-      // }],
+      middleConnections: [{
+        type: 'tube',
+        num: 2,
+        position: 10,
+        length: 50,
+        middleConnections: [
+          {
+            type: 'tee',
+            position: 20,
+            // rotation: 180,
+            endConnections: [{
+              type: 'tube',
+              length: 5,
+            }],
+          }, {
+            type: 'tee',
+            position: 25,
+            // rotation: 180,
+            endConnections: [{
+              type: 'tube',
+              length: 10,
+            }],
+          }, {
+            type: 'tee',
+            position: 30,
+            // rotation: 180,
+            endConnections: [{
+              type: 'tube',
+              length: 15,
+            }],
+          }, {
+            type: 'tee',
+            position: 35,
+            // rotation: 180,
+            endConnections: [{
+              type: 'tube',
+              length: 20,
+            }],
+          }
+        ],
+        endConnections: [{
+          type: 'flange'
+        }, {
+          type: 'flange'
+        }]
+      }],
     }],
     endConnections: [{
-      type: 'tee'
+      type: 'tee',
+      rotation: 15,
+      num: 1,
+      middleConnections: [{
+        type: 'tube',
+        num: 1,
+        length: 60,
+        position: 30,
+        middleConnections: [{
+          type: 'tee',
+          position: 0,
+          rotation: 90,
+          marker: 10,
+          endConnections: [{
+            type: 'tube',
+            length: 10,
+          }],
+        }, {
+          type: 'tee',
+          position: 5,
+          rotation: 30,
+        }, {
+          type: 'tee',
+          position: 10,
+          rotation: 45,
+        }, {
+          type: 'tee',
+          position: 15,
+          rotation: 60,
+        }, {
+          type: 'tee',
+          position: 20,
+          rotation: 0,
+        }, {
+          type: 'crossover',
+          position: 60,
+          rotation: 15,
+        }, {
+          type: 'crossover',
+          position: 55,
+          rotation: 15,
+        }, {
+          type: 'crossover',
+          position: 50,
+          rotation: 30,
+        }, {
+          type: 'crossover',
+          position: 45,
+          rotation: 45,
+        }, {
+          type: 'crossover',
+          position: 40,
+          rotation: 60,
+        }, {
+          type: 'crossover',
+          position: 35,
+          rotation: 0,
+        }]
+      }],
     }],
   }]
 }

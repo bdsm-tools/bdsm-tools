@@ -4,6 +4,7 @@ import floorMap from '../textures/Wood_FloorOak_1K_albedo.png';
 import floorHeight from '../textures/Wood_FloorOak_1K_height.png';
 import floorNormalMap from '../textures/Wood_FloorOak_1K_normal.png';
 import floorRoughness from '../textures/Wood_FloorOak_1K_roughness.png';
+import useRotate from '../controls/useRotate'
 
 export default function Floor({ length, width }) {
     const ref = React.useRef();
@@ -14,15 +15,12 @@ export default function Floor({ length, width }) {
         roughnessMap: floorRoughness,
     });
 
-    const thickness = 2;
+    useRotate(ref, { x: 270 });
 
     return (
-        <mesh ref={ref} name='floor' position={[width / 2, -thickness, length / 2]}>
-            <boxGeometry args={[width, thickness, length]} />
-            <meshStandardMaterial
-                color='white'
-                {...textureProps}
-            />
+        <mesh ref={ref} name='floor' position={[width / 2, 0, length / 2]}>
+            <planeGeometry args={[width, length]} />
+            <meshStandardMaterial {...textureProps} />
         </mesh>
     );
 }

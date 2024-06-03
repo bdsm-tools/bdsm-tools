@@ -5,6 +5,8 @@ import { Vector3 } from 'three'
 import useKeyDown from '../../hooks/customHooks'
 import useFocusPoint from '../controls/useFocusPoint'
 
+// TODO get from some GUI option
+const visuliseFocusPoint = false;
 export default function CameraControls() {
     const { camera, gl: { domElement } } = useThree();
     const controls = React.useRef();
@@ -84,21 +86,13 @@ export default function CameraControls() {
         // controls.current.update();
     });
 
+    if (!visuliseFocusPoint) return null;
     return (
       <>
           <mesh position={focusPoint.toArray([])}>
-              <sphereGeometry args={[1, 32, 32]}/>
+              <sphereGeometry args={[1, 16, 16]}/>
               <meshBasicMaterial color={0xff0000} />
           </mesh>
-          {/*<OrbitControls*/}
-          {/*  ref={controls}*/}
-          {/*  camera={camera}*/}
-          {/*  domElement={domElement}*/}
-          {/*  target={focusPoint}*/}
-          {/*  listenToKeyEvents={window}*/}
-          {/*  enableDamping*/}
-          {/*  makeDefault*/}
-          {/*/>*/}
       </>
     );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { DoubleSide } from 'three'
+import { DoubleSide, RepeatWrapping } from 'three'
 import { useTexture } from '@react-three/drei'
 import tubeMap from "../textures/Metal_Galvanized_1K_albedo.png";
 import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
@@ -8,6 +8,7 @@ import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useSelectionStore from '../state/useSelectionStore'
 import { Select } from '@react-three/postprocessing'
 import useRotate from '../controls/useRotate'
+import { PI } from 'three/examples/jsm/nodes/math/MathNode'
 
 export default function Tube({ id, length, size }) {
     const ref = React.useRef();
@@ -22,6 +23,9 @@ export default function Tube({ id, length, size }) {
         normalMap: tubeNormalMap,
         roughnessMap: tubeRoughness,
         metalnessMap: tubeMetalic,
+    }, texture => {
+        texture.wrapS = RepeatWrapping;
+        texture.wrapT = RepeatWrapping;
     });
 
     useRotate(startRingRef, { x: 90, y: 180 });
@@ -44,19 +48,19 @@ export default function Tube({ id, length, size }) {
         >
             <mesh position={[0, (length / 2), 0]}>
                 <cylinderGeometry args={[tubeRadius, tubeRadius, length, 64, 1, true]}/>
-                <meshStandardMaterial {...textureProps} side={DoubleSide}/>
+                <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
             <mesh position={[0, (length / 2), 0]}>
                 <cylinderGeometry args={[tubeRadius - .2, tubeRadius - .2, length, 64, 1, true]}/>
-                <meshStandardMaterial {...textureProps} side={DoubleSide}/>
+                <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
             <mesh ref={startRingRef} position={[0, 0, 0]}>
                 <ringGeometry args={[tubeRadius, tubeRadius - .2, 64]}/>
-                <meshStandardMaterial {...textureProps} side={DoubleSide}/>
+                <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
             <mesh ref={endRingRef} position={[0, length, 0]}>
                 <ringGeometry args={[tubeRadius, tubeRadius - .2, 64]}/>
-                <meshStandardMaterial {...textureProps} side={DoubleSide}/>
+                <meshPhysicalMaterial {...textureProps} side={DoubleSide} />
             </mesh>
         </group>
       </Select>

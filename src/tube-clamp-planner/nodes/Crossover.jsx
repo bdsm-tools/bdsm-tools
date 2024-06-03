@@ -41,8 +41,8 @@ export default function Crossover({ id, size, middleConnections, setMiddleConnec
     React.useEffect(() => setMiddleConnectionPosition(0, [
         endPosition[0],
         0,
-        -connectedTube?.node.position,
-    ]), [connectedTube?.node.position]);
+        -connectedTube?.node?.position || 0,
+    ]), [connectedTube?.node?.position]);
     React.useEffect(() => setMiddleConnectionRotation(0, { x: 90 }), []);
 
     return (

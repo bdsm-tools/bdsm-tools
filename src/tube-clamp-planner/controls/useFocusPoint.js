@@ -1,5 +1,5 @@
 import React from 'react'
-import { Vector3 } from 'three'
+import { Box3, Vector3 } from 'three'
 import { useSelect } from '@react-three/drei'
 
 export default function useFocusPoint () {
@@ -9,7 +9,7 @@ export default function useFocusPoint () {
 
   React.useEffect(() => {
     if (selection) {
-      setFocusPoint(selection.getWorldPosition(new Vector3()));
+      setFocusPoint(new Box3().setFromObject(selection).getCenter(new Vector3()));
     }
     console.log(selection)
   }, [selection]);

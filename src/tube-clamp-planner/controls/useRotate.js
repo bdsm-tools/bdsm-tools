@@ -24,9 +24,9 @@ function rotateAboutPoint(obj, point, axis, theta, pointIsWorld){
     obj.rotateOnAxis(axis, theta); // rotate the OBJECT
 }
 
-export default function useRotate(ref, { x = 0, y = 0, z = 0 }) {
+export default function useRotate(ref, { x = 0, y = 0, z = 0 }, condition) {
     React.useEffect(() => {
-        if (ref.current) {
+        if (ref.current && (!condition || condition())) {
 
             if (x > -1) {
                 ref.current.rotation.x = MathUtils.degToRad(x % 360);
@@ -39,5 +39,5 @@ export default function useRotate(ref, { x = 0, y = 0, z = 0 }) {
             }
 
         }
-    }, [ref.current, x, y, z]);
+    }, [ref.current, x, y, z, condition]);
 }

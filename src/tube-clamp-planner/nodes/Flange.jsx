@@ -1,11 +1,11 @@
 import React from "react";
+import { DoubleSide, RepeatWrapping } from 'three'
 import {useTexture} from "@react-three/drei";
 import tubeMap from "../textures/Metal_Galvanized_1K_albedo.png";
 import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useRotate from '../controls/useRotate'
-import { DoubleSide } from 'three'
 
 export default function Flange({ id, size }) {
     const groupRef = React.useRef();
@@ -18,6 +18,10 @@ export default function Flange({ id, size }) {
         normalMap: tubeNormalMap,
         roughnessMap: tubeRoughness,
         metalnessMap: tubeMetalic,
+    });
+    Object.values(textureProps).forEach((texture) => {
+        texture.wrapS = RepeatWrapping;
+        texture.wrapT = RepeatWrapping;
     });
 
     useRotate(neckRingRef, { x: 90 });

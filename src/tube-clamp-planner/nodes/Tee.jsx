@@ -8,15 +8,16 @@ import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useRotate from "../controls/useRotate";
 
-export default function Tee({ id, size, connection, middleConnections, setMiddleConnectionPosition, setMiddleConnectionRotation }) {
+export default function Tee({ id, size, connection, parentConnection, middleConnections, setMiddleConnectionPosition, setMiddleConnectionRotation, setEndConnectionPosition, setEndConnectionRotation }) {
     const [connectedTube] = middleConnections;
 
     const ref = React.useRef();
-    const middleRef = React.useRef();
     const endRef = React.useRef();
     const endInnerRef = React.useRef();
     const endRingStartRef = React.useRef();
     const endRingEndRef = React.useRef();
+    const middleRef = React.useRef();
+    const middleInnerRef = React.useRef();
     const middleRingEndRef = React.useRef();
 
     useRotate(endRef, { x: 90 });
@@ -34,14 +35,23 @@ export default function Tee({ id, size, connection, middleConnections, setMiddle
     const tubeRadius = (size + 1) / 2;
     const tubeHeight = 4;
 
-    const middlePosition = [0, (tubeRadius * 2) - 0.5, 0];
+    React.useEffect(() => setMiddleConnectionPosition(0, [
+        0,
+        -tubeRadius,
+        -connectedTube?.node?.position || 0,
+    ]), [connectedTube?.node?.position]);
+    React.useEffect(() => setMiddleConnectionRotation(0, { x: 90 }), []);
 
-    // React.useEffect(() => setMiddleConnectionPosition(0, [
-    //     endPosition[0],
-    //     0,
-    //     -connectedTube.node.position,
-    // ]), []);
-    // React.useEffect(() => setMiddleConnectionRotation(0, { x: 90 }), []);
+    React.useEffect(() => setEndConnectionPosition(0, [
+        0,
+        0,
+        -tubeRadius,
+    ]), []);
+    React.useEffect(() => setEndConnectionRotation(0, { x: 270 }), []);
+
+
+    const rotationCondition = React.useCallback(() => parentConnection?.parentSlot === 'middle', [parentConnection?.parentSlot])
+    useRotate(ref, { x: 270 }, rotationCondition);
 
     return (
         <group
@@ -49,27 +59,27 @@ export default function Tee({ id, size, connection, middleConnections, setMiddle
           name='tee'
           layers={1}
           userData={{ id, selectable: true }}
-          // position={[0, -(tubeRadius * 2), 0]}
+          position={rotationCondition() ? [0, 0, -(tubeHeight / 2)] : [0, 0, 0]}
         >
-            <mesh position={[0, 0, 0]}>
+            <mesh ref={middleRef} position={[0, 0, 0]}>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
                 <Geometry>
                     <Base>
                         <cylinderGeometry args={[tubeRadius, tubeRadius, tubeHeight, 64, 1, true]}/>
                     </Base>
                     <Subtraction position={[0, -tubeRadius, 0]} rotation={new Euler(MathUtils.degToRad(90), 0, 0)}>
-                        <cylinderGeometry args={[tubeRadius, tubeRadius, tubeRadius * 2, 64, 1]}/>
+                        <cylinderGeometry args={[tubeRadius - .2, tubeRadius - .2, tubeRadius * 2, 64, 1]}/>
                     </Subtraction>
                 </Geometry>
             </mesh>
-            <mesh position={[0, 0, 0]}>
+            <mesh ref={middleInnerRef} position={[0, 0, 0]}>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>
                 <Geometry>
                     <Base>
                         <cylinderGeometry args={[tubeRadius - .2, tubeRadius - .2, tubeHeight, 64, 1, true]}/>
                     </Base>
                     <Subtraction position={[0, -tubeRadius, 0]} rotation={new Euler(MathUtils.degToRad(90), 0, 0)}>
-                        <cylinderGeometry args={[tubeRadius, tubeRadius, tubeRadius * 2, 64, 1]}/>
+                        <cylinderGeometry args={[tubeRadius - .2, tubeRadius - .2, tubeRadius * 2, 64, 1]}/>
                     </Subtraction>
                 </Geometry>
             </mesh>
