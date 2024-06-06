@@ -5,6 +5,7 @@ import floorHeight from '../textures/Wood_FloorOak_1K_height.png';
 import floorNormalMap from '../textures/Wood_FloorOak_1K_normal.png';
 import floorRoughness from '../textures/Wood_FloorOak_1K_roughness.png';
 import useRotate from '../controls/useRotate'
+import { RepeatWrapping } from 'three'
 
 export default function Floor({ length, width }) {
     const ref = React.useRef();
@@ -14,6 +15,12 @@ export default function Floor({ length, width }) {
         normalMap: floorNormalMap,
         roughnessMap: floorRoughness,
     });
+    Object.values(textureProps).forEach(texture => {
+        texture.wrapS = RepeatWrapping;
+        texture.wrapT = RepeatWrapping;
+        texture.repeat.setX(width / 100);
+        texture.repeat.setY(length / 100);
+    })
 
     useRotate(ref, { x: 270 });
 

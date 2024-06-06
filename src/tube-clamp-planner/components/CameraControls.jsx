@@ -48,7 +48,7 @@ export default function CameraControls() {
     React.useEffect(() => {
         camera.position.x = 100;
         camera.position.y = 100;
-        camera.position.z = 100;
+        camera.position.z = 150;
         camera.up = new Vector3(0, 1, 0);
     }, []);
 

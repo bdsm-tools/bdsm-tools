@@ -8,7 +8,7 @@ import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useRotate from "../controls/useRotate";
 
-export default function Tee({ id, size, connection, parentConnection, middleConnections, setMiddleConnectionPosition, setMiddleConnectionRotation, setEndConnectionPosition, setEndConnectionRotation }) {
+export default function Tee({ id, size, connectionSlot, middleConnections, setMiddleConnectionPosition, setMiddleConnectionRotation, setEndConnectionPosition, setEndConnectionRotation }) {
     const [connectedTube] = middleConnections;
 
     const ref = React.useRef();
@@ -32,7 +32,7 @@ export default function Tee({ id, size, connection, parentConnection, middleConn
         metalnessMap: tubeMetalic,
     });
 
-    const tubeRadius = (size + 1) / 2;
+    const tubeRadius = (size / 2) + .25;
     const tubeHeight = 4;
 
     React.useEffect(() => setMiddleConnectionPosition(0, [
@@ -50,8 +50,8 @@ export default function Tee({ id, size, connection, parentConnection, middleConn
     React.useEffect(() => setEndConnectionRotation(0, { x: 270 }), []);
 
 
-    const rotationCondition = React.useCallback(() => parentConnection?.parentSlot === 'middle', [parentConnection?.parentSlot])
-    useRotate(ref, { x: 270 }, rotationCondition);
+    const isMiddle = React.useCallback(() => connectionSlot === 'middle', [connectionSlot])
+    useRotate(ref, { x: 270 }, isMiddle);
 
     return (
         <group
@@ -59,7 +59,7 @@ export default function Tee({ id, size, connection, parentConnection, middleConn
           name='tee'
           layers={1}
           userData={{ id, selectable: true }}
-          position={rotationCondition() ? [0, 0, -(tubeHeight / 2)] : [0, 0, 0]}
+          position={isMiddle() ? [0, 0, -(tubeHeight / 2)] : [0, 0, 0]}
         >
             <mesh ref={middleRef} position={[0, 0, 0]}>
                 <meshStandardMaterial {...textureProps} side={DoubleSide}/>

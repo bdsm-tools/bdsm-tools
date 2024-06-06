@@ -7,10 +7,10 @@ import useSelectionStore from '../state/useSelectionStore'
 import { Select } from '@react-three/postprocessing'
 
 const TubeNode = ({ chain, tube, position, size, rotation }) => {
-  const groupRef = React.useRef()
-  useRotate(groupRef, rotation)
+  const groupRef = React.useRef();
+  useRotate(groupRef, rotation);
 
-  const [end1, end2] = tube.children.end
+  const [end1, end2] = tube.children.end;
 
   return (
     <group ref={groupRef} position={position}>
@@ -49,7 +49,7 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
         />
       )}
     </group>
-  )
+  );
 }
 
 const ChainNode = ({ chain, connection, size, position, rotation }) => {
@@ -88,6 +88,7 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
           id={connection.id}
           connection={connection.node}
           parentConnection={chain[connection.parent]}
+          connectionSlot={connection.parentSlot}
           middleConnections={connection.children.middle
             ?.filter(id => id !== connection.parent)
             .map(id => chain[id]) || []}
@@ -137,10 +138,10 @@ export default function Chain ({ chain, scene }) {
   let rotation;
   const [x, y] = connection.coords;
   if (connection.surface === 'floor') {
-    position = [scene.width - x, 0, scene.length - y];
+    position = [x, 0, y];
     rotation = { x: 0, y: 0, z: 0 };
   } else if (connection.surface === 'side-wall') {
-    position = [0, y, x];
+    position = [0, y, scene.length - x];
     rotation = { x: 0, y: 0, z: 270 };
   } else if (connection.surface === 'back-wall') {
     position = [x, y, 0];

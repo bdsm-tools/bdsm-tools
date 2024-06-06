@@ -9,6 +9,7 @@ import useSelectionStore from '../state/useSelectionStore'
 import { Select } from '@react-three/postprocessing'
 import useRotate from '../controls/useRotate'
 import { PI } from 'three/examples/jsm/nodes/math/MathNode'
+import { mapObject } from '../../util'
 
 export default function Tube({ id, length, size }) {
     const ref = React.useRef();
@@ -18,14 +19,18 @@ export default function Tube({ id, length, size }) {
     const selectedNodeId = useSelectionStore((state) => state.selectedNodeId);
     const isSelected = id === selectedNodeId;
 
-    const textureProps = useTexture({
+    const textureProps = mapObject(useTexture({
         map: tubeMap,
         normalMap: tubeNormalMap,
         roughnessMap: tubeRoughness,
         metalnessMap: tubeMetalic,
-    }, texture => {
+    }), (t) => t.clone(), texture => {
         texture.wrapS = RepeatWrapping;
         texture.wrapT = RepeatWrapping;
+        texture.repeat.setX((size * 3.14) / 20);
+        texture.repeat.setY(length / 20);
+
+        return texture;
     });
 
     useRotate(startRingRef, { x: 90, y: 180 });

@@ -6,12 +6,19 @@ import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useRotate from '../controls/useRotate'
+import { mapObject } from '../../util'
 
-export default function Flange({ id, size }) {
+export default function Flange({ id, size, setMiddleConnectionPosition }) {
     const groupRef = React.useRef();
     const neckRingRef = React.useRef();
     const baseRingStartRef = React.useRef();
     const baseRingEndRef = React.useRef();
+
+    const baseRadius = size * 1.5;
+    const baseHeight = 1;
+
+    const neckRadius = (size / 2) + .25;
+    const neckHeight = 5;
 
     const textureProps = useTexture({
         map: tubeMap,
@@ -28,11 +35,12 @@ export default function Flange({ id, size }) {
     useRotate(baseRingStartRef, { x: 90 });
     useRotate(baseRingEndRef, { x: 90 });
 
-    const baseRadius = size * 1.5;
-    const baseHeight = 1;
+    React.useEffect(() => setMiddleConnectionPosition(0, [
+        0,
+        baseHeight / 2,
+        0,
+    ]), []);
 
-    const neckRadius = (size + 1) / 2;
-    const neckHeight = 5;
     return (
         <group
           ref={groupRef}

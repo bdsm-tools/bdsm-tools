@@ -31,7 +31,7 @@ export default function Crossover({ id, size, middleConnections, setMiddleConnec
         metalnessMap: tubeMetalic,
     });
 
-    const tubeRadius = (size + 1) / 2;
+    const tubeRadius = (size / 2) + .25;
     const tubeHeight = 4;
 
     const endPosition = [(tubeRadius * 2) - 0.5, 0, 0];

@@ -18,12 +18,14 @@ import validateChain from './validation/validateChain'
 import './connectors/flange'
 import './connectors/crossover'
 import './connectors/tee'
+import './connectors/corner'
 import Chain from './components/Chain'
 import { exportChain, importChain } from './data/chain'
 import GuiControls, { CanvasDataCapture } from './controls/GuiControls'
 import useChainStore from './state/useChainStore'
 import HighlightSelected from './controls/HighlightSelected'
 import RetryErrorBoundary from './components/RetryErrorBoundary'
+import testScene from './data/testScene'
 
 extend({ OrbitControls })
 
@@ -79,6 +81,14 @@ const exampleChain = {
             endConnections: [{
               type: 'tube',
               length: 20,
+              endConnections: [{
+                type: 'corner',
+                rotation: 45,
+                endConnections: [{
+                  type: 'tube',
+                  length: 20,
+                }],
+              }],
             }],
           }
         ],
@@ -204,14 +214,14 @@ const ControlsEnum = {
 const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent))
 
 export default function Entry () {
-  const [scene, setSceneNow] = React.useState(example);
+  const [scene, setSceneNow] = React.useState(testScene);
   const [canvasData, setData] = React.useState({});
 
   const { run: setScene } = useThrottleFn(setSceneNow, { wait: 50 });
 
   const { chains, getNode, setChainNode, addChainNode, importChains } = useChainStore()
   React.useEffect(() => {
-    importChains(...example.chains)
+    importChains(...scene.chains)
   }, []);
 
   // const { run: setChainNodeThrottled } = useThrottleFn((id, node) => {
