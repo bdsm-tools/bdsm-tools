@@ -27,14 +27,16 @@ export default function CameraControls() {
                 const cameraRight = new Vector3();
                 cameraRight.crossVectors(cameraDirection, new Vector3(0, 1, 0)).normalize();
 
-                return cameraRight.multiplyScalar(speed * ('right' === direction ? 1 : -1))
+                return cameraRight.multiplyScalar(speed * ('right' === direction ? 1 : -1));
             } else if (direction === 'forward') {
-                return cameraDirection.multiplyScalar(speed)
+                return cameraDirection.multiplyScalar(speed);
             } else if (direction === 'backward') {
-                return cameraDirection.multiplyScalar(-speed)
+                return cameraDirection.multiplyScalar(-speed);
             } else if (direction === 'up') {
+                // return cameraDirection.multiplyScalar(speed).add(new Vector3(0, -speed, 0));
                 return new Vector3(0, speed, 0);
             } else if (direction === 'down') {
+                // return cameraDirection.multiplyScalar(speed).add(new Vector3(0, speed, 0));
                 return new Vector3(0, -speed, 0);
             } else {
                 throw 'Unknown direction: ' + direction;
@@ -66,6 +68,7 @@ export default function CameraControls() {
     const zoomOut = useKeyDown(189);
 
     useFrame(() => {
+        const distanceToFocusPoint = camera.position.clone().sub(focusPoint);
         camera.lookAt(focusPoint);
 
         const speed = 1.6;
@@ -84,6 +87,7 @@ export default function CameraControls() {
         if (zoomOut) zoomCamera(-speed * modifier(zoomOut));
 
         // controls.current.update();
+        camera.updateProjectionMatrix();
     });
 
     if (!visuliseFocusPoint) return null;

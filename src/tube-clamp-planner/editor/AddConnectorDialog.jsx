@@ -1,7 +1,7 @@
 import React from 'react'
-import { Button, InputNumber, Modal, Select, Typography } from 'antd'
+import { Button, InputNumber, Modal, Typography } from 'antd'
 import { v4 as uuidv4 } from 'uuid';
-import { getTypeDefinitionsAsOptions } from '../connectors/types'
+import ConnectorSelector from './ConnectorSelector'
 
 export default function AddConnectorDialog({ parent, tube, onAdd }) {
   const [open, setOpen] = React.useState();
@@ -20,6 +20,10 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
   React.useEffect(() => {
     if (!open) {
       setConnector({
+        position: undefined,
+      });
+    } else if (open === 'middle') {
+      setConnector({
         position: 0,
       });
     }
@@ -29,6 +33,7 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
     <>
       <Modal
         open={!!open}
+        okText='Add'
         onOk={() => {
           onAdd({
             id: uuidv4(),
@@ -43,41 +48,38 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
           setOpen(undefined);
         }}
         onCancel={() => setOpen(undefined)}
+        okButtonProps={{
+          disabled: !connector.type,
+        }}
       >
         <Typography>
-          Choose a position to place the connector on the tube:
+          Choose a connector to place on the tube:
         </Typography>
-        <Select
-          size='small'
-          options={getTypeDefinitionsAsOptions((def) => {
-            if (open === 'end') return def.endConnections > 0;
-            if (open === 'middle') return def.middleConnections > 0;
-            return true;
-          })}
+        <ConnectorSelector
+          slot={open}
           value={connector.type}
-          onChange={(value) => setConnector((old) => ({
-            ...old,
-            type: value,
-          }))}
-          style={{ width: 300 }}
+          onChange={(type) => setConnector((old) => ({ ...old, type }))}
         />
-
-        <Typography>
-          Choose a position to place the connector on the tube:
-        </Typography>
-        <InputNumber
-          addonAfter='cm'
-          controls
-          size='small'
-          autoFocus
-          min={0}
-          max={tube.node.length}
-          value={connector.position}
-          onChange={(value) => setConnector((old) => ({
-            ...old,
-            position: value,
-          }))}
-        />
+        {open === 'middle' && (
+          <>
+            <Typography>
+              Choose a position to place the connector on the tube:
+            </Typography>
+            <InputNumber
+              addonAfter='cm'
+              controls
+              size='small'
+              autoFocus
+              min={0}
+              max={tube.node.length}
+              value={connector.position}
+              onChange={(value) => setConnector((old) => ({
+                ...old,
+                position: value,
+              }))}
+            />
+          </>
+        )}
       </Modal>
       <Button onClick={() => setOpen('middle')}>
         Add Middle Connection
