@@ -14,10 +14,10 @@ export default function TubePlannerDashboard() {
 
   const onNewDesign = (id) => {
     setTubePlanIndex({
-      plans: [
+      plans: [...new Set([
         ...tubePlanIndex.plans,
         id,
-      ],
+      ])],
     });
     navigate(id);
   };
@@ -39,7 +39,14 @@ export default function TubePlannerDashboard() {
         </div>
         <div className='flex'>
           {tubePlanIndex.plans.map((planId) => (
-            <TubePlanCard sceneId={planId} />
+            <TubePlanCard
+              key={planId}
+              sceneId={planId}
+              onDelete={() => setTubePlanIndex((oldIndex) => ({
+                ...oldIndex,
+                plans: oldIndex.plans.filter((id) => id !== planId)
+              }))}
+            />
           ))}
         </div>
       </>

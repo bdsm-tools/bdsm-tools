@@ -36,7 +36,7 @@ export default function TubePlanCard({ sceneId, onDelete }) {
               icon={<DeleteOutlined />}
               onClick={() => {
                 onDelete();
-                localStorage.removeItem(`scene-plan-${sceneId}`);
+                localStorage.removeItem(`tube-plan-${sceneId}`);
               }}
               style={{ marginLeft: 5 }}
             />
