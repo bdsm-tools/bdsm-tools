@@ -12,6 +12,8 @@ import ScenarioEntry from './scenario-picker/ScenarioEntry'
 import NegotiationFormWrapper from './scene-negotiation/NegotiationFormWrapper'
 import ViewingTemplates from './scene-negotiation/ViewingTemplates'
 import api from './services/feature-flag-api'
+import TubePlanViewer from './tube-clamp-planner/TubePlanViewer'
+import TubePlannerDashboard from './tube-clamp-planner/TubePlannerDashboard'
 
 ReactGA.initialize('G-SKBSEEBLCP')
 
@@ -59,7 +61,10 @@ export default function Application () {
               <Route index element={<ScenarioTable/>}/>
               <Route path=':type' element={<ScenarioEntry/>}/>
             </Route>
-            <Route path="tube-planner" element={<TubePlannerEntry/>}/>
+            <Route path="tube-planner" element={<TubePlannerEntry/>}>
+              <Route index element={<TubePlannerDashboard />}/>
+              <Route path=':sceneId' element={<TubePlanViewer />} />
+            </Route>
           </Route>
         </Route>
       </Routing>

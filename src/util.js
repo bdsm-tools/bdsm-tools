@@ -17,4 +17,19 @@ function * intersperseGenerator (array, delimiter) {
 
 export const mapObject = (obj, ...mappingFunctions) => Object.fromEntries(Object.entries(obj).map(
   ([key, value], index) => [key, mappingFunctions.reduce((value, mappingFunction) => mappingFunction(value, key, index), value)]
-))
+));
+
+export const downloadJSON = (jsonData, filename = 'download.json') => {
+  const jsonBlob = new Blob([JSON.stringify(jsonData)], { type: 'application/json' });
+
+  const a = document.createElement('a');
+  a.href = window.URL.createObjectURL(jsonBlob);
+  a.download = filename;
+  a.style.display = 'none';
+
+  document.body.appendChild(a);
+  a.click();
+
+  document.body.removeChild(a);
+  window.URL.revokeObjectURL(a.href);
+};

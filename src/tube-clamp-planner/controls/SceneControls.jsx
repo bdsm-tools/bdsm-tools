@@ -1,15 +1,38 @@
-import { Descriptions, InputNumber, Slider, Typography } from 'antd'
-import React from 'react'
+import React from 'react';
+import { Button, Descriptions, Image, Input, InputNumber, Slider, Typography } from 'antd'
 
-export default function SceneControls ({ scene, setScene }) {
+const takeSnapshot = () => document.getElementById('tube-planner-canvas')
+    ?.getElementsByTagName('canvas')[0]
+    ?.toDataURL("image/png");
 
+export default function SceneControls({ scene, setScene, basicOnly = false }) {
   return (
     <>
+      <Input
+        value={scene.title}
+        onChange={({ target }) => setScene({
+          ...scene,
+          title: target.value,
+        })}
+        size="large"
+        placeholder="Scene title"
+      />
+      <Input.TextArea
+        value={scene.description || ''}
+        onChange={({ target }) => setScene({
+          ...scene,
+          description: target.value,
+        })}
+        size="large"
+        placeholder="Scene description"
+        style={{ marginTop: 10 }}
+      />
       <Descriptions
         title='Scene'
         layout="vertical"
         size='small'
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+        style={{ marginTop: 20 }}
       >
         <Descriptions.Item label='Length'>
           <InputNumber
@@ -32,6 +55,18 @@ export default function SceneControls ({ scene, setScene }) {
             onChange={(value) => setScene({
               ...scene,
               width: value
+            })}
+          />
+        </Descriptions.Item>
+        <Descriptions.Item label='Height'>
+          <InputNumber
+            addonAfter='cm'
+            controls
+            size='small'
+            value={scene.height}
+            onChange={(value) => setScene({
+              ...scene,
+              height: value
             })}
           />
         </Descriptions.Item>
@@ -60,6 +95,24 @@ export default function SceneControls ({ scene, setScene }) {
             />
           </div>
         </Descriptions.Item>
+        {!basicOnly && (
+          <Descriptions.Item label='Preview Image' contentStyle={{ flexDirection: 'column' }}>
+            {scene.previewImage && (
+              <div style={{ aspectRatio: 3 / 2, overflowY: 'auto', width: '100%' }}>
+                <Image width='100%' src={scene.previewImage}/>
+              </div>
+            )}
+            <Button
+              style={{ marginTop: 5, width: '100%' }}
+              onClick={() => setScene({
+                ...scene,
+                previewImage: takeSnapshot(),
+              })}
+            >
+              Take {scene.previewImage ? 'new' : 'a'} Snapshot
+            </Button>
+          </Descriptions.Item>
+        )}
       </Descriptions>
     </>
   )

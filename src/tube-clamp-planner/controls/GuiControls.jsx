@@ -1,14 +1,16 @@
 import React from 'react';
-import { useSelect } from '@react-three/drei'
-import { Card, Segmented } from 'antd'
-import SceneControls from './SceneControls'
-import SelectionControls from './SelectionControls'
-import ControlsDialog from './ControlsDialog'
-import useSelectionStore from '../state/useSelectionStore'
+import { useSelect } from '@react-three/drei';
+import { Card, PageHeader, Segmented } from 'antd';
+import { useNavigate } from 'react-router';
+import SceneControls from './SceneControls';
+import SelectionControls from './SelectionControls';
+import ControlsDialog from './ControlsDialog';
+import useSelectionStore from '../state/useSelectionStore';
 
 export default function GuiControls({ canvasData, scene, setScene, getNode, setChainNode, addChainNode }) {
   const { selection } = canvasData;
   const [tab, setTab] = React.useState('Scene');
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     if (selection) {
@@ -21,6 +23,11 @@ export default function GuiControls({ canvasData, scene, setScene, getNode, setC
       style={{ width: 400 }}
       bodyStyle={{ padding: 0, height: '100%', width: 400 }}
     >
+      <PageHeader
+        title={'Tube Planner'}
+        onBack={() => navigate('/tools/tube-planner')}
+        style={{ padding: '5px 20px' }}
+      />
       <Segmented
         block
         value={tab}
@@ -28,7 +35,7 @@ export default function GuiControls({ canvasData, scene, setScene, getNode, setC
         onChange={(value) => setTab(value)}
       />
 
-      <div style={{ padding: 10, height: 'calc(100% - 64px)', overflowY: 'scroll' }}>
+      <div style={{ padding: 10, height: 'calc(100% - 64px - 50px)', overflowY: 'scroll' }}>
         {tab === 'Scene' && (
           <SceneControls scene={scene} setScene={setScene} />
         )}

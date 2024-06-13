@@ -130,6 +130,9 @@ const corners = [
 ];
 
 export default {
+  id: '__dev__',
+  version: 1,
+  title: 'Dev Scene',
   length: 300,
   width: 400,
   height: 240,
