@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert } from 'antd'
+import { Alert, Button, Empty } from 'antd'
 import { useLocalStorageState, useThrottleFn } from 'ahooks'
 import WebGL from 'three/examples/jsm/capabilities/WebGL'
 import { Canvas, extend } from '@react-three/fiber'
@@ -15,6 +15,7 @@ import GuiControls, { CanvasDataCapture } from './controls/GuiControls'
 import { Object3D } from 'three'
 import testScene from './data/testScene'
 import useChainStore from './state/useChainStore'
+import { useNavigate } from 'react-router'
 
 extend({ OrbitControls })
 
@@ -24,14 +25,9 @@ function Loader () {
 }
 
 export default function SceneCanvas({ sceneId }) {
+  const navigate = useNavigate();
   const [scene, setSceneNow] = useLocalStorageState(`tube-plan-${sceneId}`, {
-    defaultValue: {
-      chains: [],
-      width: 100,
-      length: 100,
-      height: 100,
-      brightness: 1,
-    },
+    defaultValue: undefined,
   });
   const [canvasData, setData] = React.useState({});
 
@@ -50,7 +46,19 @@ export default function SceneCanvas({ sceneId }) {
     }
   }, [sceneId]);
 
-  const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent))
+  if (!scene) {
+    return (
+      <Empty
+        description={`Cannot find a plan with the id: ${sceneId}`}
+      >
+        <Button onClick={() => navigate('..')}>
+          Back to safety
+        </Button>
+      </Empty>
+    )
+  }
+
+  const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent));
 
   if (!WebGL.isWebGLAvailable()) return <Alert>The browser you are using in unable to display this content</Alert>
   return (

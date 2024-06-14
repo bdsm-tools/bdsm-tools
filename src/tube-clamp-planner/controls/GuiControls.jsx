@@ -25,7 +25,7 @@ export default function GuiControls({ canvasData, scene, setScene, getNode, setC
     >
       <PageHeader
         title={'Tube Planner'}
-        onBack={() => navigate('/tools/tube-planner')}
+        onBack={() => navigate('..')}
         style={{ padding: '5px 20px' }}
       />
       <Segmented
