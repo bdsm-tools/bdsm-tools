@@ -1,11 +1,15 @@
 import React from 'react';
-import { Button, Descriptions, Image, Input, InputNumber, Slider, Typography } from 'antd'
+import { Button, Descriptions, Image, Input, InputNumber, Slider } from 'antd'
+import useSceneStore from '../state/useSceneStore'
 
-const takeSnapshot = () => document.getElementById('tube-planner-canvas')
-    ?.getElementsByTagName('canvas')[0]
+const takeSnapshot = (canvas) => (canvas || document.getElementById('tube-planner-canvas')
+    ?.getElementsByTagName('canvas')[0])
     ?.toDataURL("image/png");
 
-export default function SceneControls({ scene, setScene, basicOnly = false }) {
+export default function SceneControls({ basicOnly = false }) {
+
+  const { scene, setScene, canvasData } = useSceneStore();
+
   return (
     <>
       <Input
@@ -106,7 +110,16 @@ export default function SceneControls({ scene, setScene, basicOnly = false }) {
               style={{ marginTop: 5, width: '100%' }}
               onClick={() => setScene({
                 ...scene,
-                previewImage: takeSnapshot(),
+                camera: {
+                  position: {
+                    x: canvasData?.camera?.canvasCamera?.position?.x,
+                    y: canvasData?.camera?.canvasCamera?.position?.y,
+                    z: canvasData?.camera?.canvasCamera?.position?.z,
+                  },
+                  up: canvasData?.camera?.canvasCamera?.up,
+                  focusPoint: canvasData?.focusPoint,
+                },
+                previewImage: takeSnapshot(canvasData.domElement),
               })}
             >
               Take {scene.previewImage ? 'new' : 'a'} Snapshot

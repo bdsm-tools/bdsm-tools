@@ -3,13 +3,20 @@ import { Typography } from 'antd'
 import { getTypeDefinition } from '../connectors/types'
 import TubeEditor from '../editor/TubeEditor'
 import useSelectionStore from '../state/useSelectionStore'
+import SurfaceSelectionEditor from '../editor/SurfaceSelectionEditor'
+import useSceneStore from '../state/useSceneStore'
 
 const tubeDefinition = {
   Editor: TubeEditor,
 }
 
-export default function SelectionControls({ canvasData, scene, getNode, setChainNode, addChainNode }) {
+const getNodeDefinition = (node) => node.node.type === 'tube' ? tubeDefinition : getTypeDefinition(node.node.type);
+
+const surfaceIds = ['side-wall', 'side-wall2', 'back-wall', 'back-wall2', 'floor'];
+
+export default function SelectionControls() {
   const selectionStore = useSelectionStore();
+  const { getNode, setChainNode, addChainNode } = useSceneStore();
 
   if (!selectionStore.selectedNodeId) {
     return (
@@ -19,10 +26,26 @@ export default function SelectionControls({ canvasData, scene, getNode, setChain
     );
   }
 
+  const onDeselect = () => selectionStore.setSelectedNode(undefined);
+  const NodeSelector = ({ id }) => (
+    <Typography>
+      {getNodeDefinition(getNode(id)).name}
+    </Typography>
+  );
+
+  if (surfaceIds.includes(selectionStore.selectedNodeId)) {
+    return (
+      <SurfaceSelectionEditor
+        surfaceId={selectionStore.selectedNodeId}
+        onDeselect={onDeselect}
+        NodeSelector={NodeSelector}
+      />
+    );
+  }
+
   const node = getNode(selectionStore.selectedNodeId);
   const setNode = setChainNode(selectionStore.selectedNodeId);
 
-  const getNodeDefinition = (node) => node.node.type === 'tube' ? tubeDefinition : getTypeDefinition(node.node.type);
   const { Editor = () => null } = getNodeDefinition(node);
   return (
     <>
@@ -33,12 +56,8 @@ export default function SelectionControls({ canvasData, scene, getNode, setChain
         addChainNode={addChainNode}
         getNode={getNode}
         connection={node}
-        onDeselect={() => selectionStore.setSelectedNode(undefined)}
-        NodeSelector={({ id }) => (
-          <Typography>
-            {getNodeDefinition(getNode(id)).name}
-          </Typography>
-        )}
+        onDeselect={onDeselect}
+        NodeSelector={NodeSelector}
       />
     </>
   );

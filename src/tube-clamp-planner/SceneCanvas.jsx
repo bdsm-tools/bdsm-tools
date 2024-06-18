@@ -1,6 +1,5 @@
 import React from 'react';
 import { Alert, Button, Empty } from 'antd'
-import { useLocalStorageState, useThrottleFn } from 'ahooks'
 import WebGL from 'three/examples/jsm/capabilities/WebGL'
 import { Canvas, extend } from '@react-three/fiber'
 import { Html, OrbitControls, Select, useProgress } from '@react-three/drei'
@@ -11,11 +10,11 @@ import Chain from './components/Chain'
 import HighlightSelected from './controls/HighlightSelected'
 import Controls from './components/Controls'
 import CameraControls from './components/CameraControls'
-import GuiControls, { CanvasDataCapture } from './controls/GuiControls'
+import GuiControls, { CaptureSelection } from './controls/GuiControls'
 import { Object3D } from 'three'
-import testScene from './data/testScene'
-import useChainStore from './state/useChainStore'
+import useSceneStore, { useInitScene } from './state/useSceneStore'
 import { useNavigate } from 'react-router'
+import { useMatch } from 'react-router-dom'
 
 extend({ OrbitControls })
 
@@ -24,38 +23,23 @@ function Loader () {
   return <Html center>{Math.floor(progress)} % loaded</Html>
 }
 
-export default function SceneCanvas({ sceneId }) {
+export default function SceneCanvas() {
   const navigate = useNavigate();
-  const [scene, setSceneNow] = useLocalStorageState(`tube-plan-${sceneId}`, {
-    defaultValue: undefined,
-  });
+  const { params } = useMatch('/tools/tube-planner/:sceneId') || { params: {} };
   const [canvasData, setData] = React.useState({});
 
-  const { run: setScene } = useThrottleFn(setSceneNow, { wait: 50 });
-
-  const { chains, getNode, setChainNode, addChainNode, importChains } = useChainStore()
-  React.useEffect(() => {
-    if (scene) {
-      importChains(...scene.chains);
-    }
-  }, [scene]);
-
-  React.useEffect(() => {
-    if (sceneId === '__dev__') {
-      setSceneNow(testScene);
-    }
-  }, [sceneId]);
+  const { scene, chains } = useSceneStore();
 
   if (!scene) {
     return (
       <Empty
-        description={`Cannot find a plan with the id: ${sceneId}`}
+        description={`Cannot find a plan with the id: ${params.sceneId}`}
       >
         <Button onClick={() => navigate('..')}>
           Back to safety
         </Button>
       </Empty>
-    )
+    );
   }
 
   const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent));
@@ -66,7 +50,7 @@ export default function SceneCanvas({ sceneId }) {
       <RetryErrorBoundary message="Error when rendering the canvas. Please refresh and try again">
         <Canvas id='tube-planner-canvas' gl={{ preserveDrawingBuffer: true }}>
           <React.Suspense fallback={<Loader/>}>
-            <Select filter={(s) => s.map(getSelectable).filter((s) => !!s)}>
+            <Select onChangePointerUp={(e) => console.log(e)} filter={(s) => s.map(getSelectable).filter((s) => !!s)}>
               <ambientLight intensity={scene.brightness}/>
               <pointLight position={[scene.width / 2, scene.height - 20, scene.length / 2]} power={1000000 * scene.brightness} castShadow={true} />
 
@@ -77,7 +61,7 @@ export default function SceneCanvas({ sceneId }) {
                 )))}
 
                 <EffectComposer autoClear={false} multisampling={16}>
-                  <HighlightSelected selection={canvasData.selection}/>
+                  <HighlightSelected />
 
                   <SSAO/>
                   <SMAA/>
@@ -86,22 +70,14 @@ export default function SceneCanvas({ sceneId }) {
 
 
               <Controls/>
-              <CameraControls/>
+              <CameraControls />
 
-              <CanvasDataCapture setData={setData}/>
+              <CaptureSelection />
             </Select>
           </React.Suspense>
         </Canvas>
       </RetryErrorBoundary>
-      <GuiControls
-        canvasData={canvasData}
-        scene={scene}
-        setScene={setScene}
-        chains={chains}
-        getNode={getNode}
-        setChainNode={setChainNode}
-        addChainNode={addChainNode}
-      />
+      <GuiControls />
     </div>
   )
 }

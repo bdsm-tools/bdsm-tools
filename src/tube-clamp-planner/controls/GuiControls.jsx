@@ -6,17 +6,18 @@ import SceneControls from './SceneControls';
 import SelectionControls from './SelectionControls';
 import ControlsDialog from './ControlsDialog';
 import useSelectionStore from '../state/useSelectionStore';
+import useSceneStore from '../state/useSceneStore'
 
-export default function GuiControls({ canvasData, scene, setScene, getNode, setChainNode, addChainNode }) {
-  const { selection } = canvasData;
+export default function GuiControls() {
   const [tab, setTab] = React.useState('Scene');
   const navigate = useNavigate();
+  const { selectedNodeId } = useSelectionStore();
 
   React.useEffect(() => {
-    if (selection) {
+    if (selectedNodeId) {
       setTab('Selection');
     }
-  }, [selection]);
+  }, [selectedNodeId]);
 
   return (
     <Card
@@ -37,16 +38,10 @@ export default function GuiControls({ canvasData, scene, setScene, getNode, setC
 
       <div style={{ padding: 10, height: 'calc(100% - 64px - 50px)', overflowY: 'scroll' }}>
         {tab === 'Scene' && (
-          <SceneControls scene={scene} setScene={setScene} />
+          <SceneControls />
         )}
         {tab === 'Selection' && (
-          <SelectionControls
-            canvasData={canvasData}
-            scene={scene}
-            getNode={getNode}
-            setChainNode={setChainNode}
-            addChainNode={addChainNode}
-          />
+          <SelectionControls />
         )}
       </div>
       <ControlsDialog />
@@ -54,16 +49,16 @@ export default function GuiControls({ canvasData, scene, setScene, getNode, setC
   );
 }
 
-export function CanvasDataCapture({ setData }) {
+export function CaptureSelection() {
   const [selection, ...extraSelections] = useSelect();
   const selectionStore = useSelectionStore();
+  const { setCanvasData } = useSceneStore();
 
   React.useEffect(() => {
-    setData({
-      selection,
-      extraSelections,
-    });
     selectionStore.setSelectedNode(selection?.userData?.id);
+    setCanvasData({
+      selection,
+    });
   }, [selection]);
   return null;
 }
