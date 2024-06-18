@@ -7,14 +7,14 @@ export default function validateChain(chain) {
         return;
     }
 
-    const { type, surfaceConnections } = chain;
+    const { type, surface } = chain;
 
-    if (!surfaceConnections || surfaceConnections.length < 1) {
+    if (!surface || !surface.type || !surface.coords) {
         throw 'Chain start must connect to at least one surface';
     }
 
     const typeDefinition = getTypeDefinition(type);
-    if (typeDefinition.surfaceConnections < 1) {
+    if (!typeDefinition.hasSurfaceConnection) {
         throw `The chain start '${type}' is not able to connect to a surface`;
     }
 

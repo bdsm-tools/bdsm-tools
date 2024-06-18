@@ -6,7 +6,7 @@ export default registerTypeDefinition({
     type: 'crossover',
     endConnections: 0,
     middleConnections: 2,
-    surfaceConnections: 0,
+    hasSurfaceConnection: false,
     name: 'Crossover',
     Node: Crossover,
     Editor: CrossoverEditor,

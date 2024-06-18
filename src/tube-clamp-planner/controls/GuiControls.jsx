@@ -7,6 +7,7 @@ import SelectionControls from './SelectionControls';
 import ControlsDialog from './ControlsDialog';
 import useSelectionStore from '../state/useSelectionStore';
 import useSceneStore from '../state/useSceneStore'
+import { useThree } from '@react-three/fiber'
 
 export default function GuiControls() {
   const [tab, setTab] = React.useState('Scene');
@@ -50,6 +51,7 @@ export default function GuiControls() {
 }
 
 export function CaptureSelection() {
+  const { camera } = useThree();
   const [selection, ...extraSelections] = useSelect();
   const selectionStore = useSelectionStore();
   const { setCanvasData } = useSceneStore();
@@ -59,6 +61,10 @@ export function CaptureSelection() {
     setCanvasData({
       selection,
     });
+
+    if (selection?.userData.cameraPositionOnFocus) {
+      camera.position.set(...selection?.userData.cameraPositionOnFocus);
+    }
   }, [selection]);
   return null;
 }

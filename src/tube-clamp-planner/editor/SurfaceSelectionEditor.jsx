@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Collapse, Descriptions, Tooltip, Typography } from 'antd'
 import CloseSelectionIcon from '@ant-design/icons/CloseCircleOutlined'
 import useSceneStore from '../state/useSceneStore'
+import StartChainDialog from './StartChainDialog'
 
 const surfaceIds = {
   'side-wall': 'Left Side Wall',
@@ -13,12 +14,12 @@ const surfaceIds = {
 
 export default function SurfaceSelectionEditor({ surfaceId, onDeselect, NodeSelector }) {
 
-  const { chains } = useSceneStore();
+  const { chains, addChain } = useSceneStore();
   console.log(chains);
 
   const surfaceConnections = chains
     .flatMap((chain) => Object.values(chain))
-    .filter((connection) => !connection.parent)
+    .filter((connection) => !connection.node?.surface?.type === surfaceId)
     .map((connection) => connection.id);
 
   return (
@@ -46,6 +47,10 @@ export default function SurfaceSelectionEditor({ surfaceId, onDeselect, NodeSele
           ))}
         </Collapse.Panel>
       </Collapse>
+      <StartChainDialog
+        surfaceId={surfaceId}
+        onAdd={addChain}
+      />
     </>
   );
 }

@@ -1,10 +1,10 @@
 import validateTube from "./validateTube";
 
-export default function validateTypeDefinition(typeDefinition, { surfaceConnections = [], middleConnections = [], endConnections = [] }, joinedFrom) {
+export default function validateTypeDefinition(typeDefinition, { surface, middleConnections = [], endConnections = [] }, joinedFrom) {
     const { type } = typeDefinition;
 
-    if (typeDefinition.surfaceConnections < surfaceConnections.length) {
-        throw `Type '${type}' can only connect to ${typeDefinition.surfaceConnections} surfaces`;
+    if (!typeDefinition.hasSurfaceConnection && !!surface) {
+        throw `Type '${type}' cannot connect to a surface`;
     }
 
     const fromMiddle = joinedFrom === 'middle' ? 1 : 0;

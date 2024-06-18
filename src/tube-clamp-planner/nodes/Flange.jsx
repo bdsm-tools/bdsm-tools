@@ -6,7 +6,6 @@ import tubeNormalMap from "../textures/Metal_Galvanized_1K_normal.png";
 import tubeRoughness from "../textures/Metal_Galvanized_1K_roughness.png";
 import tubeMetalic from "../textures/Metal_Galvanized_1K_metallic.png";
 import useRotate from '../controls/useRotate'
-import { mapObject } from '../../util'
 
 export default function Flange({ id, size, setMiddleConnectionPosition }) {
     const groupRef = React.useRef();

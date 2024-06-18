@@ -25,7 +25,16 @@ export default function Floor({ length, width }) {
     useRotate(ref, { x: 270 });
 
     return (
-        <mesh ref={ref} name='floor' position={[width / 2, 0, length / 2]} receiveShadow={true}>
+        <mesh
+          ref={ref} name='floor'
+          position={[width / 2, 0, length / 2]}
+          receiveShadow={true}
+          userData={{
+              id: 'floor',
+              selectable: true,
+              cameraPositionOnFocus: [width / 2, Math.max(width, length) / 2, length / 2],
+          }}
+        >
             <planeGeometry args={[width, length]} />
             <meshStandardMaterial {...textureProps} />
         </mesh>

@@ -132,24 +132,24 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
 
 export default function Chain ({ chain, scene }) {
   const firstNode = Object.values(chain).find((node) => !node.parent);
-  const [connection] = firstNode.node.surfaceConnections; // Just take the first surface for now
+  const connection = firstNode.node.surface;
 
   let position;
   let rotation;
   const [x, y] = connection.coords;
-  if (connection.surface === 'floor') {
+  if (connection.type === 'floor') {
     position = [x, 0, y];
     rotation = { x: 0, y: 0, z: 0 };
-  } else if (connection.surface === 'side-wall') {
+  } else if (connection.type === 'side-wall') {
     position = [0, y, scene.length - x];
     rotation = { x: 0, y: 0, z: 270 };
-  } else if (connection.surface === 'back-wall') {
+  } else if (connection.type === 'back-wall') {
     position = [x, y, 0];
     rotation = { x: 90, y: 0, z: 0 };
-  } else if (connection.surface === 'side-wall2') {
+  } else if (connection.type === 'side-wall2') {
     position = [scene.width, y, x];
     rotation = { x: 0, y: 0, z: 90 };
-  } else if (connection.surface === 'back-wall2') {
+  } else if (connection.type === 'back-wall2') {
     position = [scene.width - x, y, scene.length];
     rotation = { x: 270, y: 0, z: 0 };
   }

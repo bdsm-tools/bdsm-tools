@@ -8,10 +8,10 @@ const flanges = [
         type: 'flange',
       }],
     }],
-    surfaceConnections: [{
-      surface: 'floor',
+    surface: {
+      type: 'floor',
       coords: [20, 20]
-    }],
+    },
   }, {
     type: 'flange',
     endConnections: [{
@@ -21,10 +21,10 @@ const flanges = [
         type: 'flange',
       }],
     }],
-    surfaceConnections: [{
-      surface: 'back-wall',
+    surface: {
+      type: 'back-wall',
       coords: [20, 60]
-    }],
+    },
   }
 ];
 
@@ -42,10 +42,10 @@ const tees = [
         type: 'tee',
       }],
     }],
-    surfaceConnections: [{
-      surface: 'floor',
+    surface: {
+      type: 'floor',
       coords: [40, 20]
-    }]
+    }
   }, {
     type: 'flange',
     endConnections: [{
@@ -60,10 +60,10 @@ const tees = [
         type: 'tee',
       }],
     }],
-    surfaceConnections: [{
-      surface: 'back-wall',
+    surface: {
+      type: 'back-wall',
       coords: [40, 60]
-    }]
+    }
   }
 ];
 
@@ -78,10 +78,10 @@ const crossovers = [
         position: 40,
       }]
     }],
-    surfaceConnections: [{
-      surface: 'floor',
+    surface: {
+      type: 'floor',
       coords: [60, 20]
-    }]
+    }
   }, {
     type: 'flange',
     endConnections: [{
@@ -92,10 +92,10 @@ const crossovers = [
         position: 10,
       }]
     }],
-    surfaceConnections: [{
-      surface: 'back-wall',
+    surface: {
+      type: 'back-wall',
       coords: [60, 60]
-    }]
+    }
   }
 ];
 
@@ -109,10 +109,10 @@ const corners = [
         type: 'corner',
       }],
     }],
-    surfaceConnections: [{
-      surface: 'floor',
+    surface: {
+      type: 'floor',
       coords: [80, 20]
-    }],
+    },
   },{
     type: 'flange',
     endConnections: [{
@@ -122,10 +122,10 @@ const corners = [
         type: 'corner',
       }],
     }],
-    surfaceConnections: [{
-      surface: 'back-wall',
+    surface: {
+      type: 'back-wall',
       coords: [80, 60]
-    }],
+    },
   }
 ];
 

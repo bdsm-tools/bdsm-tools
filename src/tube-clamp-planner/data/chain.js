@@ -38,8 +38,7 @@ export function importChain(chain) {
       parentSlot,
       children: {
         middle: node?.middleConnections?.map((e) => chainNode(e, id, 'middle')) || [],
-        end: node?.endConnections?.map((e) => chainNode(e, id, 'end')) || []
-        // TODO: Maybe surface connections too
+        end: node?.endConnections?.map((e) => chainNode(e, id, 'end')) || [],
       },
     };
 

@@ -5,7 +5,7 @@ export default registerTypeDefinition({
     type: 'tee',
     endConnections: 1,
     middleConnections: 1,
-    surfaceConnections: 0,
+    hasSurfaceConnection: false,
     name: 'Tee',
     Node: Tee,
 })

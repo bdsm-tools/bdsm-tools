@@ -34,6 +34,12 @@ const useStore = create(immer((set) => ({
       ...node,
     }
   }),
+  addChain: (chain) => set((state) => {
+    state.chains = [
+      ...state.chains,
+      importChain(chain),
+    ];
+  }),
 
   setCanvasData: (data = {}) => set((state) => {
     state.canvasData = {

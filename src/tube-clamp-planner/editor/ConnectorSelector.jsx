@@ -7,6 +7,7 @@ export default function ConnectorSelector({ slot, value, onChange }) {
   const options = getTypeDefinitionsAsOptions((def) => {
     if (slot === 'end') return def.endConnections > 0;
     if (slot === 'middle') return def.middleConnections > 0;
+    if (slot === 'surface') return !!def.hasSurfaceConnection;
     return true;
   });
 

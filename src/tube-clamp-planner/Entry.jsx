@@ -146,34 +146,34 @@ const example = {
   chains: [
     {
       ...exampleChain,
-      surfaceConnections: [{
-        surface: 'floor',
+      surface: {
+        type: 'floor',
         coords: [100, 50]
-      }],
+      },
     }, {
       ...exampleChain,
-      surfaceConnections: [{
-        surface: 'side-wall',
+      surface: {
+        type: 'side-wall',
         coords: [100, 50]
-      }],
+      },
     }, {
       ...exampleChain,
-      surfaceConnections: [{
-        surface: 'back-wall',
+      surface: {
+        type: 'back-wall',
         coords: [100, 50]
-      }],
+      },
     }, {
       ...exampleChain,
-      surfaceConnections: [{
-        surface: 'side-wall2',
+      surface: {
+        type: 'side-wall2',
         coords: [100, 50]
-      }],
+      },
     }, {
       ...exampleChain,
-      surfaceConnections: [{
-        surface: 'back-wall2',
+      surface: {
+        type: 'back-wall2',
         coords: [100, 50]
-      }],
+      },
     }
   ]
 }

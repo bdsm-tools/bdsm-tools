@@ -9,6 +9,8 @@ import useRotate from '../controls/useRotate'
 import { RepeatWrapping } from 'three'
 import { mapObject } from '../../util'
 
+const heightDistanceModifier = 1.333334;
+
 export default function Wall({ length, width, height }) {
     const ref = React.useRef();
     const sideRef = React.useRef();
@@ -46,19 +48,59 @@ export default function Wall({ length, width, height }) {
 
     return (
         <>
-            <mesh ref={ref} name='wall' position={[width / 2, height / 2, 0]} receiveShadow={true} userData={{ id: 'back-wall', selectable: true }}>
+            <mesh
+              ref={ref}
+              name='wall'
+              position={[width / 2, height / 2, 0]}
+              receiveShadow={true}
+              userData={{
+                id: 'back-wall',
+                selectable: true,
+                cameraPositionOnFocus: [width / 2, height / 2, Math.max(width, height * heightDistanceModifier) / 2],
+              }}
+            >
                 <planeGeometry args={[width, height]} />
                 <meshStandardMaterial {...backWallTextureProps} />
             </mesh>
-            <mesh ref={sideRef} name='wall' position={[0, height / 2, length / 2]} receiveShadow={true} userData={{ id: 'side-wall', selectable: true }}>
+            <mesh
+              ref={sideRef}
+              name='wall'
+              position={[0, height / 2, length / 2]}
+              receiveShadow={true}
+              userData={{
+                id: 'side-wall',
+                selectable: true,
+                cameraPositionOnFocus: [Math.max(length, height * heightDistanceModifier) / 2, height / 2, length / 2],
+              }}
+            >
                 <planeGeometry args={[length, height]} />
                 <meshStandardMaterial {...sideWallTextureProps}/>
             </mesh>
-            <mesh ref={backRef} name='wall' position={[width / 2, height / 2, length]} receiveShadow={true} userData={{ id: 'back-wall2', selectable: true }}>
+            <mesh
+              ref={backRef}
+              name='wall'
+              position={[width / 2, height / 2, length]}
+              receiveShadow={true}
+              userData={{
+                id: 'back-wall2',
+                selectable: true,
+                cameraPositionOnFocus: [width / 2, height / 2, length - (Math.max(width, height * heightDistanceModifier) / 2)],
+              }}
+            >
                 <planeGeometry args={[width, height]} />
                 <meshStandardMaterial {...backWallTextureProps} />
             </mesh>
-            <mesh ref={backSideRef} name='wall' position={[width, height / 2, length / 2]} receiveShadow={true} userData={{ id: 'side-wall2', selectable: true }}>
+            <mesh
+              ref={backSideRef}
+              name='wall'
+              position={[width, height / 2, length / 2]}
+              receiveShadow={true}
+              userData={{
+                id: 'side-wall2',
+                selectable: true,
+                cameraPositionOnFocus: [width - (Math.max(length, height * heightDistanceModifier) / 2), height / 2, length / 2],
+              }}
+            >
                 <planeGeometry args={[length, height]} />
                 <meshStandardMaterial {...sideWallTextureProps}/>
             </mesh>
