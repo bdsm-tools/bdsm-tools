@@ -16,7 +16,7 @@ export default function Tube({ id, length, size }) {
     const startRingRef = React.useRef();
     const endRingRef = React.useRef();
 
-    const selectedNodeId = useSelectionStore((state) => state.selectedNodeId);
+    const {selectedNodeId} = useSelectionStore();
     const isSelected = id === selectedNodeId;
 
     const textureProps = mapObject(useTexture({

@@ -78,7 +78,7 @@ export const useInitScene = (sceneId) => {
   React.useEffect(() => saveToLocalStorage, []);
 };
 
-export default function useSceneStore () {
+export default function useSceneStore() {
   const store = useStore();
   const { run: setScene, flush: flushSetScene } = useThrottleFn(store.setScene, { wait: 50 });
   const { run: setChainNodeThrottled, flush: flushSetChain } = useThrottleFn(store.setChainNode, { wait: 50 });

@@ -28,10 +28,8 @@ export default function FlangeEditor({ node, getNode, setNode, addChainNode, con
         )}
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
       >
-        <Descriptions.Item label='Surface Connection'>
-          <SurfaceEditorInput node={node} setNode={setNode} surfaceId={node.surface.type} />
-        </Descriptions.Item>
       </Descriptions>
+      <SurfaceEditorInput node={node} setNode={setNode} surfaceId={node.surface.type} />
       {end && (
         <Collapse ghost>
           <Collapse.Panel key={1} header='End Connections'>

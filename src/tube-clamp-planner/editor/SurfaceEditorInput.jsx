@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputNumber, Typography } from 'antd'
+import { Descriptions, InputNumber } from 'antd'
 import useSceneStore from '../state/useSceneStore'
 
 const surfaceSizes = {
@@ -28,10 +28,13 @@ export default function SurfaceEditorInput({ node, setNode, surfaceId }) {
   }, [node?.surface?.coords]);
 
   return (
-    <>
-      <Typography>
-        Right:
-      </Typography>
+    <Descriptions
+      title='Surface Position'
+      layout="vertical"
+      size='small'
+      column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
+    >
+      <Descriptions.Item label='Right'>
       <InputNumber
         addonAfter='cm'
         controls
@@ -47,9 +50,8 @@ export default function SurfaceEditorInput({ node, setNode, surfaceId }) {
           }
         })}
       />
-      <Typography>
-        {surfaceId === 'floor' ? 'Down:' : 'Up:'}
-      </Typography>
+      </Descriptions.Item>
+      <Descriptions.Item label={surfaceId === 'floor' ? 'Down' : 'Up'}>
       <InputNumber
         addonAfter='cm'
         controls
@@ -65,6 +67,7 @@ export default function SurfaceEditorInput({ node, setNode, surfaceId }) {
           }
         })}
       />
-    </>
+      </Descriptions.Item>
+    </Descriptions>
   );
 }

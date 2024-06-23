@@ -6,10 +6,12 @@ import useKeyDown from '../../hooks/customHooks'
 import useFocusPoint from '../controls/useFocusPoint'
 import { useInterval } from 'ahooks'
 import useSceneStore from '../state/useSceneStore'
+import useSelectionStore from '../state/useSelectionStore'
 
 export default function CameraControls () {
   const { camera, gl: { domElement } } = useThree();
   const [focusPoint, setFocusPoint] = useFocusPoint();
+  const { selection } = useSelectionStore();
 
   const { scene, setCanvasData } = useSceneStore();
 
@@ -76,6 +78,12 @@ export default function CameraControls () {
           },
       });
   }, [focusPoint, camera, domElement]);
+
+  React.useEffect(() => {
+    if (selection?.userData.cameraPositionOnFocus) {
+      camera.position.set(...selection?.userData.cameraPositionOnFocus);
+    }
+  }, [selection]);
 
   const forward = useKeyDown('w')
   const forward2 = useKeyDown('upArrow')

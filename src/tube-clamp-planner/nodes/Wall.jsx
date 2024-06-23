@@ -56,6 +56,7 @@ export default function Wall({ length, width, height }) {
               userData={{
                 id: 'back-wall',
                 selectable: true,
+                requiresNothingSelected: true,
                 cameraPositionOnFocus: [width / 2, height / 2, Math.max(width, height * heightDistanceModifier) / 2],
               }}
             >
@@ -70,6 +71,7 @@ export default function Wall({ length, width, height }) {
               userData={{
                 id: 'side-wall',
                 selectable: true,
+                requiresNothingSelected: true,
                 cameraPositionOnFocus: [Math.max(length, height * heightDistanceModifier) / 2, height / 2, length / 2],
               }}
             >
@@ -84,6 +86,7 @@ export default function Wall({ length, width, height }) {
               userData={{
                 id: 'back-wall2',
                 selectable: true,
+                requiresNothingSelected: true,
                 cameraPositionOnFocus: [width / 2, height / 2, length - (Math.max(width, height * heightDistanceModifier) / 2)],
               }}
             >
@@ -98,6 +101,7 @@ export default function Wall({ length, width, height }) {
               userData={{
                 id: 'side-wall2',
                 selectable: true,
+                requiresNothingSelected: true,
                 cameraPositionOnFocus: [width - (Math.max(length, height * heightDistanceModifier) / 2), height / 2, length / 2],
               }}
             >

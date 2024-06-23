@@ -1,11 +1,11 @@
 import React from 'react'
 import { Box3, Vector3 } from 'three'
-import { useSelect } from '@react-three/drei'
+import useSelectionStore from '../state/useSelectionStore'
 
 export default function useFocusPoint () {
   const [focusPoint, setFocusPoint] = React.useState(new Vector3(50, 0, 0));
 
-  const [selection] = useSelect();
+  const {selection} = useSelectionStore();
 
   React.useEffect(() => {
     if (selection) {

@@ -38,9 +38,6 @@ export default function StartChainDialog({ surfaceId, onAdd }) {
           onChange={(type) => setConnector((old) => ({ ...old, type }))}
         />
 
-        <Typography>
-          Choose where to place the connector on the surface:
-        </Typography>
         <SurfaceEditorInput
           node={connector}
           setNode={(value) => setConnector((old) => ({

@@ -53,33 +53,33 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
 }
 
 const ChainNode = ({ chain, connection, size, position, rotation }) => {
-  const groupRef = React.useRef()
-  useRotate(groupRef, rotation)
-  const selectedNodeId = useSelectionStore((state) => state.selectedNodeId)
+  const groupRef = React.useRef();
+  useRotate(groupRef, rotation);
+  const {selectedNodeId} = useSelectionStore();
 
-  const { Node } = getTypeDefinition(connection.node.type)
+  const { Node } = getTypeDefinition(connection.node.type);
 
-  const [endConnectionPositions, setEndConnectionPositions] = React.useState({})
-  const [middleConnectionPositions, setMiddleConnectionPositions] = React.useState({})
-  const [endConnectionRotations, setEndConnectionRotations] = React.useState({})
-  const [middleConnectionRotations, setMiddleConnectionRotations] = React.useState({})
+  const [endConnectionPositions, setEndConnectionPositions] = React.useState({});
+  const [middleConnectionPositions, setMiddleConnectionPositions] = React.useState({});
+  const [endConnectionRotations, setEndConnectionRotations] = React.useState({});
+  const [middleConnectionRotations, setMiddleConnectionRotations] = React.useState({});
 
   const setEndConnectionPosition = (index, _position) => setEndConnectionPositions(old => ({
     ...old,
     [index]: _position,
-  }))
+  }));
   const setMiddleConnectionPosition = (index, _position) => setMiddleConnectionPositions(old => ({
     ...old,
     [index]: _position,
-  }))
+  }));
   const setEndConnectionRotation = (index, _rotation) => setEndConnectionRotations(old => ({
     ...old,
     [index]: _rotation,
-  }))
+  }));
   const setMiddleConnectionRotation = (index, _rotation) => setMiddleConnectionRotations(old => ({
     ...old,
     [index]: _rotation,
-  }))
+  }));
 
   return (
     <group ref={groupRef} position={position}>
@@ -127,7 +127,7 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
           />
         ))}
     </group>
-  )
+  );
 }
 
 export default function Chain ({ chain, scene }) {
@@ -154,8 +154,8 @@ export default function Chain ({ chain, scene }) {
     rotation = { x: 270, y: 0, z: 0 };
   }
 
-  const groupRef = React.useRef()
-  useRotate(groupRef, rotation)
+  const groupRef = React.useRef();
+  useRotate(groupRef, rotation);
 
   return (
     <group ref={groupRef} position={position}>
@@ -167,5 +167,5 @@ export default function Chain ({ chain, scene }) {
         rotation={{ x: 0, y: 0, z: 0 }}
       />
     </group>
-  )
+  );
 }

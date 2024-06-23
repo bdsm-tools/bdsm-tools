@@ -1,10 +1,16 @@
-import { create } from 'zustand';
-import { immer } from 'zustand/middleware/immer';
+import { create } from 'zustand'
+import { immer } from 'zustand/middleware/immer'
 
-export default create(immer(set => ({
+const useSelectionStore = create(immer((set) => ({
+  selection: undefined,
   selectedNodeId: undefined,
+  previousSelectedNodeId: undefined,
 
-  setSelectedNode: (_selectedNodeId) => set((state) => {
-    state.selectedNodeId = _selectedNodeId;
+  setSelectedNode: (_selected) => set((state) => {
+    state.selection = _selected
+    state.selectedNodeId = _selected?.userData?.id
+    state.previousSelectedNodeId = state.selectedNodeId
   }),
 })));
+
+export default useSelectionStore
