@@ -1,5 +1,5 @@
 import React from 'react';
-import { InputNumber } from 'antd'
+import { InputNumber } from 'antd';
 
 export default function LengthEditorInput({ node, setNode }) {
   return (
@@ -8,10 +8,18 @@ export default function LengthEditorInput({ node, setNode }) {
       controls
       size='small'
       value={node.length}
-      onChange={(value) => setNode({
-        length: value > 0 ? value : node.length,
-        position: !node.position ? undefined : (node.position > (value > 0 ? value : node.length) ? (value > 0 ? value : node.length) : node.position)
-      })}
+      onChange={(value) =>
+        setNode({
+          length: value > 0 ? value : node.length,
+          position: !node.position
+            ? undefined
+            : node.position > (value > 0 ? value : node.length)
+              ? value > 0
+                ? value
+                : node.length
+              : node.position,
+        })
+      }
     />
   );
 }

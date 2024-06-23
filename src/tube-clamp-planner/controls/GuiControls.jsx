@@ -34,13 +34,15 @@ export default function GuiControls() {
         onChange={(value) => setTab(value)}
       />
 
-      <div style={{ padding: 10, height: 'calc(100% - 64px - 50px)', overflowY: 'scroll' }}>
-        {tab === 'Scene' && (
-          <SceneControls />
-        )}
-        {tab === 'Selection' && (
-          <SelectionControls />
-        )}
+      <div
+        style={{
+          padding: 10,
+          height: 'calc(100% - 64px - 50px)',
+          overflowY: 'scroll',
+        }}
+      >
+        {tab === 'Scene' && <SceneControls />}
+        {tab === 'Selection' && <SelectionControls />}
       </div>
       <ControlsDialog />
     </Card>

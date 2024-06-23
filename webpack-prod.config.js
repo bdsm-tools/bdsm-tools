@@ -1,10 +1,10 @@
 const webpack = require('webpack');
-const { merge } = require("webpack-merge");
+const { merge } = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
 
 const { version } = require('./package.json');
-const common = require("./webpack-common.config");
+const common = require('./webpack-common.config');
 const cdnModules = require('./webpack-cdn-config');
 
 const mode = 'production';
@@ -36,15 +36,15 @@ module.exports = merge(common, {
       'process.env': {
         VERSION: JSON.stringify(version),
         SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
-          'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation'
+          'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation',
         ),
         FEATURE_FLAG_API_ROOT: JSON.stringify(
-          'https://europe-west2-bdsm-tools.cloudfunctions.net/feature-flag'
+          'https://europe-west2-bdsm-tools.cloudfunctions.net/feature-flag',
         ),
       },
     }),
     new WebpackCdnPlugin({
       modules: cdnModules(mode),
     }),
-  ]
+  ],
 });

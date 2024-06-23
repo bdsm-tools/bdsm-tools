@@ -1,9 +1,9 @@
-import React from 'react'
-import { Button, InputNumber, Modal, Typography } from 'antd'
+import React from 'react';
+import { Button, InputNumber, Modal, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import ConnectorSelector from './ConnectorSelector'
-import useSceneStore from '../state/useSceneStore'
-import SurfaceEditorInput from './SurfaceEditorInput'
+import ConnectorSelector from './ConnectorSelector';
+import useSceneStore from '../state/useSceneStore';
+import SurfaceEditorInput from './SurfaceEditorInput';
 
 export default function StartChainDialog({ surfaceId, onAdd }) {
   const [open, setOpen] = React.useState(false);
@@ -29,9 +29,7 @@ export default function StartChainDialog({ surfaceId, onAdd }) {
           disabled: !connector.type,
         }}
       >
-        <Typography>
-          Choose a connector to place on the surface:
-        </Typography>
+        <Typography>Choose a connector to place on the surface:</Typography>
         <ConnectorSelector
           slot='surface'
           value={connector.type}
@@ -40,16 +38,16 @@ export default function StartChainDialog({ surfaceId, onAdd }) {
 
         <SurfaceEditorInput
           node={connector}
-          setNode={(value) => setConnector((old) => ({
-            ...old,
-            ...value,
-          }))}
+          setNode={(value) =>
+            setConnector((old) => ({
+              ...old,
+              ...value,
+            }))
+          }
           surfaceId={surfaceId}
         />
       </Modal>
-      <Button onClick={() => setOpen(true)}>
-        Start new Chain
-      </Button>
+      <Button onClick={() => setOpen(true)}>Start new Chain</Button>
     </>
-  )
+  );
 }

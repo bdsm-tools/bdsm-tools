@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slider } from 'antd'
+import { Slider } from 'antd';
 
 export default function PositionEditorInput({ node, setNode, max }) {
   return (
@@ -13,14 +13,16 @@ export default function PositionEditorInput({ node, setNode, max }) {
         min={0}
         max={max || node.length}
         value={node.position}
-        onChange={(value) => setNode({
-          position: value,
-        })}
+        onChange={(value) =>
+          setNode({
+            position: value,
+          })
+        }
         tooltip={{
           formatter: (value) => `${value}cm`,
         }}
         style={{ width: '100%' }}
       />
     </div>
-  )
+  );
 }

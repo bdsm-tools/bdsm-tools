@@ -1,7 +1,7 @@
-import React from 'react'
-import { Button, InputNumber, Modal, Typography } from 'antd'
+import React from 'react';
+import { Button, InputNumber, Modal, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import ConnectorSelector from './ConnectorSelector'
+import ConnectorSelector from './ConnectorSelector';
 
 export default function AddConnectorDialog({ parent, tube, onAdd }) {
   const [open, setOpen] = React.useState();
@@ -10,12 +10,12 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
   const tubeEndConnections = [
     ...tube.children.end,
     open === 'end' ? tube.parent : undefined,
-  ].filter(value => !!value);
+  ].filter((value) => !!value);
 
   const tubeMiddleConnections = [
     ...tube.children.middle,
     open === 'middle' ? tube.parent : undefined,
-  ].filter(value => !!value);
+  ].filter((value) => !!value);
 
   React.useEffect(() => {
     if (!open) {
@@ -43,7 +43,7 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
             children: {
               middle: [],
               end: [],
-            }
+            },
           });
           setOpen(undefined);
         }}
@@ -52,9 +52,7 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
           disabled: !connector.type,
         }}
       >
-        <Typography>
-          Choose a connector to place on the tube:
-        </Typography>
+        <Typography>Choose a connector to place on the tube:</Typography>
         <ConnectorSelector
           slot={open}
           value={connector.type}
@@ -73,22 +71,20 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
               min={0}
               max={tube.node.length}
               value={connector.position}
-              onChange={(value) => setConnector((old) => ({
-                ...old,
-                position: value,
-              }))}
+              onChange={(value) =>
+                setConnector((old) => ({
+                  ...old,
+                  position: value,
+                }))
+              }
             />
           </>
         )}
       </Modal>
-      <Button onClick={() => setOpen('middle')}>
-        Add Middle Connection
-      </Button>
+      <Button onClick={() => setOpen('middle')}>Add Middle Connection</Button>
       {tubeEndConnections.length < 2 && (
-        <Button onClick={() => setOpen('end')}>
-          Add End Connection
-        </Button>
+        <Button onClick={() => setOpen('end')}>Add End Connection</Button>
       )}
     </>
-  )
+  );
 }

@@ -17,4 +17,4 @@ document.body.appendChild(rootElement);
 
 const root = ReactDOM.createRoot(rootElement);
 
-root.render(<Application/>);
+root.render(<Application />);

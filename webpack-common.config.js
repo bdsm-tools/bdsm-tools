@@ -22,19 +22,21 @@ module.exports = {
     filename: 'bundle/[name]/[fullhash].bundle.js',
     chunkFilename: 'bundle/[name]/[contenthash].chunk.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
   },
 
   optimization: {
     splitChunks: {
-      chunks: "all",
+      chunks: 'all',
       maxInitialRequests: Infinity,
       minSize: 0,
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name(module) {
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            const packageName = module.context.match(
+              /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
+            )[1];
             return `vendor/${packageName.replace('@', '')}`;
           },
           priority: -10,
@@ -43,7 +45,7 @@ module.exports = {
           minChunks: 2,
           priority: -20,
           reuseExistingChunk: true,
-        }
+        },
       },
     },
     runtimeChunk: 'single',
@@ -59,63 +61,63 @@ module.exports = {
             options: {
               outputPath: 'assets',
             },
-          }
-        ]
+          },
+        ],
       },
       {
         test: /\.css$/,
-        use: [
-         'style-loader',
-         'css-loader',
-        ],
-      }, {
+        use: ['style-loader', 'css-loader'],
+      },
+      {
         test: /\.less$/,
         use: [
-            {
-              loader: 'style-loader',
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+          },
+          {
+            loader: 'less-loader',
+            options: {
+              implementation: 'less',
+              lessOptions: {
+                modifyVars: {
+                  'link-color': '#c41212',
+                },
+                javascriptEnabled: true,
+              },
             },
-            {
-              loader: 'css-loader',
-            },
-            {
-              loader: 'less-loader',
-              options: {
-                implementation: 'less',
-                lessOptions: {
-                  modifyVars: {
-                    'link-color': '#c41212',
-                  },
-                  javascriptEnabled: true,
-                }
-              }
-            },
+          },
         ],
-      }, {
+      },
+      {
         test: /\.m?jsx?$/,
         exclude: /(node_modules)/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', "@babel/preset-react"]
-          }
-        }
-      }, {
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+          },
+        },
+      },
+      {
         test: /\.svg$/,
         use: [
           {
-            loader: "babel-loader",
+            loader: 'babel-loader',
             options: {
-              presets: ['@babel/preset-env', "@babel/preset-react"]
-            }
+              presets: ['@babel/preset-env', '@babel/preset-react'],
+            },
           },
           {
-            loader: "react-svg-loader",
+            loader: 'react-svg-loader',
             options: {
-              jsx: true // true outputs JSX tags
-            }
-          }
-        ]
-      }
+              jsx: true, // true outputs JSX tags
+            },
+          },
+        ],
+      },
     ],
   },
 
@@ -138,4 +140,4 @@ module.exports = {
       process: 'process/browser',
     }),
   ],
-}
+};

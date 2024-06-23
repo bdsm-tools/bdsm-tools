@@ -1,5 +1,5 @@
 import React from 'react';
-import { Slider } from 'antd'
+import { Slider } from 'antd';
 
 export default function RotationEditorInput({ node, setNode }) {
   return (
@@ -19,9 +19,11 @@ export default function RotationEditorInput({ node, setNode }) {
         min={0}
         max={360}
         value={node.rotation || 0}
-        onChange={(value) => setNode({
-          rotation: value,
-        })}
+        onChange={(value) =>
+          setNode({
+            rotation: value,
+          })
+        }
         tooltip={{
           formatter: (value) => `${value}°`,
         }}

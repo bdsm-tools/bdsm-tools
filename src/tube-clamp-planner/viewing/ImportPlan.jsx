@@ -1,13 +1,15 @@
-import React from 'react'
-import { Button, Modal, Typography, Upload, message } from 'antd'
-import { useLocalStorageState } from 'ahooks'
-import InboxOutlined from '@ant-design/icons/InboxOutlined'
+import React from 'react';
+import { Button, Modal, Typography, Upload, message } from 'antd';
+import { useLocalStorageState } from 'ahooks';
+import InboxOutlined from '@ant-design/icons/InboxOutlined';
 
-export default function ImportPlan ({ onImport }) {
-  const [open, setOpen] = React.useState(false)
+export default function ImportPlan({ onImport }) {
+  const [open, setOpen] = React.useState(false);
   const [scene, setScene] = React.useState();
   const [file, setFile] = React.useState([]);
-  const [localStore, setLocalStore] = useLocalStorageState(`tube-plan-${scene?.id}`)
+  const [localStore, setLocalStore] = useLocalStorageState(
+    `tube-plan-${scene?.id}`,
+  );
 
   const onClose = () => {
     setFile([]);
@@ -47,7 +49,8 @@ export default function ImportPlan ({ onImport }) {
               if (localStorage.getItem(`tube-plan-${uploadScene.id}`)) {
                 Modal.warning({
                   title: 'Careful!',
-                  content: 'This Tube Plan already exists locally, by continuing you may be overwriting any changes made since you downloaded the file.',
+                  content:
+                    'This Tube Plan already exists locally, by continuing you may be overwriting any changes made since you downloaded the file.',
                 });
               }
               setScene(uploadScene);
@@ -57,15 +60,18 @@ export default function ImportPlan ({ onImport }) {
           }}
           fileList={file}
         >
-          <p className="ant-upload-drag-icon">
-            <InboxOutlined/>
+          <p className='ant-upload-drag-icon'>
+            <InboxOutlined />
           </p>
-          <p className="ant-upload-text">Click or drag a file to this area to upload</p>
-          <p className="ant-upload-hint">
-            Downloaded plans will appear in your Downloads folder and have a .tube extension
+          <p className='ant-upload-text'>
+            Click or drag a file to this area to upload
+          </p>
+          <p className='ant-upload-hint'>
+            Downloaded plans will appear in your Downloads folder and have a
+            .tube extension
           </p>
         </Upload.Dragger>
       </Modal>
     </>
-  )
+  );
 }

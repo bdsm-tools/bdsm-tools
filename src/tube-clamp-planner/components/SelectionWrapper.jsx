@@ -13,23 +13,30 @@ const StoreSetter = () => {
   return null;
 };
 
-const SelectionWrapper = React.forwardRef(({ children }, ref) =>  {
-  const getSelectable = (s) => !s || !(s instanceof Object3D) ? undefined : (s?.userData?.selectable ? s : getSelectable(s.parent));
-  const filter = (s) => s.map(getSelectable)
-    .filter((selectable) => !!selectable)
-    .filter((selectable) => {
-      if (selectable?.userData?.requiresNothingSelected) {
-        return !useSelectionStore.getState().selectedNodeId;
-      }
-      return true;
-    });
+const SelectionWrapper = React.forwardRef(({ children }, ref) => {
+  const getSelectable = (s) =>
+    !s || !(s instanceof Object3D)
+      ? undefined
+      : s?.userData?.selectable
+        ? s
+        : getSelectable(s.parent);
+  const filter = (s) =>
+    s
+      .map(getSelectable)
+      .filter((selectable) => !!selectable)
+      .filter((selectable) => {
+        if (selectable?.userData?.requiresNothingSelected) {
+          return !useSelectionStore.getState().selectedNodeId;
+        }
+        return true;
+      });
 
   return (
     <Select ref={ref} filter={filter}>
       <StoreSetter />
       {children}
     </Select>
-  )
+  );
 });
 
 export default SelectionWrapper;

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Card, Button, Typography } from 'antd';
-import { DiffOutlined } from "@ant-design/icons";
+import { DiffOutlined } from '@ant-design/icons';
 
 export default function NegotiationCard(props) {
   return (
     <Card
-      type="inner"
+      type='inner'
       style={{ margin: 15, width: '30%', minWidth: 300 }}
       title={props.title}
     >

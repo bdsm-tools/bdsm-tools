@@ -5,5 +5,9 @@ export const D = 4.83;
 export const E = 6.03;
 
 export const sizes = {
-    A, B, C, D, E,
+  A,
+  B,
+  C,
+  D,
+  E,
 };

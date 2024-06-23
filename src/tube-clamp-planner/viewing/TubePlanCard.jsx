@@ -1,9 +1,14 @@
 import React from 'react';
-import { Button, Card, Image, Tooltip, Typography } from 'antd'
-import { DeleteOutlined, DownloadOutlined, DiffOutlined, TabletOutlined } from '@ant-design/icons';
+import { Button, Card, Image, Tooltip, Typography } from 'antd';
+import {
+  DeleteOutlined,
+  DownloadOutlined,
+  DiffOutlined,
+  TabletOutlined,
+} from '@ant-design/icons';
 import { useLocalStorageState } from 'ahooks';
 import { useNavigate } from 'react-router';
-import { downloadJSON } from '../../util'
+import { downloadJSON } from '../../util';
 
 export default function TubePlanCard({ sceneId, onDelete }) {
   const navigate = useNavigate();
@@ -11,28 +16,28 @@ export default function TubePlanCard({ sceneId, onDelete }) {
 
   return (
     <Card
-      type="inner"
+      type='inner'
       style={{ margin: 15, width: '25%', minWidth: 300 }}
-      title={(
+      title={
         <>
           {tubePlan.title || 'Untitled Plan'}
           <Tooltip title='Data is stored locally on your browser and can only be seen by you'>
             <TabletOutlined style={{ marginLeft: 10 }} />
           </Tooltip>
         </>
-      )}
-      extra={(
+      }
+      extra={
         <>
           <Tooltip title='Download'>
             <Button
-              shape="circle"
+              shape='circle'
               icon={<DownloadOutlined />}
               onClick={() => downloadJSON(tubePlan, `${tubePlan.title}.tube`)}
             />
           </Tooltip>
           <Tooltip title='Delete'>
             <Button
-              shape="circle"
+              shape='circle'
               icon={<DeleteOutlined />}
               onClick={() => {
                 onDelete();
@@ -42,7 +47,7 @@ export default function TubePlanCard({ sceneId, onDelete }) {
             />
           </Tooltip>
         </>
-      )}
+      }
     >
       <Typography>
         <Typography.Paragraph>
@@ -51,14 +56,12 @@ export default function TubePlanCard({ sceneId, onDelete }) {
       </Typography>
       {tubePlan.previewImage && (
         <div style={{ aspectRatio: 3 / 2, overflowY: 'auto' }}>
-          <Image width='100%' src={tubePlan.previewImage}/>
+          <Image width='100%' src={tubePlan.previewImage} />
         </div>
       )}
       {!tubePlan.previewImage && (
         <Typography>
-          <Typography.Paragraph>
-            {'<No Preview>'}
-          </Typography.Paragraph>
+          <Typography.Paragraph>{'<No Preview>'}</Typography.Paragraph>
         </Typography>
       )}
 
@@ -70,5 +73,5 @@ export default function TubePlanCard({ sceneId, onDelete }) {
         View / Edit
       </Button>
     </Card>
-  )
+  );
 }

@@ -1,10 +1,10 @@
-import React from 'react'
-import { getTypeDefinition } from '../connectors/types'
-import { B } from '../sizes'
-import Tube from '../nodes/Tube'
-import useRotate from '../controls/useRotate'
-import useSelectionStore from '../state/useSelectionStore'
-import { Select } from '@react-three/postprocessing'
+import React from 'react';
+import { getTypeDefinition } from '../connectors/types';
+import { B } from '../sizes';
+import Tube from '../nodes/Tube';
+import useRotate from '../controls/useRotate';
+import useSelectionStore from '../state/useSelectionStore';
+import { Select } from '@react-three/postprocessing';
 
 const TubeNode = ({ chain, tube, position, size, rotation }) => {
   const groupRef = React.useRef();
@@ -20,16 +20,18 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
         length={tube.node.length}
         size={size}
       />
-      {tube.children.middle?.map(id => chain[id]).map((middle, index) => (
-        <ChainNode
-          chain={chain}
-          key={middle.id}
-          connection={middle}
-          position={[0, middle.node.position, 0]}
-          rotation={{ y: middle.node.rotation }}
-          size={size}
-        />
-      ))}
+      {tube.children.middle
+        ?.map((id) => chain[id])
+        .map((middle, index) => (
+          <ChainNode
+            chain={chain}
+            key={middle.id}
+            connection={middle}
+            position={[0, middle.node.position, 0]}
+            rotation={{ y: middle.node.rotation }}
+            size={size}
+          />
+        ))}
       {end1 && (
         <ChainNode
           chain={chain}
@@ -50,36 +52,46 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
       )}
     </group>
   );
-}
+};
 
 const ChainNode = ({ chain, connection, size, position, rotation }) => {
   const groupRef = React.useRef();
   useRotate(groupRef, rotation);
-  const {selectedNodeId} = useSelectionStore();
+  const { selectedNodeId } = useSelectionStore();
 
   const { Node } = getTypeDefinition(connection.node.type);
 
-  const [endConnectionPositions, setEndConnectionPositions] = React.useState({});
-  const [middleConnectionPositions, setMiddleConnectionPositions] = React.useState({});
-  const [endConnectionRotations, setEndConnectionRotations] = React.useState({});
-  const [middleConnectionRotations, setMiddleConnectionRotations] = React.useState({});
+  const [endConnectionPositions, setEndConnectionPositions] = React.useState(
+    {},
+  );
+  const [middleConnectionPositions, setMiddleConnectionPositions] =
+    React.useState({});
+  const [endConnectionRotations, setEndConnectionRotations] = React.useState(
+    {},
+  );
+  const [middleConnectionRotations, setMiddleConnectionRotations] =
+    React.useState({});
 
-  const setEndConnectionPosition = (index, _position) => setEndConnectionPositions(old => ({
-    ...old,
-    [index]: _position,
-  }));
-  const setMiddleConnectionPosition = (index, _position) => setMiddleConnectionPositions(old => ({
-    ...old,
-    [index]: _position,
-  }));
-  const setEndConnectionRotation = (index, _rotation) => setEndConnectionRotations(old => ({
-    ...old,
-    [index]: _rotation,
-  }));
-  const setMiddleConnectionRotation = (index, _rotation) => setMiddleConnectionRotations(old => ({
-    ...old,
-    [index]: _rotation,
-  }));
+  const setEndConnectionPosition = (index, _position) =>
+    setEndConnectionPositions((old) => ({
+      ...old,
+      [index]: _position,
+    }));
+  const setMiddleConnectionPosition = (index, _position) =>
+    setMiddleConnectionPositions((old) => ({
+      ...old,
+      [index]: _position,
+    }));
+  const setEndConnectionRotation = (index, _rotation) =>
+    setEndConnectionRotations((old) => ({
+      ...old,
+      [index]: _rotation,
+    }));
+  const setMiddleConnectionRotation = (index, _rotation) =>
+    setMiddleConnectionRotations((old) => ({
+      ...old,
+      [index]: _rotation,
+    }));
 
   return (
     <group ref={groupRef} position={position}>
@@ -89,12 +101,16 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
           connection={connection.node}
           parentConnection={chain[connection.parent]}
           connectionSlot={connection.parentSlot}
-          middleConnections={connection.children.middle
-            ?.filter(id => id !== connection.parent)
-            .map(id => chain[id]) || []}
-          endConnections={connection.children.end
-            ?.filter(id => id !== connection.parent)
-            .map(id => chain[id]) || []}
+          middleConnections={
+            connection.children.middle
+              ?.filter((id) => id !== connection.parent)
+              .map((id) => chain[id]) || []
+          }
+          endConnections={
+            connection.children.end
+              ?.filter((id) => id !== connection.parent)
+              .map((id) => chain[id]) || []
+          }
           size={size}
           setEndConnectionPosition={setEndConnectionPosition}
           setMiddleConnectionPosition={setMiddleConnectionPosition}
@@ -103,8 +119,9 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
         />
       </Select>
       {connection.children.end
-        ?.filter(id => id !== connection.parent)
-        .map((id) => chain[id]).map((end, index) => (
+        ?.filter((id) => id !== connection.parent)
+        .map((id) => chain[id])
+        .map((end, index) => (
           <TubeNode
             chain={chain}
             key={end.id}
@@ -115,8 +132,9 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
           />
         ))}
       {connection.children.middle
-        ?.filter(id => id !== connection.parent)
-        .map((id) => chain[id]).map((middle, index) => (
+        ?.filter((id) => id !== connection.parent)
+        .map((id) => chain[id])
+        .map((middle, index) => (
           <TubeNode
             chain={chain}
             key={middle.id}
@@ -128,9 +146,9 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
         ))}
     </group>
   );
-}
+};
 
-export default function Chain ({ chain, scene }) {
+export default function Chain({ chain, scene }) {
   const firstNode = Object.values(chain).find((node) => !node.parent);
   const connection = firstNode.node.surface;
 

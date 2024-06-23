@@ -1,9 +1,19 @@
 import React from 'react';
-import { withJsonFormsEnumCellProps} from '@jsonforms/react';
-import {Select, Typography} from 'antd';
+import { withJsonFormsEnumCellProps } from '@jsonforms/react';
+import { Select, Typography } from 'antd';
 
 function SelectionCell(props) {
-  const {data, className, id, enabled, visible, schema, uischema, path, handleChange} = props;
+  const {
+    data,
+    className,
+    id,
+    enabled,
+    visible,
+    schema,
+    uischema,
+    path,
+    handleChange,
+  } = props;
 
   if (!visible) {
     return null;
@@ -11,9 +21,7 @@ function SelectionCell(props) {
   return (
     <React.Fragment>
       <Typography>
-        <Typography.Text>
-          {uischema.label}
-        </Typography.Text>
+        <Typography.Text>{uischema.label}</Typography.Text>
       </Typography>
       <Select
         className={className}
@@ -21,12 +29,16 @@ function SelectionCell(props) {
         disabled={!enabled}
         autoFocus={uischema.options && uischema.options.focus}
         value={data || ''}
-        onChange={value => handleChange(path, value)}
+        onChange={(value) => handleChange(path, value)}
         style={{ width: '100%', ...uischema.style }}
       >
         {/*<Select.Option value="" label="">{''}</Select.Option>*/}
-        {(schema.options || []).map(optionValue => (
-          <Select.Option value={optionValue} label={optionValue} key={optionValue}>
+        {(schema.options || []).map((optionValue) => (
+          <Select.Option
+            value={optionValue}
+            label={optionValue}
+            key={optionValue}
+          >
             {optionValue}
           </Select.Option>
         ))}

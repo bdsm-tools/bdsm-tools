@@ -1,1 +1,3 @@
-export default (filterValue) => ({ participantCount }) => participantCount === filterValue;
+export default (filterValue) =>
+  ({ participantCount }) =>
+    participantCount === filterValue;

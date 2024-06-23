@@ -61,8 +61,10 @@ async function doPost(req, res) {
   const { id, active } = query;
 
   if (path.startsWith('/negotiation-types/activate')) {
-    return await sceneNegotiationTypes(req, res)
-      .activate(id, (active || 'true') === 'true');
+    return await sceneNegotiationTypes(req, res).activate(
+      id,
+      (active || 'true') === 'true',
+    );
   }
 
   if (path.startsWith('/negotiation-types/delete')) {
@@ -85,26 +87,21 @@ async function doPost(req, res) {
 }
 
 const sceneNegotiationTypes = (req, res) => {
-  const collection = db.collection("scene-negotiation-types");
-  return ({
+  const collection = db.collection('scene-negotiation-types');
+  return {
     async getAll(all) {
       let query = collection.limit(100);
       if (!all) {
         query = query.where('active', '==', true);
       }
 
-      const docs = await query
-        .get()
-        .then(extract);
+      const docs = await query.get().then(extract);
 
       res.status(200).json(docs);
       return docs;
     },
     async getOne(id) {
-      const doc = await collection
-        .doc(id)
-        .get()
-        .then(extract);
+      const doc = await collection.doc(id).get().then(extract);
 
       res.status(200).json(doc);
       return doc;
@@ -114,8 +111,7 @@ const sceneNegotiationTypes = (req, res) => {
         ...body,
         active: false,
       });
-      const template = await ref.get()
-        .then(extract);
+      const template = await ref.get().then(extract);
 
       res.status(200).json({ ...template, id: ref.id });
       return template;
@@ -125,16 +121,14 @@ const sceneNegotiationTypes = (req, res) => {
       await ref.update({
         active,
       });
-      const template = await ref.get()
-        .then(extract);
+      const template = await ref.get().then(extract);
 
       res.status(200).json({ ...template, id: ref.id });
       return template;
     },
     async delete(id) {
       const ref = await collection.doc(id);
-      const doc = ref.get()
-        .then(extract);
+      const doc = ref.get().then(extract);
 
       if (!doc.active) {
         await ref.delete();
@@ -142,34 +136,30 @@ const sceneNegotiationTypes = (req, res) => {
       } else {
         res.status(400).sendMessage('Template is active');
       }
-    }
-  });
+    },
+  };
 };
 
 const sceneNegotiation = (req, res) => {
-  const collection = db.collection("scene-negotiations");
-  return ({
+  const collection = db.collection('scene-negotiations');
+  return {
     async getOne(id) {
-      const doc = await collection
-        .doc(id)
-        .get()
-        .then(extract);
+      const doc = await collection.doc(id).get().then(extract);
 
       res.status(200).json(doc);
       return doc;
     },
     async save(body) {
       const ref = await collection.add({
-          ...body,
-          when: new Date(),
-        });
-      const negotiation = await ref.get()
-        .then(extract);
+        ...body,
+        when: new Date(),
+      });
+      const negotiation = await ref.get().then(extract);
 
       res.status(200).json({ ...negotiation, id: ref.id });
       return negotiation;
-    }
-  });
+    },
+  };
 };
 
 const extract = (querySnapshot) => {
@@ -178,10 +168,10 @@ const extract = (querySnapshot) => {
   }
 
   if (querySnapshot.data) {
-    return ({
+    return {
       id: querySnapshot.id,
-      ...querySnapshot.data()
-    });
+      ...querySnapshot.data(),
+    };
   }
   return querySnapshot;
-}
+};

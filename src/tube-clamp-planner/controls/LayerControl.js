@@ -1,4 +1,4 @@
-import { Layers } from 'three'
+import { Layers } from 'three';
 
 export default {
   Selectable: (() => {
@@ -6,4 +6,4 @@ export default {
     layers.set(1);
     return layers;
   })(),
-}
+};

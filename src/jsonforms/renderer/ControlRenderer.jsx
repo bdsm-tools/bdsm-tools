@@ -1,6 +1,6 @@
 import React from 'react';
-import {DispatchCell, withJsonFormsControlProps} from '@jsonforms/react';
-import {computeLabel, NOT_APPLICABLE} from "@jsonforms/core";
+import { DispatchCell, withJsonFormsControlProps } from '@jsonforms/react';
+import { computeLabel, NOT_APPLICABLE } from '@jsonforms/core';
 import { Alert } from 'antd';
 import _ from 'lodash';
 
@@ -17,7 +17,7 @@ function ControlRenderer(props) {
     required,
     path,
     cells,
-    config
+    config,
   } = props;
 
   // const [isFocused, setIsFocused] = React.useState(false);
@@ -39,9 +39,9 @@ function ControlRenderer(props) {
   const labelText = computeLabel(
     label,
     required,
-    appliedUiSchemaOptions.hideRequiredAsterisk
+    appliedUiSchemaOptions.hideRequiredAsterisk,
   );
-  const cell = _.maxBy(cells, r => r.tester(uischema, schema));
+  const cell = _.maxBy(cells, (r) => r.tester(uischema, schema));
   if (cell === undefined || cell.tester(uischema, schema) === NOT_APPLICABLE) {
     console.warn('No applicable cell found.', uischema, schema);
     return null;

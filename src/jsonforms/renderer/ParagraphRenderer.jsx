@@ -1,6 +1,6 @@
 import React from 'react';
-import {withJsonFormsLayoutProps} from '@jsonforms/react';
-import {Typography} from 'antd';
+import { withJsonFormsLayoutProps } from '@jsonforms/react';
+import { Typography } from 'antd';
 
 function ParagraphRenderer(props) {
   const { visible, uischema } = props;
@@ -11,9 +11,7 @@ function ParagraphRenderer(props) {
   const SubType = Typography[uischema.subtype] || Typography.Text;
   return (
     <Typography>
-      <SubType {...(uischema.props || {})}>
-        {uischema.text}
-      </SubType>
+      <SubType {...(uischema.props || {})}>{uischema.text}</SubType>
     </Typography>
   );
 }

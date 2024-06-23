@@ -1,6 +1,6 @@
 export default {
-    'Male Slave': 'blue',
-    'Female Slave': 'magenta',
-    'Master': 'gold',
-    'Mistress': 'red',
+  'Male Slave': 'blue',
+  'Female Slave': 'magenta',
+  Master: 'gold',
+  Mistress: 'red',
 };

@@ -1,8 +1,8 @@
 import React from 'react';
-import { Button, Modal, Typography } from 'antd'
+import { Button, Modal, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
-import { useLocalStorageState } from 'ahooks'
-import SceneControls from '../controls/SceneControls'
+import { useLocalStorageState } from 'ahooks';
+import SceneControls from '../controls/SceneControls';
 
 const defaultScene = () => ({
   id: uuidv4(),
@@ -11,14 +11,16 @@ const defaultScene = () => ({
   width: 350,
   length: 300,
   height: 240,
-  brightness: .75,
+  brightness: 0.75,
   chains: [],
 });
 
 export default function CreatePlan({ onCreate }) {
   const [open, setOpen] = React.useState(false);
   const [scene, setScene] = React.useState(defaultScene());
-  const [localStore, setLocalStore] = useLocalStorageState(`tube-plan-${scene.id}`);
+  const [localStore, setLocalStore] = useLocalStorageState(
+    `tube-plan-${scene.id}`,
+  );
 
   const onClose = () => {
     setScene(defaultScene());
@@ -51,5 +53,5 @@ export default function CreatePlan({ onCreate }) {
         </div>
       </Modal>
     </>
-  )
+  );
 }

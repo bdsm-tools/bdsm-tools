@@ -1,5 +1,5 @@
 import React from 'react';
-import { useKeyPress } from 'ahooks'
+import { useKeyPress } from 'ahooks';
 
 export default function useKeyDown(keyFilter, option) {
   const [keyEvent, setKeyEvent] = React.useState();

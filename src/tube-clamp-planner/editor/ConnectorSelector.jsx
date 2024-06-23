@@ -30,7 +30,7 @@ export default function ConnectorSelector({ slot, value, onChange }) {
         >
           <ConnectorPreview connectorType={type} />
           <Button
-            type="primary"
+            type='primary'
             ghost
             style={{ marginTop: 5 }}
             onClick={() => onChange(type)}

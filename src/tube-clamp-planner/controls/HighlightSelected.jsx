@@ -1,7 +1,7 @@
-import React from 'react'
-import { Outline } from '@react-three/postprocessing'
+import React from 'react';
+import { Outline } from '@react-three/postprocessing';
 
-export default function HighlightSelected () {
+export default function HighlightSelected() {
   return (
     <Outline
       edgeStrength={100}
@@ -11,5 +11,5 @@ export default function HighlightSelected () {
       blur={true}
       xRay
     />
-  )
+  );
 }

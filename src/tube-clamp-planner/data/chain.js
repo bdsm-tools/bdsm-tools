@@ -1,14 +1,20 @@
-import { v4 as uuid} from 'uuid';
-import validateChain from '../validation/validateChain'
+import { v4 as uuid } from 'uuid';
+import validateChain from '../validation/validateChain';
 
 export function exportChain(normalisedChain) {
-  const entryChain = Object.values(normalisedChain).find(value => !value.parent);
+  const entryChain = Object.values(normalisedChain).find(
+    (value) => !value.parent,
+  );
 
   function chainNode(node) {
     const chain = {
       ...node.node,
-      middleConnections: node.children.middle.map(id => chainNode(normalisedChain[id])),
-      endConnections: node.children.end.map(id => chainNode(normalisedChain[id])),
+      middleConnections: node.children.middle.map((id) =>
+        chainNode(normalisedChain[id]),
+      ),
+      endConnections: node.children.end.map((id) =>
+        chainNode(normalisedChain[id]),
+      ),
     };
 
     if (chain.middleConnections.length < 1) delete chain.middleConnections;
@@ -37,7 +43,8 @@ export function importChain(chain) {
       parent,
       parentSlot,
       children: {
-        middle: node?.middleConnections?.map((e) => chainNode(e, id, 'middle')) || [],
+        middle:
+          node?.middleConnections?.map((e) => chainNode(e, id, 'middle')) || [],
         end: node?.endConnections?.map((e) => chainNode(e, id, 'end')) || [],
       },
     };

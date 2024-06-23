@@ -1,25 +1,30 @@
 import React from 'react';
-import { Alert, Button, Empty } from 'antd'
-import WebGL from 'three/examples/jsm/capabilities/WebGL'
-import { Canvas, extend } from '@react-three/fiber'
-import { Html, OrbitControls, useProgress } from '@react-three/drei'
-import { EffectComposer, N8AO, Selection, SMAA } from '@react-three/postprocessing'
-import { useMatch, useNavigate } from 'react-router-dom'
-import RetryErrorBoundary from './components/RetryErrorBoundary'
-import Base from './components/Base'
-import Chain from './components/Chain'
-import HighlightSelected from './controls/HighlightSelected'
-import Controls from './components/Controls'
-import CameraControls from './components/CameraControls'
-import GuiControls from './controls/GuiControls'
-import useSceneStore from './state/useSceneStore'
+import { Alert, Button, Empty } from 'antd';
+import WebGL from 'three/examples/jsm/capabilities/WebGL';
+import { Canvas, extend } from '@react-three/fiber';
+import { Html, OrbitControls, useProgress } from '@react-three/drei';
+import {
+  EffectComposer,
+  N8AO,
+  Selection,
+  SMAA,
+} from '@react-three/postprocessing';
+import { useMatch, useNavigate } from 'react-router-dom';
+import RetryErrorBoundary from './components/RetryErrorBoundary';
+import Base from './components/Base';
+import Chain from './components/Chain';
+import HighlightSelected from './controls/HighlightSelected';
+import Controls from './components/Controls';
+import CameraControls from './components/CameraControls';
+import GuiControls from './controls/GuiControls';
+import useSceneStore from './state/useSceneStore';
 import SelectionWrapper from './components/SelectionWrapper';
 
-extend({ OrbitControls })
+extend({ OrbitControls });
 
-function Loader () {
-  const { progress } = useProgress()
-  return <Html center>{Math.floor(progress)} % loaded</Html>
+function Loader() {
+  const { progress } = useProgress();
+  return <Html center>{Math.floor(progress)} % loaded</Html>;
 }
 
 export default function SceneCanvas() {
@@ -29,40 +34,58 @@ export default function SceneCanvas() {
 
   if (!scene) {
     return (
-      <Empty
-        description={`Cannot find a plan with the id: ${params.sceneId}`}
-      >
-        <Button onClick={() => navigate('..')}>
-          Back to safety
-        </Button>
+      <Empty description={`Cannot find a plan with the id: ${params.sceneId}`}>
+        <Button onClick={() => navigate('..')}>Back to safety</Button>
       </Empty>
     );
   }
 
-  if (!WebGL.isWebGLAvailable()) return <Alert>The browser you are using in unable to display this content</Alert>
+  if (!WebGL.isWebGLAvailable())
+    return (
+      <Alert>The browser you are using in unable to display this content</Alert>
+    );
   return (
-    <div style={{ display: 'flex', height: '100%', marginLeft: -50, marginRight: -50 }}>
-      <RetryErrorBoundary message="Error when rendering the canvas. Please refresh and try again">
+    <div
+      style={{
+        display: 'flex',
+        height: '100%',
+        marginLeft: -50,
+        marginRight: -50,
+      }}
+    >
+      <RetryErrorBoundary message='Error when rendering the canvas. Please refresh and try again'>
         <Canvas id='tube-planner-canvas' gl={{ preserveDrawingBuffer: true }}>
-          <React.Suspense fallback={<Loader/>}>
+          <React.Suspense fallback={<Loader />}>
             <SelectionWrapper>
-              <ambientLight intensity={scene.brightness}/>
-              <pointLight position={[scene.width / 2, scene.height - 20, scene.length / 2]} power={1000000 * scene.brightness} castShadow={true} />
+              <ambientLight intensity={scene.brightness} />
+              <pointLight
+                position={[
+                  scene.width / 2,
+                  scene.height - 20,
+                  scene.length / 2,
+                ]}
+                power={1000000 * scene.brightness}
+                castShadow={true}
+              />
 
               <Selection enabled>
-                <Base length={scene.length} width={scene.width} height={scene.height} />
-                {chains.map(((chain, index) => (
-                  <Chain key={index} chain={chain} scene={scene}/>
-                )))}
+                <Base
+                  length={scene.length}
+                  width={scene.width}
+                  height={scene.height}
+                />
+                {chains.map((chain, index) => (
+                  <Chain key={index} chain={chain} scene={scene} />
+                ))}
 
                 <EffectComposer autoClear={false} multisampling={16}>
                   <HighlightSelected />
 
-                  {scene?.settings?.n8ao && (<N8AO/>)}
-                  {scene?.settings?.smaa && (<SMAA/>)}
+                  {scene?.settings?.n8ao && <N8AO />}
+                  {scene?.settings?.smaa && <SMAA />}
                 </EffectComposer>
               </Selection>
-              <Controls/>
+              <Controls />
               <CameraControls />
             </SelectionWrapper>
           </React.Suspense>
@@ -70,5 +93,5 @@ export default function SceneCanvas() {
       </RetryErrorBoundary>
       <GuiControls />
     </div>
-  )
+  );
 }
