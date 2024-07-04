@@ -31,6 +31,13 @@ const SelectionWrapper = React.forwardRef(({ children }, ref) => {
         return true;
       });
 
+  const selectionStore = useSelectionStore();
+
+  React.useEffect(() => () => {
+    selectionStore.setSelectedNode(undefined);
+    selectionStore.setSelectedNode(undefined);
+  }, []);
+
   return (
     <Select ref={ref} filter={filter}>
       <StoreSetter />

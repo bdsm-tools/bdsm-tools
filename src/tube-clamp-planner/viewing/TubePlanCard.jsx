@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Image, Tooltip, Typography } from 'antd';
+import { Button, Card, Image, Popconfirm, Tooltip, Typography } from 'antd';
 import {
   DeleteOutlined,
   DownloadOutlined,
@@ -36,15 +36,22 @@ export default function TubePlanCard({ sceneId, onDelete }) {
             />
           </Tooltip>
           <Tooltip title='Delete'>
-            <Button
-              shape='circle'
-              icon={<DeleteOutlined />}
-              onClick={() => {
+            <Popconfirm
+              title="Are you sure to delete this design?"
+              onConfirm={() => {
                 onDelete();
                 localStorage.removeItem(`tube-plan-${sceneId}`);
               }}
+              okType='danger'
+              okText="Delete"
+              cancelText="Cancel"
+            >
+            <Button
+              shape='circle'
+              icon={<DeleteOutlined />}
               style={{ marginLeft: 5 }}
             />
+            </Popconfirm>
           </Tooltip>
         </>
       }
@@ -56,7 +63,7 @@ export default function TubePlanCard({ sceneId, onDelete }) {
       </Typography>
       {tubePlan.previewImage && (
         <div style={{ aspectRatio: 3 / 2, overflowY: 'auto' }}>
-          <Image width='100%' src={tubePlan.previewImage} />
+          <Image width='100%' height="100%" src={tubePlan.previewImage} />
         </div>
       )}
       {!tubePlan.previewImage && (

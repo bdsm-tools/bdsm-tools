@@ -10,8 +10,11 @@ const takeSnapshot = (canvas) =>
       ?.getElementsByTagName('canvas')[0]
   )?.toDataURL('image/png');
 
-export default function SceneControls({ basicOnly = false }) {
-  const { scene, setScene, canvasData } = useSceneStore();
+export default function SceneControls({ scene: propsScene, setScene: propsSetScene, basicOnly = false }) {
+  const { scene: storeScene, setScene: storeSetScene, canvasData } = useSceneStore();
+
+  const scene = propsScene ?? storeScene;
+  const setScene = propsSetScene ?? storeSetScene;
 
   return (
     <>
@@ -19,7 +22,6 @@ export default function SceneControls({ basicOnly = false }) {
         value={scene.title}
         onChange={({ target }) =>
           setScene({
-            ...scene,
             title: target.value,
           })
         }
@@ -30,7 +32,6 @@ export default function SceneControls({ basicOnly = false }) {
         value={scene.description || ''}
         onChange={({ target }) =>
           setScene({
-            ...scene,
             description: target.value,
           })
         }
@@ -53,7 +54,6 @@ export default function SceneControls({ basicOnly = false }) {
             value={scene.length}
             onChange={(value) =>
               setScene({
-                ...scene,
                 length: value,
               })
             }
@@ -67,7 +67,6 @@ export default function SceneControls({ basicOnly = false }) {
             value={scene.width}
             onChange={(value) =>
               setScene({
-                ...scene,
                 width: value,
               })
             }
@@ -81,7 +80,6 @@ export default function SceneControls({ basicOnly = false }) {
             value={scene.height}
             onChange={(value) =>
               setScene({
-                ...scene,
                 height: value,
               })
             }
@@ -103,7 +101,6 @@ export default function SceneControls({ basicOnly = false }) {
               value={scene.brightness}
               onChange={(value) =>
                 setScene({
-                  ...scene,
                   brightness: value,
                 })
               }
@@ -130,7 +127,6 @@ export default function SceneControls({ basicOnly = false }) {
               style={{ marginTop: 5, width: '100%' }}
               onClick={() =>
                 setScene({
-                  ...scene,
                   camera: {
                     position: {
                       x: canvasData?.camera?.canvasCamera?.position?.x,
@@ -138,7 +134,7 @@ export default function SceneControls({ basicOnly = false }) {
                       z: canvasData?.camera?.canvasCamera?.position?.z,
                     },
                     up: canvasData?.camera?.canvasCamera?.up,
-                    focusPoint: canvasData?.focusPoint,
+                    focusPoint: { ...canvasData?.camera?.focusPoint },
                   },
                   previewImage: takeSnapshot(canvasData.domElement),
                 })

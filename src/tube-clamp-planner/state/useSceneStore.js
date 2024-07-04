@@ -2,6 +2,7 @@ import React from 'react';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import { useInterval, useLocalStorageState, useThrottleFn } from 'ahooks';
+import { v4 as uuidv4 } from 'uuid';
 import { exportChain, importChain } from '../data/chain';
 import testScene from '../data/testScene';
 
@@ -26,6 +27,9 @@ const useStore = create(
 
     addChainNode: (node) =>
       set((state) => {
+        if (!node.id) {
+          node.id = uuidv4();
+        }
         const chain = state.chains.find((chain) => chain[node.parent]);
         chain[node.id] = node;
         chain[node.parent].children[node.parentSlot].push(node.id);
@@ -62,6 +66,16 @@ export const useInitScene = (sceneId) => {
     defaultValue: undefined,
   });
 
+  const saveToLocalStorage = () => {
+    if (store.scene.id === sceneId) {
+      setLocalScene({
+        ...store.scene,
+        version: 1,
+        chains: store.chains.map((chain) => exportChain(chain)),
+      });
+    }
+  };
+
   React.useEffect(() => {
     if (sceneId === '__dev__') {
       setLocalScene(testScene);
@@ -71,17 +85,16 @@ export const useInitScene = (sceneId) => {
       store.setScene(scene);
       store.importChains(...scene.chains);
     }
+
+    return () => {
+      saveToLocalStorage();
+      store.setScene({});
+      store.importChains();
+      store.setCanvasData({});
+    };
   }, [sceneId, !scene]);
 
-  const saveToLocalStorage = () =>
-    setLocalScene({
-      version: 1,
-      ...store.scene,
-      chains: store.chains.map((chain) => exportChain(chain)),
-    });
-
   useInterval(saveToLocalStorage, 5000, { immediate: false });
-  React.useEffect(() => saveToLocalStorage, []);
 };
 
 export default function useSceneStore() {
@@ -107,7 +120,7 @@ export default function useSceneStore() {
     ...store,
 
     setScene,
-    getNode: (id) => store.chains.find((chain) => chain[id])[id],
+    getNode: (id) => store.chains.find((chain) => !!chain[id])?.[id],
     setChainNode: (id) => (node) => setChainNodeThrottled(id, node),
   };
 }

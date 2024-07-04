@@ -33,7 +33,7 @@ export default function TubePlannerDashboard() {
           {CreateButton}
           {ImportButton}
         </div>
-        <div className='flex'>
+        <div className='flex' style={{ flexFlow: 'wrap' }}>
           {tubePlanIndex.plans.map((planId) => (
             <TubePlanCard
               key={planId}
