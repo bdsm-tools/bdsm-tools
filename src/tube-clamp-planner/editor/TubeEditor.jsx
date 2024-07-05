@@ -35,7 +35,7 @@ export default function TubeEditor({
         <Descriptions.Item label='Length'>
           <LengthEditorInput node={node} setNode={setNode} />
         </Descriptions.Item>
-        <Descriptions.Item label='Rotation (WIP)'>
+        <Descriptions.Item label='Rotation'>
           <RotationEditorInput node={node} setNode={setNode} />
         </Descriptions.Item>
         {connection.parent && connection.parentSlot === 'middle' && (

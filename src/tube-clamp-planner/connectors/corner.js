@@ -1,5 +1,6 @@
 import Corner from '../nodes/Corner';
 import { registerTypeDefinition } from './types';
+import CornerEditor from '../editor/CornerEditor';
 
 export default registerTypeDefinition({
   type: 'corner',
@@ -8,4 +9,5 @@ export default registerTypeDefinition({
   hasSurfaceConnection: false,
   name: 'Corner',
   Node: Corner,
+  Editor: CornerEditor,
 });

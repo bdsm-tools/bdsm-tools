@@ -8,12 +8,15 @@ import { Select } from '@react-three/postprocessing';
 
 const TubeNode = ({ chain, tube, position, size, rotation }) => {
   const groupRef = React.useRef();
+  const tubeRotateRef = React.useRef();
   useRotate(groupRef, rotation);
+  useRotate(tubeRotateRef, { y: tube.node.rotation });
 
   const [end1, end2] = tube.children.end;
 
   return (
     <group ref={groupRef} position={position}>
+    <group ref={tubeRotateRef}>
       <Tube
         id={tube.id}
         tube={tube.node}
@@ -50,6 +53,7 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
           size={size}
         />
       )}
+    </group>
     </group>
   );
 };
