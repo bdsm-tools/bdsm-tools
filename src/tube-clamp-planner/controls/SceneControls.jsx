@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button, Descriptions, Image, Input, InputNumber, Slider } from 'antd';
 import useSceneStore from '../state/useSceneStore';
+import ReactGA from 'react-ga4';
 
 const takeSnapshot = (canvas) =>
   (
@@ -125,7 +126,7 @@ export default function SceneControls({ scene: propsScene, setScene: propsSetSce
             )}
             <Button
               style={{ marginTop: 5, width: '100%' }}
-              onClick={() =>
+              onClick={() => {
                 setScene({
                   camera: {
                     position: {
@@ -137,8 +138,10 @@ export default function SceneControls({ scene: propsScene, setScene: propsSetSce
                     focusPoint: { ...canvasData?.camera?.focusPoint },
                   },
                   previewImage: takeSnapshot(canvasData.domElement),
-                })
-              }
+                });
+
+                ReactGA.event('take_canvas_snapshot');
+              }}
             >
               Take {scene.previewImage ? 'new' : 'a'} Snapshot
             </Button>

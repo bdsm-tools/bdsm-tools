@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import ConnectorSelector from './ConnectorSelector';
 import useSceneStore from '../state/useSceneStore';
 import SurfaceEditorInput from './SurfaceEditorInput';
+import ReactGA from 'react-ga4';
 
 export default function StartChainDialog({ surfaceId, onAdd }) {
   const [open, setOpen] = React.useState(false);
@@ -22,6 +23,13 @@ export default function StartChainDialog({ surfaceId, onAdd }) {
         okText='Add'
         onOk={() => {
           onAdd(connector);
+
+          ReactGA.event('add_chain', {
+            surface: connector.surface.type,
+            type: connector.type,
+            position: `${connector.surface.coords[0]}, ${connector.surface.coords[1]}`,
+          });
+
           setOpen(undefined);
         }}
         onCancel={() => setOpen(undefined)}

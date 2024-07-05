@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, InputNumber, Modal, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import ConnectorSelector from './ConnectorSelector';
+import ReactGA from 'react-ga4';
 
 export default function AddConnectorDialog({ parent, tube, onAdd }) {
   const [open, setOpen] = React.useState();
@@ -45,6 +46,18 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
               end: [],
             },
           });
+
+          try {
+            ReactGA.event('add_connector', {
+              parentSlot: open,
+              type: connector.type,
+              position: connector.position,
+            });
+          } catch (e) {
+            // Don't worry, it's just analytics
+            console.error(e);
+          }
+
           setOpen(undefined);
         }}
         onCancel={() => setOpen(undefined)}

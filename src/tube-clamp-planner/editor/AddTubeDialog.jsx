@@ -1,8 +1,12 @@
 import React from 'react';
 import { Button, InputNumber, Modal, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
+import ReactGA from 'react-ga4';
+import useSceneStore from '../state/useSceneStore';
 
 export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
+  const sceneStore = useSceneStore();
+
   const [open, setOpen] = React.useState(false);
   const [tube, setTube] = React.useState({});
 
@@ -31,6 +35,19 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
               end: [],
             },
           });
+
+          try {
+            ReactGA.event('add_tube', {
+              parent: sceneStore.getNode(parent)?.node?.type,
+              parentSlot,
+              length: tube.length,
+              position: tube.position,
+            });
+          } catch (e) {
+            // Don't worry, it's just analytics
+            console.error(e);
+          }
+
           setOpen(false);
         }}
         onCancel={() => setOpen(false)}

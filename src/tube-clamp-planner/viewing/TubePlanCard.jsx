@@ -9,6 +9,7 @@ import {
 import { useLocalStorageState } from 'ahooks';
 import { useNavigate } from 'react-router';
 import { downloadJSON } from '../../util';
+import ReactGA from 'react-ga4';
 
 export default function TubePlanCard({ sceneId, onDelete }) {
   const navigate = useNavigate();
@@ -32,7 +33,12 @@ export default function TubePlanCard({ sceneId, onDelete }) {
             <Button
               shape='circle'
               icon={<DownloadOutlined />}
-              onClick={() => downloadJSON(tubePlan, `${tubePlan.title}.tube`)}
+              onClick={() => {
+                downloadJSON(tubePlan, `${tubePlan.title}.tube`);
+                ReactGA.event('download_tube_plan', {
+                  title: tubePlan.title,
+                });
+              }}
             />
           </Tooltip>
           <Tooltip title='Delete'>
@@ -41,6 +47,10 @@ export default function TubePlanCard({ sceneId, onDelete }) {
               onConfirm={() => {
                 onDelete();
                 localStorage.removeItem(`tube-plan-${sceneId}`);
+
+                ReactGA.event('delete_tube_plan', {
+                  title: tubePlan.title,
+                });
               }}
               okType='danger'
               okText="Delete"

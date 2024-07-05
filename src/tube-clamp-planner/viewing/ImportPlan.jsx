@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Modal, Typography, Upload, message } from 'antd';
 import { useLocalStorageState } from 'ahooks';
+import ReactGA from 'react-ga4';
+import { Button, Modal, Upload } from 'antd';
 import InboxOutlined from '@ant-design/icons/InboxOutlined';
 
 export default function ImportPlan({ onImport }) {
@@ -20,6 +21,17 @@ export default function ImportPlan({ onImport }) {
   const create = () => {
     setLocalStore(scene);
     onImport(scene.id);
+
+    ReactGA.event('import_tube_plan', {
+      title: scene.title,
+      width: scene.width,
+      length: scene.length,
+      height: scene.height,
+      brightness: scene.brightness,
+      version: scene.version,
+      chains: scene.chains?.length,
+    });
+
     onClose();
   };
 

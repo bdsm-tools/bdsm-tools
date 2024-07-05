@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Modal, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import { useLocalStorageState } from 'ahooks';
+import ReactGA from 'react-ga4';
 import SceneControls from '../controls/SceneControls';
 
 const defaultScene = () => ({
@@ -30,6 +31,15 @@ export default function CreatePlan({ onCreate }) {
   const create = () => {
     setLocalStore(scene);
     onCreate(scene.id);
+
+    ReactGA.event('create_tube_plan', {
+      title: scene.title,
+      width: scene.width,
+      length: scene.length,
+      height: scene.height,
+      brightness: scene.brightness,
+    });
+
     onClose();
   };
 
