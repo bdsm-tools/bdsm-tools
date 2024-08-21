@@ -9,6 +9,7 @@ jobs:
   setup-build-publish-deploy:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
+    environment: production
 
     permissions:
       contents: read
@@ -65,3 +66,16 @@ jobs:
           --memory 128Mi \
           --timeout 5s \
           --region europe-west2
+
+    - name: Add Slave Training Tasks API Function
+      run: |-
+        cd api/slave-training && gcloud functions deploy slave-training \
+          --gen2 \
+          --entry-point app \
+          --runtime nodejs18 \
+          --trigger-http \
+          --allow-unauthenticated \
+          --memory 128Mi \
+          --timeout 5s \
+          --region europe-west2 \
+          --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }},SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"
