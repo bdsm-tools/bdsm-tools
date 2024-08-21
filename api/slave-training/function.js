@@ -229,7 +229,7 @@ const completeTask = (isCompleted) => async (req, res) => {
     if (!req.session?.slaveTask?.failedTasks)
       _.set(req.session, 'slaveTask.failedTasks', []);
 
-    req.session.slaveTask.stats.points -= (100 * (daily ? 5 : 1));
+    req.session.slaveTask.stats.points -= (100 * (daily === 'true' ? 5 : 1));
     req.session.slaveTask.stats.failedTasks++;
     req.session.slaveTask.failedTasks.push({
       taskId,
@@ -247,7 +247,7 @@ const completeTask = (isCompleted) => async (req, res) => {
       req.session.slaveTask.stats.dailyStreak = 0;
     }
 
-    req.session.slaveTask.stats.points += (100 * (bonus ? 2 : 1) * (daily ? 5 : 1));
+    req.session.slaveTask.stats.points += (100 * (bonus === 'true' ? 2 : 1) * (daily === 'true' ? 5 : 1));
     req.session.slaveTask.stats.completedTasks++;
     req.session.slaveTask.completedTasks.push({
       taskId,
