@@ -7,7 +7,7 @@ import { hash } from '../util';
 import { useLocalStorageState } from 'ahooks';
 import { ReloadOutlined } from '@ant-design/icons';
 
-export default function RandomTask({ onCompleteTask, onFailTask }) {
+export default function RandomTask({ completedTasks = [], failedTasks = [], onCompleteTask, onFailTask }) {
   const [task, setTask] = useLocalStorageState('slave-task-random-task', {
     serializer: JSON.stringify,
     deserializer: JSON.parse,
@@ -45,6 +45,8 @@ export default function RandomTask({ onCompleteTask, onFailTask }) {
         randomNumber={parseInt(hash(moment().format('YYYY-MM-DD')))}
         onCompleteTask={onCompleteTask}
         onFailTask={onFailTask}
+        isCompleted={!!completedTasks.find(({ taskId }) => taskId === task._id)}
+        isFailed={!!failedTasks.find(({ taskId }) => taskId === task._id)}
       />
     );
   }

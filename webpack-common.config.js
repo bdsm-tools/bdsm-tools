@@ -14,9 +14,7 @@ module.exports = {
       crypto: require.resolve("crypto-browserify"),
       stream: require.resolve("stream-browserify"),
       vm: require.resolve("vm-browserify"),
-    },
-    alias: {
-      process: 'process/browser',
+      'process/browser': require.resolve("process/browser"),
     },
   },
 

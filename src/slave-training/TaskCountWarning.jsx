@@ -7,7 +7,7 @@ export default function TaskCountWarning() {
   const taskCount = globalHeader['x-bdsmtools-slave-task-count'];
 
   if (taskCount !== undefined) {
-    return (
+    if (taskCount < 10) return (
       <Alert
         message={`
                 Your current configuration of body parts and equipment only provide ${taskCount} tasks
@@ -17,6 +17,17 @@ export default function TaskCountWarning() {
         showIcon
       />
     );
+
+    if (taskCount >= 10) return (
+      <Alert
+        message={`
+                Your current configuration of body parts and equipment provides ${taskCount} tasks
+                to be generated. This should give you a good selection of tasks.
+                `}
+        type='success'
+        showIcon
+      />
+    )
   }
   return null;
 }

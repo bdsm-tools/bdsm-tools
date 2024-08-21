@@ -200,11 +200,17 @@ const slaveTrainingTasks = (req, res) => {
   });
 };
 
-const getStats = async (req, res) => res.status(200).json(req.session?.slaveTask?.stats || {
-  points: 0,
-  completedTasks: 0,
-  failedTasks: 0,
-  dailyStreak: 0,
+const getStats = async (req, res) => res.status(200).json({
+  stats: req.session?.slaveTask?.stats || {
+    points: 0,
+    completedTasks: 0,
+    failedTasks: 0,
+    dailyStreak: 0,
+  },
+  completedTasks: (req.session.slaveTask.completedTasks ?? [])
+    .filter(({ timestamp }) => moment(timestamp).isSame(moment(), 'day')),
+  failedTasks: (req.session.slaveTask.failedTasks ?? [])
+    .filter(({ timestamp }) => moment(timestamp).isSame(moment(), 'day')),
 });
 
 const getTask = async (req, res) => req.query.bodyPart
@@ -214,7 +220,7 @@ const getTask = async (req, res) => req.query.bodyPart
 const getDailyTask = async (req, res) => await slaveTrainingTasks(req, res).getDailyTask();
 
 const completeTask = (isCompleted) => async (req, res) => {
-  const { id: taskId } = req.query;
+  const { id: taskId, bonus, daily } = req.query;
 
   if (!req.session?.slaveTask?.stats)
     _.set(req.session, 'slaveTask.stats', { points: 0, completedTasks: 0, failedTasks: 0, dailyStreak: 0 });
@@ -223,6 +229,7 @@ const completeTask = (isCompleted) => async (req, res) => {
     if (!req.session?.slaveTask?.failedTasks)
       _.set(req.session, 'slaveTask.failedTasks', []);
 
+    req.session.slaveTask.stats.points -= (100 * (daily ? 5 : 1));
     req.session.slaveTask.stats.failedTasks++;
     req.session.slaveTask.failedTasks.push({
       taskId,
@@ -240,6 +247,7 @@ const completeTask = (isCompleted) => async (req, res) => {
       req.session.slaveTask.stats.dailyStreak = 0;
     }
 
+    req.session.slaveTask.stats.points += (100 * (bonus ? 2 : 1) * (daily ? 5 : 1));
     req.session.slaveTask.stats.completedTasks++;
     req.session.slaveTask.completedTasks.push({
       taskId,

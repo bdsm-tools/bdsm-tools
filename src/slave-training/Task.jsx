@@ -4,7 +4,7 @@ import { Watermark } from '@hirohe/react-watermark';
 
 import Tags from '../components/Tags';
 
-export default function Task({ title, subTitle, action, task, randomNumber = (Math.random() * 1000000), isCompleted = false, onCompleteTask, onFailTask }) {
+export default function Task({ title, subTitle, action, task, randomNumber = (Math.random() * 1000000), isCompleted = false, isFailed = false, onCompleteTask, onFailTask }) {
 
   const eg = {
     "_id": "66a928e26f5e17075343f0e4",
@@ -45,8 +45,8 @@ export default function Task({ title, subTitle, action, task, randomNumber = (Ma
   }
 
   return (
-    <div style={{ width: 400, marginBottom: 20 }} disabled={isCompleted}>
-      <Watermark show={isCompleted} text="Complete">
+    <div style={{ width: 400, marginBottom: 20 }}>
+      <Watermark show={isCompleted || isFailed} text={isCompleted ? "Complete" : isFailed ? "Failed" : ""}>
         <Card
           title={<Card.Meta title={title} description={subTitle} />}
           extra={action}
@@ -83,7 +83,7 @@ export default function Task({ title, subTitle, action, task, randomNumber = (Ma
           <Tags values={task.requiresBodyPart} colourFunction={{ undefined: 'blue' }} />
           <Tags values={task.requiresEquipment} colourFunction={{ undefined: 'red' }} />
 
-          {!isCompleted && (
+          {!(isCompleted || isFailed) && (
             <>
               <Divider/>
               <div style={{ display: 'grid' }}>

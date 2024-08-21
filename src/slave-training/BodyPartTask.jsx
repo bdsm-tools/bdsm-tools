@@ -8,7 +8,7 @@ import { bodyParts } from '../components/MyBodyParts';
 import { useLocalStorageState } from 'ahooks';
 import { CloseOutlined } from '@ant-design/icons';
 
-export default function BodyPartTask({ onCompleteTask, onFailTask }) {
+export default function BodyPartTask({ completedTasks = [], failedTasks = [], onCompleteTask, onFailTask }) {
   const [tasks, setTasks] = useLocalStorageState('slave-task-random-body-part-task', {
     defaultValue: {},
     serializer: JSON.stringify,
@@ -75,6 +75,8 @@ export default function BodyPartTask({ onCompleteTask, onFailTask }) {
           randomNumber={parseInt(hash(moment().format('YYYY-MM-DD')))}
           onCompleteTask={onCompleteTask}
           onFailTask={onFailTask}
+          isCompleted={!!completedTasks.find(({ taskId }) => taskId === task._id)}
+          isFailed={!!failedTasks.find(({ taskId }) => taskId === task._id)}
         />
       ))}
     </>
