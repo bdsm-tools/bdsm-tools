@@ -39,6 +39,11 @@ export default function NavMenu({vertical}) {
               Scenario Picker
             </Link>
           </Menu.Item>
+          <Menu.Item key="slave-training" icon={<FileDoneOutlined/>}>
+            <Link to="/tools/slave-training">
+              Slave Training
+            </Link>
+          </Menu.Item>
         </Menu.SubMenu>
         <Menu.SubMenu key="about" title="About" icon={<BulbOutlined />}>
           <Menu.Item key="info" icon={<InfoCircleOutlined />}>

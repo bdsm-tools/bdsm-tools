@@ -1,6 +1,7 @@
 BUCKET_URI="test.bdsmtools.org" &&
 
-npm run build &&
+rm -rf ./dist/ &&
+npm run test-build &&
 
 echo Deploying to: ${BUCKET_URI} &&
 

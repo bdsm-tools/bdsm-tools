@@ -10,7 +10,10 @@ module.exports = {
       url: false,
       http: false,
       https: false,
-      buffer: false,
+      buffer: require.resolve("buffer"),
+      crypto: require.resolve("crypto-browserify"),
+      stream: require.resolve("stream-browserify"),
+      vm: require.resolve("vm-browserify"),
     },
     alias: {
       process: 'process/browser',
@@ -19,7 +22,7 @@ module.exports = {
 
   entry: './src/index.jsx',
   output: {
-    filename: 'bundle/[name]/[hash].bundle.js',
+    filename: 'bundle/[name]/[fullhash].bundle.js',
     chunkFilename: 'bundle/[name]/[contenthash].chunk.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/'
@@ -123,6 +126,9 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.ids.HashedModuleIdsPlugin(),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),

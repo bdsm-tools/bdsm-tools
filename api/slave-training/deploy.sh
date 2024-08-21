@@ -10,6 +10,6 @@ gcloud functions deploy slave-training-test \
   --trigger-http \
   --allow-unauthenticated \
   --memory 128Mi \
-  --timeout 2s \
-  --region europe-west2 \
-  --set-env-vars MONGO_CLUSTER_PASSWORD="${MONGO_CLUSTER_PASSWORD}",MONGO_CLUSTER_URI="${MONGO_CLUSTER_URI}",MONGO_DB="${MONGO_DB},SESSION_KEY_V1="${SESSION_KEY_V1}"
+  --timeout 5s \
+  --region europe-west1 \
+  --set-env-vars MONGO_CLUSTER_PASSWORD="${MONGO_CLUSTER_PASSWORD}",MONGO_CLUSTER_URI="${MONGO_CLUSTER_URI}",MONGO_DB="${MONGO_DB}",SESSION_KEY_V1="${SESSION_KEY_V1}"

@@ -16,3 +16,4 @@
 node_modules
 
 deploy.sh
+local.mjs

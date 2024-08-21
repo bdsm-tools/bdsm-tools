@@ -1,14 +1,14 @@
 import React from "react";
 import {Checkbox, Table, Select, Typography} from 'antd';
 import {Link} from "react-router-dom";
+import ReactGA from 'react-ga4'
 import TagsComponent from '../components/Tags';
+import MyEquipment from '../components/MyEquipment';
 import participantColourFunction from "./participantColourFunction";
-import MyEquipmentSelector from "./MyEquipmentSelector";
 import equipmentFilterFunction from './filters/equipmentFilter';
 import participantFilterFunction from './filters/participantFilter';
 import compatibilityFilterFunction from './filters/compatibilityFilter';
 import scenarioData from "./scenarios/scenario-index";
-import ReactGA from 'react-ga4'
 
 const Tags = (values = []) => <TagsComponent values={values} colourFunction={participantColourFunction}/>;
 
@@ -71,7 +71,7 @@ export default function ScenarioTable({data = scenarioData}) {
         <>
             <div style={{marginBottom: 20}}>
                 <div className='flex' style={{alignItems: 'center'}}>
-                    <MyEquipmentSelector data={data}/>
+                    <MyEquipment/>
                     <Checkbox
                         checked={equipmentFilter}
                         onChange={({target}) => setEquipmentFilter(target.checked)}

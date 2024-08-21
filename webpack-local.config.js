@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const { merge } = require("webpack-merge");
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
@@ -8,6 +9,20 @@ const cdnModules = require('./webpack-cdn-config');
 const mode = 'development';
 module.exports = merge(common, {
   mode,
+
+  devServer: {
+    compress: true,
+    static: {
+      directory: path.join(__dirname, 'www'),
+      publicPath: '/',
+    },
+    host: '0.0.0.0',
+    port: '3002',
+    hot: true,
+    historyApiFallback: {
+      index: '/',
+    },
+  },
 
   devtool: 'inline-cheap-source-map',
 
@@ -22,7 +37,7 @@ module.exports = merge(common, {
           'https://feature-flag.api.test.bdsmtools.org'
         ),
         SLAVE_TRAINING_API_ROOT: JSON.stringify(
-          'https://slave-training.api.test.bdsmtools.org'
+          'http://localhost:3300'
         ),
       },
     }),

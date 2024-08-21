@@ -5,9 +5,9 @@ import {Tag, Popover} from "antd";
 export default function Tags({values, colourFunction = {}}) {
     return (
         <>
-            {Object.values(values).sort(alphabeticalSort()).map((value) => (
+            {Object.values(values || []).sort(alphabeticalSort()).map((value) => (
                 <Popover key={value} content={value} trigger='click'>
-                    <Tag color={colourFunction[value] || value}>
+                    <Tag color={colourFunction[value] || colourFunction[undefined] || value}>
                         {ellipse(value, {limit: 20})}
                     </Tag>
                 </Popover>

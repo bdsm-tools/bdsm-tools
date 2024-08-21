@@ -17,23 +17,27 @@ ReactGA.initialize('G-SKBSEEBLCP')
 
 const SceneNegotiationEntry = React.lazy(() =>
   import(/* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry')
-)
+);
 
 const ScenarioPickerEntry = React.lazy(() =>
   import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry')
-)
+);
+
+const SlaveTrainingEntry = React.lazy(() =>
+  import(/* webpackChunkName: "SlaveTraining", webpackPrefetch: true */ './slave-training/Entry')
+);
 
 const AboutEntry = React.lazy(() =>
   import(/* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry')
-)
+);
 
 const FaqEntry = React.lazy(() =>
   import(/* webpackChunkName: "FAQ", webpackPrefetch: true */ './about/Faq')
-)
+);
 
 const Home = React.lazy(() =>
   import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
-)
+);
 
 export default function Application () {
   return (
@@ -55,6 +59,7 @@ export default function Application () {
               <Route index element={<ScenarioTable/>}/>
               <Route path=':type' element={<ScenarioEntry/>}/>
             </Route>
+            <Route path="slave-training" element={<SlaveTrainingEntry/>}/>
           </Route>
 
         </Route>

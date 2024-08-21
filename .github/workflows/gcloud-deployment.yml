@@ -47,25 +47,25 @@ jobs:
       run: |-
         cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
           --gen2 \
-          --entry-point doProcess \
+          --entry-point app \
           --runtime nodejs18 \
           --trigger-http \
           --allow-unauthenticated \
           --memory 128Mi \
           --timeout 10s \
-          --region europe-west2
+          --region europe-west1
 
     - name: Add Feature Flag API Function
       run: |-
         cd api/feature-flags && gcloud functions deploy feature-flag \
           --gen2 \
-          --entry-point doProcess \
+          --entry-point app \
           --runtime nodejs18 \
           --trigger-http \
           --allow-unauthenticated \
           --memory 128Mi \
           --timeout 5s \
-          --region europe-west2
+          --region europe-west1
 
     - name: Add Slave Training Tasks API Function
       run: |-
@@ -77,5 +77,5 @@ jobs:
           --allow-unauthenticated \
           --memory 128Mi \
           --timeout 5s \
-          --region europe-west2 \
-          --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }},SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"
+          --region europe-west1 \
+          --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }}",SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"
