@@ -9,7 +9,13 @@ export const ellipse = (text, { limit = 20 } = {}) => text.length > limit
 
 export const hash = (...data) => crypto.createHash('md5').update(data.map((d) => JSON.stringify(d)).join('')).digest('hex');
 
-export function convertMongoTimestamp({ $timestamp: bsonTimestamp }) {
+export function convertMongoTimestamp(timestamp) {
+  if (moment.isMoment(timestamp)) {
+    return timestamp;
+  }
+
+  const { $timestamp: bsonTimestamp } = timestamp;
+
   // Convert the string timestamp to a BigInt (because it's a 64-bit value)
   const timestampBigInt = BigInt(bsonTimestamp);
 

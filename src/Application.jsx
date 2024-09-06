@@ -106,9 +106,7 @@ function FeatureFlagLayout() {
     console.error(e);
     setFlag({
       enabled: false,
-      lastChanged: {
-        _seconds: moment().seconds(),
-      },
+      lastChanged: moment(),
       reason: 'An error occurred when fetching this feature flag. Check the console for more details.'
     });
   };

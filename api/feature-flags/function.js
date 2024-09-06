@@ -66,12 +66,13 @@ app.use(session({
   store: new MongoDBStore({
     uri,
     databaseName: MONGO_DB,
-    collection: 'user-sessions'
+    collection: 'user-sessions',
+    expires: 5.184e+9, // ~60 days
   }),
   secret: [
     SESSION_KEY_V1
   ],
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   cookie: {
     sameSite: 'Lax',
