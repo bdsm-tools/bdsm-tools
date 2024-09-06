@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Select, Button, Tooltip } from 'antd';
+import { Input, Select, Button, Tooltip, notification } from 'antd';
 import moment from 'moment';
 import Task from './Task';
 import api from '../services/slave-training-api';
@@ -32,7 +32,11 @@ export default function BodyPartTask({ completedTasks = [], failedTasks = [], on
           generatedForBodyPart: bodyPart,
           generatedOn: moment().format('HH:mm:ss [on] MMMM Do, YYYY'),
         }
-      })));
+      })))
+      .catch(() => notification.error({
+        message: `Error fetching task for ${bodyPart}`,
+        description: 'Our server may be experiencing issues. Please try again later',
+      }));
   };
 
   React.useEffect(() => {
@@ -58,7 +62,7 @@ export default function BodyPartTask({ completedTasks = [], failedTasks = [], on
         <Task
           key={task._id}
           title={`Random Task for the ${task.generatedForBodyPart}`}
-          subTitle={`Generated on ${task.generatedOn}`}
+          subTitle={<Tooltip title={task.generatedOn}>Generated on {task.generatedOn}</Tooltip>}
           action={(
             <Tooltip title='Remove task'>
               <Button

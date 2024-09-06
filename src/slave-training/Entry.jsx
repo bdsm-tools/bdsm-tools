@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Col, Row, Divider, Modal, Result } from 'antd';
+import { PageHeader, Col, Row, Divider, notification } from 'antd';
 import useAnalytics from '../hooks/useAnalytics'
 import DailyTask from './DailyTask';
 import TaskStats from './TaskStats';
@@ -29,19 +29,31 @@ export default function Entry() {
 
   React.useEffect(() => {
     api.getStats()
-      .then(setStats);
+      .then(setStats)
+      .catch(() => notification.error({
+        message: 'Error fetching task statistics',
+        description: 'Our server may be experiencing issues. Please try again later',
+      }));
   }, []);
 
   const completeTask = (daily = false) => (taskId, bonus) => {
     api.completeTask(taskId, bonus, daily)
       .then(setStats)
-      .then(() => setFinish({ success: true }));
+      .then(() => setFinish({ success: true }))
+      .catch(() => notification.error({
+        message: 'Error when completing task',
+        description: 'Our server may be experiencing issues. Please try again later',
+      }));
   };
 
   const failTask = (daily = false) => (taskId, bonus) => {
     api.failTask(taskId, bonus, daily)
       .then(setStats)
-      .then(() => setFinish({ success: false }));
+      .then(() => setFinish({ success: false }))
+      .catch(() => notification.error({
+        message: 'Error when failing the task',
+        description: 'Our server may be experiencing issues. Please try again later',
+      }));
   };
 
   return (
@@ -60,10 +72,10 @@ export default function Entry() {
             </Col>
           </Row>
           <Row>
-            <Col span={8}>
+            <Col xs={24} xl={12} xxl={8}>
               <EditParameters />
             </Col>
-            <Col span={16}>
+            <Col xs={24} xl={12} xxl={16}>
               <TaskCountWarning/>
             </Col>
           </Row>

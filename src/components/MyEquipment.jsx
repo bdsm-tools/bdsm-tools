@@ -119,10 +119,6 @@ export const equipment = [
     'value': 'sexy outfit'
   },
   {
-    'label': 'Sexy Outfit',
-    'value': 'sexy outfit'
-  },
-  {
     'label': 'Ball Gag',
     'value': 'ball gag'
   },

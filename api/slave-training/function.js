@@ -160,12 +160,12 @@ const slaveTrainingTasks = (req, res) => {
       const filter = createFilter(bodyParts, equipment);
 
       const queryHash = hash(filter, FILTER_HASH_SALT);
-      const startOfTomorrow = moment().utcOffset(Number(req.cookies.timezoneOffset || 0)).endOf('day').add(1, 'second');
+      const dateHash = hash(moment().utcOffset(Number(req.cookies.timezoneOffset || 0)).format('YYYY-MM-DD'));
+      const etag = hash(queryHash, dateHash);
 
-      res.set('Expires', startOfTomorrow.toDate().toUTCString());
-      res.set('ETag', queryHash);
+      res.set('ETag', etag);
       res.set('Cache-Control', 'no-cache'); // Use etag to verify usage of cache
-      if (req.headers['If-None-Match'] === queryHash) {
+      if (req.headers['If-None-Match'] === etag) {
         res.status(304).end();
       } else {
 
@@ -182,7 +182,6 @@ const slaveTrainingTasks = (req, res) => {
               return [];
             }
 
-            const dateHash = hash(moment().utcOffset(Number(req.cookies.timezoneOffset || 0)).format('YYYY-MM-DD'));
             const numberOfTasks = req.session.slaveTask.getDailyTask.queryCount;
             const taskNumber = parseInt(dateHash, 16) % numberOfTasks;
 
@@ -207,9 +206,9 @@ const getStats = async (req, res) => res.status(200).json({
     failedTasks: 0,
     dailyStreak: 0,
   },
-  completedTasks: (req.session.slaveTask.completedTasks ?? [])
+  completedTasks: (req.session?.slaveTask?.completedTasks ?? [])
     .filter(({ timestamp }) => moment(timestamp).isSame(moment(), 'day')),
-  failedTasks: (req.session.slaveTask.failedTasks ?? [])
+  failedTasks: (req.session?.slaveTask?.failedTasks ?? [])
     .filter(({ timestamp }) => moment(timestamp).isSame(moment(), 'day')),
 });
 

@@ -24,7 +24,7 @@ export default function FinishTaskDialog({ open, finish = {}, stats, previousSta
           title="Very disappointing Slave, you have failed the task"
           subTitle="You have lost points"
           extra={[
-            <Statistic value={points} prefix={<MinusOutlined />}/>
+            <Statistic key='stat' value={points} prefix={<MinusOutlined />}/>
           ]}
         />
       </Modal>
@@ -46,7 +46,7 @@ export default function FinishTaskDialog({ open, finish = {}, stats, previousSta
         title="Well done Slave, you have successfully completed the task!"
         subTitle="You've gained some points"
         extra={[
-          <Statistic value={points} prefix={<PlusOutlined />}/>
+          <Statistic key='stat' value={points} prefix={<PlusOutlined />}/>
         ]}
       />
     </Modal>

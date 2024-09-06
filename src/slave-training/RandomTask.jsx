@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Tooltip } from 'antd';
+import { Button, notification, Tooltip } from 'antd';
 import moment from 'moment';
 import Task from './Task';
 import api from '../services/slave-training-api';
@@ -15,10 +15,15 @@ export default function RandomTask({ completedTasks = [], failedTasks = [], onCo
 
   const getTask = () => {
     setTask({ loading: true });
-    api.getTask().then((task) => setTask({
+    api.getTask()
+      .then((task) => setTask({
       ...task,
       generatedOn: moment().format('HH:mm:ss [on] MMMM Do, YYYY'),
-    }));
+    }))
+      .catch(() => notification.error({
+        message: 'Error fetching random task',
+        description: 'Our server may be experiencing issues. Please try again later',
+      }));
   };
 
   React.useEffect(() => {
@@ -31,7 +36,7 @@ export default function RandomTask({ completedTasks = [], failedTasks = [], onCo
     return (
       <Task
         title='Random Task'
-        subTitle={`Generated on ${task.generatedOn}`}
+        subTitle={<Tooltip title={task.generatedOn}>Generated on {task.generatedOn}</Tooltip>}
         action={(
           <Tooltip title='Get a new random task'>
             <Button
