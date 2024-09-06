@@ -1,14 +1,14 @@
 import React from 'react';
 import { PageHeader, Col, Row, Divider, notification } from 'antd';
 import useAnalytics from '../hooks/useAnalytics'
-import DailyTask from './DailyTask';
-import TaskStats from './TaskStats';
-import EditParameters from './EditParameters';
-import RandomTask from './RandomTask';
-import BodyPartTask from './BodyPartTask';
+import DailyTask from './task/DailyTask';
+import TaskStats from './stats/TaskStats';
+import EditParameters from './config/EditParameters';
+import RandomTask from './task/RandomTask';
+import BodyPartTask from './task/BodyPartTask';
 import api from '../services/slave-training-api';
-import TaskCountWarning from './TaskCountWarning';
-import FinishTaskDialog from './FinishTaskDialog';
+import TaskCountWarning from './stats/TaskCountWarning';
+import FinishTaskDialog from './task/FinishTaskDialog';
 import { usePrevious } from 'ahooks';
 
 export default function Entry() {

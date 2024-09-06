@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert } from 'antd';
-import useGlobalHeader from '../state/useGlobalHeader';
+import useGlobalHeader from '../../state/useGlobalHeader';
 
 export default function TaskCountWarning() {
   const globalHeader = useGlobalHeader();

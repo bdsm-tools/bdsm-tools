@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, Divider, Typography, Button, Checkbox, Skeleton } from 'antd';
 import { Watermark } from '@hirohe/react-watermark';
 
-import Tags from '../components/Tags';
+import Tags from '../../components/Tags';
 
 export default function Task({ title, subTitle, action, task, randomNumber = (Math.random() * 1000000), isCompleted = false, isFailed = false, onCompleteTask, onFailTask }) {
 

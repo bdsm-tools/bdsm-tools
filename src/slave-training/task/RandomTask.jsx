@@ -2,8 +2,8 @@ import React from 'react';
 import { Button, notification, Tooltip } from 'antd';
 import moment from 'moment';
 import Task from './Task';
-import api from '../services/slave-training-api';
-import { hash } from '../util';
+import api from '../../services/slave-training-api';
+import { hash } from '../../util';
 import { useLocalStorageState } from 'ahooks';
 import { ReloadOutlined } from '@ant-design/icons';
 

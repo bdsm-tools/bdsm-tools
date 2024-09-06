@@ -2,9 +2,9 @@ import React from 'react';
 import { Input, Select, Button, Tooltip, notification } from 'antd';
 import moment from 'moment';
 import Task from './Task';
-import api from '../services/slave-training-api';
-import { hash } from '../util';
-import { bodyParts } from '../components/MyBodyParts';
+import api from '../../services/slave-training-api';
+import { hash } from '../../util';
+import { bodyParts } from '../../components/MyBodyParts';
 import { useLocalStorageState } from 'ahooks';
 import { CloseOutlined } from '@ant-design/icons';
 

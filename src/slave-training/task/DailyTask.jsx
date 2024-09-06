@@ -2,8 +2,8 @@ import React from 'react';
 import { notification } from 'antd';
 import moment from 'moment';
 import Task from './Task';
-import api from '../services/slave-training-api';
-import { hash } from '../util';
+import api from '../../services/slave-training-api';
+import { hash } from '../../util';
 
 export default function DailyTask({ completedTasks = [], failedTasks = [], onCompleteTask, onFailTask }) {
   const [task, setTask] = React.useState({ loading: true });

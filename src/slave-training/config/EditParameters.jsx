@@ -1,6 +1,6 @@
 import React from 'react';
-import MyEquipment from '../components/MyEquipment';
-import MyBodyParts from '../components/MyBodyParts';
+import MyEquipment from '../../components/MyEquipment';
+import MyBodyParts from '../../components/MyBodyParts';
 
 export default function EditParameters() {
 
