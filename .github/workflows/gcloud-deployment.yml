@@ -65,7 +65,8 @@ jobs:
           --allow-unauthenticated \
           --memory 128Mi \
           --timeout 5s \
-          --region europe-west1
+          --region europe-west1 \
+          --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }}",SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"
 
     - name: Add Slave Training Tasks API Function
       run: |-

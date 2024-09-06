@@ -12,6 +12,7 @@ import ScenarioEntry from './scenario-picker/ScenarioEntry';
 import NegotiationFormWrapper from './scene-negotiation/NegotiationFormWrapper';
 import ViewingTemplates from './scene-negotiation/ViewingTemplates';
 import api from './services/feature-flag-api';
+import { convertMongoTimestamp } from './util';
 
 ReactGA.initialize('G-SKBSEEBLCP');
 
@@ -133,7 +134,7 @@ function FeatureFlagLayout() {
   if (!flag || id !== params.id) return <Spin size="large"/>;
   if (flag.enabled) return <Outlet/>;
 
-  const time = moment(moment.duration(flag.lastChanged._seconds, 's'))
+  const time = convertMongoTimestamp(flag.lastChanged)
     .format('Do MMMM YYYY [at] hh:mm:ss');
   return (
     <Result
