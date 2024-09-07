@@ -6,27 +6,6 @@ import Tags from '../../components/Tags';
 
 export default function Task({ title, subTitle, action, task, randomNumber = (Math.random() * 1000000), isCompleted = false, isFailed = false, onCompleteTask, onFailTask }) {
 
-  const eg = {
-    "_id": "66a928e26f5e17075343f0e4",
-    "bonusTask": "Ask a stranger online how long you should hold a deepthroat instead of the time given. You must go with the first realistic answer",
-    "task": "Hold a deepthroat with a dildo, fail if you cannot achieve after 2 hours",
-    "timeOptions": [
-      "20 seconds",
-      "10 seconds",
-      "5 seconds",
-      "30 seconds",
-      "1 minute",
-      "2 minutes"
-    ],
-    "requiresBodyPart": [
-      "mouth"
-    ],
-    "requiresEquipment": [
-      "dildo"
-    ],
-    "added": "2024-07-20T04:33:23.319Z"
-  };
-
   const [showBonusTask, setShowBonusTask] = React.useState(false);
 
   if (task.loading) {
