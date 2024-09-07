@@ -5,54 +5,6 @@ const admin = require('firebase-admin');
 admin.initializeApp(); // functions.config().firebase
 const db = admin.firestore();
 
-async function doGet(req, res) {
-  const { path, query } = req;
-  const { id, all } = query;
-
-  if (path.startsWith('/negotiation-types')) {
-    if (id) {
-      return await sceneNegotiationTypes(req, res).getOne(id);
-    } else {
-      return await sceneNegotiationTypes(req, res).getAll(all === 'true');
-    }
-  }
-  if (path.startsWith('/negotiation')) {
-    if (id) {
-      return await sceneNegotiation(req, res).getOne(id);
-    }
-  }
-
-  res.status(404).send('No data found for resource');
-}
-
-async function doPost(req, res) {
-  const { path, query, body } = req;
-  const { id, active } = query;
-
-  if (path.startsWith('/negotiation-types/activate')) {
-    return await sceneNegotiationTypes(req, res)
-      .activate(id, (active || 'true') === 'true');
-  }
-
-  if (path.startsWith('/negotiation-types/delete')) {
-    return await sceneNegotiationTypes(req, res).delete(id);
-  }
-
-  if (path.startsWith('/negotiation-types')) {
-    if (req.get('Content-Type') === 'application/json') {
-      return await sceneNegotiationTypes(req, res).save(body);
-    }
-  }
-
-  if (path.startsWith('/negotiation')) {
-    if (!id) {
-      if (req.get('Content-Type') === 'application/json') {
-        return await sceneNegotiation(req, res).save(body);
-      }
-    }
-  }
-}
-
 const sceneNegotiationTypes = (req, res) => {
   const collection = db.collection("scene-negotiation-types");
   return ({
@@ -155,6 +107,54 @@ const extract = (querySnapshot) => {
   return querySnapshot;
 };
 
+const getNegotiationTypes = async (req, res) => {
+  const { id, all } = req.query;
+  if (id) {
+    return await sceneNegotiationTypes(req, res).getOne(id);
+  } else {
+    return await sceneNegotiationTypes(req, res).getAll(all === 'true');
+  }
+};
+
+const getNegotiation = async (req, res) => {
+  const { id, all } = req.query;
+  if (id) {
+    return await sceneNegotiation(req, res).getOne(id);
+  }
+
+  res.status(404).send('No data found for resource');
+};
+
+const activateNegotiationType = async (req, res) => {
+  const { id, active } = req.query;
+
+  return await sceneNegotiationTypes(req, res)
+    .activate(id, (active || 'true') === 'true');
+};
+
+const deleteNegotiationType = async (req, res) => {
+  const { id } = req.query;
+
+  return await sceneNegotiationTypes(req, res).delete(id);
+};
+
+const saveNegotiationType = async (req, res) => {
+  if (req.get('Content-Type') === 'application/json') {
+    return await sceneNegotiationTypes(req, res).save(req.body);
+  }
+};
+
+const saveNegotiation = async (req, res) => {
+  const { query, body } = req;
+  const { id } = query;
+
+  if (!id) {
+    if (req.get('Content-Type') === 'application/json') {
+      return await sceneNegotiation(req, res).save(body);
+    }
+  }
+};
+
 const app = express();
 app.use(cors({
   methods: ['GET', 'POST'],
@@ -165,7 +165,11 @@ app.use(cors({
   ],
   maxAge: 300,
 }));
-app.get('/', doGet);
-app.post('/', doPost);
+app.get('/negotiation-types', getNegotiationTypes);
+app.get('/negotiation', getNegotiation);
+app.post('/negotiation', saveNegotiation);
+app.post('/negotiation-types', saveNegotiationType);
+app.post('/negotiation-types/activate', activateNegotiationType);
+app.post('/negotiation-types/delete', deleteNegotiationType);
 
 module.exports = { app };
