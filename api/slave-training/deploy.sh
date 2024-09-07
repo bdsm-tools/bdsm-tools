@@ -3,7 +3,7 @@
 : "${MONGO_DB:?No MONGO_DB environment variable found}"
 
 gcloud config set project bdsm-tools &&
-gcloud functions deploy feature-flag-test \
+gcloud functions deploy slave-training-test \
   --gen2 \
   --entry-point app \
   --runtime nodejs18 \

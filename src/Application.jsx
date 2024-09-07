@@ -1,39 +1,44 @@
-import React from 'react'
-import { Layout, Spin, Button, Result, Alert } from 'antd'
-import moment from 'moment'
+import React from 'react';
+import { Layout, Spin, Button, Result, Alert } from 'antd';
+import moment from 'moment';
 import { useLocalStorageState } from 'ahooks';
-import { BrowserRouter as Router, Routes as Routing, Route, Outlet, useMatch } from 'react-router-dom'
-import ReactGA from 'react-ga4'
-import Header from './Header'
-import NavMenu from './NavMenu'
-import ConsentModal from './ConsentModal'
-import ScenarioTable from './scenario-picker/ScenarioTable'
-import ScenarioEntry from './scenario-picker/ScenarioEntry'
-import NegotiationFormWrapper from './scene-negotiation/NegotiationFormWrapper'
-import ViewingTemplates from './scene-negotiation/ViewingTemplates'
-import api from './services/feature-flag-api'
+import { BrowserRouter as Router, Routes as Routing, Route, Outlet, useMatch } from 'react-router-dom';
+import ReactGA from 'react-ga4';
+import Header from './Header';
+import NavMenu from './NavMenu';
+import ConsentModal from './ConsentModal';
+import ScenarioTable from './scenario-picker/ScenarioTable';
+import ScenarioEntry from './scenario-picker/ScenarioEntry';
+import NegotiationFormWrapper from './scene-negotiation/NegotiationFormWrapper';
+import ViewingTemplates from './scene-negotiation/ViewingTemplates';
+import api from './services/feature-flag-api';
+import { convertMongoTimestamp } from './util';
 
-ReactGA.initialize('G-SKBSEEBLCP')
+ReactGA.initialize('G-SKBSEEBLCP');
 
 const SceneNegotiationEntry = React.lazy(() =>
   import(/* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry')
-)
+);
 
 const ScenarioPickerEntry = React.lazy(() =>
   import(/* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry')
-)
+);
+
+const SlaveTrainingEntry = React.lazy(() =>
+  import(/* webpackChunkName: "SlaveTraining", webpackPrefetch: true */ './slave-training/Entry')
+);
 
 const AboutEntry = React.lazy(() =>
   import(/* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry')
-)
+);
 
 const FaqEntry = React.lazy(() =>
   import(/* webpackChunkName: "FAQ", webpackPrefetch: true */ './about/Faq')
-)
+);
 
 const Home = React.lazy(() =>
   import(/* webpackChunkName: "Home", webpackPrefetch: true */ './Home')
-)
+);
 
 export default function Application () {
   return (
@@ -55,6 +60,7 @@ export default function Application () {
               <Route index element={<ScenarioTable/>}/>
               <Route path=':type' element={<ScenarioEntry/>}/>
             </Route>
+            <Route path="slave-training" element={<SlaveTrainingEntry/>}/>
           </Route>
 
         </Route>
@@ -100,9 +106,7 @@ function FeatureFlagLayout() {
     console.error(e);
     setFlag({
       enabled: false,
-      lastChanged: {
-        _seconds: moment().seconds(),
-      },
+      lastChanged: moment(),
       reason: 'An error occurred when fetching this feature flag. Check the console for more details.'
     });
   };
@@ -117,7 +121,7 @@ function FeatureFlagLayout() {
     return api.getFeatureFlagNoCache(params.id)
       .then(setFlag)
       .catch(error);
-  }
+  };
 
   React.useEffect(() => {
     setId(null);
@@ -125,11 +129,11 @@ function FeatureFlagLayout() {
       .then(() => setId(params.id));
   }, [params.id]);
 
-  if (!flag || id !== params.id) return <Spin size="large"/>
-  if (flag.enabled) return <Outlet/>
+  if (!flag || id !== params.id) return <Spin size="large"/>;
+  if (flag.enabled) return <Outlet/>;
 
-  const time = moment(moment.duration(flag.lastChanged._seconds, 's'))
-    .format('Do MMMM YYYY [at] hh:mm:ss')
+  const time = convertMongoTimestamp(flag.lastChanged)
+    .format('Do MMMM YYYY [at] hh:mm:ss');
   return (
     <Result
       status="error"

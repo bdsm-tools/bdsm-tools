@@ -1,40 +1,9 @@
+const express = require('express');
+const cors = require('cors');
 const admin = require('firebase-admin');
 
 admin.initializeApp(); // functions.config().firebase
 const db = admin.firestore();
-
-/**
- * Responds to any HTTP request.
- *
- * @param {!express:Request} req HTTP request context.
- * @param {!express:Response} res HTTP response context.
- */
-exports.doProcess = async (req, res) => {
-  console.log('Request:', req);
-
-  try {
-    res.set('Access-Control-Allow-Origin', '*');
-    switch (req.method) {
-      case 'OPTIONS':
-        res.set('Access-Control-Allow-Methods', 'GET,POST');
-        res.set('Access-Control-Allow-Headers', 'Content-Type');
-        res.set('Access-Control-Max-Age', '3600');
-        res.status(204).send('');
-        return;
-      case 'GET':
-        return await doGet(req, res);
-      case 'POST':
-        return await doPost(req, res);
-      default:
-        res.status(400).send('Invalid method');
-        return;
-    }
-  } catch (error) {
-    res.status(500).json({
-      error,
-    });
-  }
-};
 
 async function doGet(req, res) {
   const { path, query } = req;
@@ -184,4 +153,19 @@ const extract = (querySnapshot) => {
     });
   }
   return querySnapshot;
-}
+};
+
+const app = express();
+app.use(cors({
+  methods: ['GET', 'POST'],
+  origin: [
+    /localhost/,
+    /bdsmtools\.org/,
+    /.bdsmtools\.org/,
+  ],
+  maxAge: 300,
+}));
+app.get('/', doGet);
+app.post('/', doPost);
+
+module.exports = { app };

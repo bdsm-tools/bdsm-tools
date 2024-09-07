@@ -1,52 +1,94 @@
-const admin = require('firebase-admin');
+const { MONGO_CLUSTER_PASSWORD, MONGO_CLUSTER_URI, MONGO_DB, SESSION_KEY_V1, SESSION_DOMAIN_OVERRIDE } = process.env;
+if (!(MONGO_CLUSTER_PASSWORD && MONGO_CLUSTER_URI && MONGO_DB && SESSION_KEY_V1))
+  throw new Error('Missing environment variables. '
+    + `MONGO_CLUSTER_PASSWORD: ${!!MONGO_CLUSTER_PASSWORD}, `
+    + `MONGO_CLUSTER_URI: ${!!MONGO_CLUSTER_URI}, `
+    + `MONGO_DB: ${MONGO_DB}`);
+
 const express = require('express');
+const session = require('express-session');
+const cors = require('cors');
+const MongoDBStore = require('connect-mongodb-session')(session);
+const { MongoClient, ServerApiVersion } = require('mongodb');
 
-const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const uri = `mongodb+srv://bdsmtools-gcf:${MONGO_CLUSTER_PASSWORD}@${MONGO_CLUSTER_URI}?retryWrites=true&w=majority&appName=bdsmtools-db`;
 
-admin.initializeApp(); // functions.config().firebase
-const db = admin.firestore();
+let mongoClient;
+const client = async () => {
+  if (!mongoClient) {
+    mongoClient = await MongoClient.connect(uri, {
+      serverApi: {
+        version: ServerApiVersion.v1,
+        strict: true,
+        deprecationErrors: true
+      }
+    });
+  }
+  return mongoClient;
+};
 
-app.use((req, res, next) => {
-  console.log(`Request: ${req.method} ${req.url}  -  ${JSON.stringify(req.headers)}`);
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Cache-Control', 'public, max-age=86400');
+async function mongo (collection, func) {
+  return await func((await client()).db(MONGO_DB).collection(collection));
+}
 
-  next();
-});
-
-app.options('*', (req, res) => {
-  res.header('Access-Control-Allow-Methods', 'GET,POST');
-  res.header('Access-Control-Allow-Headers', ['Content-Type', 'Cache-Control']);
-  res.header('Access-Control-Max-Age', '3600');
-  res.status(204).send('');
-});
-
-app.get('/flag/:id', async (req, res) => {
+const getFlag = async (req, res) => {
   const { id } = req.params;
 
-  const collection = await db.collection('feature-flags');
-  const document = await collection.doc(id).get();
-  if (document.exists) {
-    res.status(200).json(document.data());
+  const result = await mongo('feature-flags', (collection) => collection.findOne({ "_id": id }));
+
+  if (result) {
+    res.status(200).json(result);
   } else {
     res.status(404).send("No feature with that ID");
   }
+};
+
+const getEnabledFlags = async (req, res) => {
+  const results = await mongo('feature-flags', async (collection) => {
+    return await collection.find({ }, { limit: 100 }).toArray();
+  });
+
+  res.status(200).json(results.map(({ _id }) => _id));
+};
+
+const app = express();
+app.use(cors({
+  methods: ['GET'],
+  origin: [
+    /localhost/,
+    /bdsmtools\.org/,
+    /.bdsmtools\.org/,
+  ],
+  maxAge: 300,
+}));
+app.use(session({
+  name: 'sessionID',
+  store: new MongoDBStore({
+    uri,
+    databaseName: MONGO_DB,
+    collection: 'user-sessions',
+    expires: 5.184e+9, // ~60 days
+  }),
+  secret: [
+    SESSION_KEY_V1
+  ],
+  resave: true,
+  saveUninitialized: true,
+  cookie: {
+    sameSite: 'Lax',
+    // secure: true,
+    httpOnly: true,
+    domain: SESSION_DOMAIN_OVERRIDE || '.bdsmtools.org',
+  }
+}));
+app.use(express.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.header('Cache-Control', 'public, max-age=86400'); // 24 hours
+  next();
 });
 
-app.get('/flag/enabled', async (req, res) => {
-  const collection = await db.collection('feature-flags');
-  const documents = await collection.limit(100).where('enabled', '==', true).get().docs;
-  const result = documents.map((doc) => doc.id);
+app.get('/flag/:id', getFlag);
 
-  res.status(200).json(result);
-});
+app.get('/flag/enabled', getEnabledFlags);
 
-/**
- * Responds to any HTTP request.
- *
- * @param {!express:Request} req HTTP request context.
- * @param {!express:Response} res HTTP response context.
- */
-exports.doProcess = app;
+module.exports = { app };
