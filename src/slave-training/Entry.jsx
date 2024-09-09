@@ -10,6 +10,7 @@ import api from '../services/slave-training-api';
 import TaskCountWarning from './stats/TaskCountWarning';
 import FinishTaskDialog from './task/FinishTaskDialog';
 import { usePrevious } from 'ahooks';
+import ReactGA from 'react-ga4';
 
 export default function Entry() {
   useAnalytics('Slave Training');
@@ -37,6 +38,8 @@ export default function Entry() {
   }, []);
 
   const completeTask = (daily = false) => (taskId, bonus) => {
+    ReactGA.event('task_complete', { daily, taskId, bonus });
+
     api.completeTask(taskId, bonus, daily)
       .then(setStats)
       .then(() => setFinish({ success: true }))
@@ -47,6 +50,8 @@ export default function Entry() {
   };
 
   const failTask = (daily = false) => (taskId, bonus) => {
+    ReactGA.event('task_fail', { daily, taskId, bonus });
+
     api.failTask(taskId, bonus, daily)
       .then(setStats)
       .then(() => setFinish({ success: false }))

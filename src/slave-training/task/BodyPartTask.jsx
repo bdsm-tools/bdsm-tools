@@ -7,6 +7,7 @@ import { hash } from '../../util';
 import { bodyParts } from '../../components/MyBodyParts';
 import { useLocalStorageState } from 'ahooks';
 import { CloseOutlined } from '@ant-design/icons';
+import ReactGA from 'react-ga4';
 
 export default function BodyPartTask({ completedTasks = [], failedTasks = [], onCompleteTask, onFailTask }) {
   const [tasks, setTasks] = useLocalStorageState('slave-task-random-body-part-task', {
@@ -17,6 +18,8 @@ export default function BodyPartTask({ completedTasks = [], failedTasks = [], on
   const [bodyPartState, setBodyPart] = React.useState(undefined);
 
   const getTask = (bodyPart) => {
+    ReactGA.event('task_generation_body_part', { bodyPart });
+
     setTasks((oldTasks) => ({
       ...oldTasks,
       [bodyPart]: {

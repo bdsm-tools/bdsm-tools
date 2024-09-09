@@ -112,6 +112,8 @@ function FeatureFlagLayout() {
   };
 
   const check = (cache) => {
+    ReactGA.event('feature_flag_check', { feature: params.id, cache });
+
     setFlag(null);
     if (cache) {
       return api.getFeatureFlag(params.id)

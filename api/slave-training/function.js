@@ -55,6 +55,16 @@ async function mongo (collection, func) {
     return await func((await client()).db(MONGO_DB).collection(collection));
 }
 
+async function updateStats(update) {
+  return await mongo('stats', (collection) => {
+    collection.updateOne(
+      { _id: 'slave-training' },
+      update,
+      { upsert: true }
+    )
+  });
+}
+
 const slaveTrainingTasks = (req, res) => {
   const equipment = req.cookies['my-equipment']?.split('|') ?? [];
   const bodyParts = req.cookies['body-parts']?.split('|') ?? [];
@@ -99,6 +109,8 @@ const slaveTrainingTasks = (req, res) => {
           res.status(200)
             .header('x-bdsmtools-slave-task-count', req.session.slaveTask.getTask.queryCount)
             .json(result);
+
+          await updateStats({ $inc: { [`randomTask.${bodyPart}`]: 1 } });
         }
       }
     },
@@ -141,6 +153,8 @@ const slaveTrainingTasks = (req, res) => {
           res.status(200)
             .header('x-bdsmtools-slave-task-count', req.session.slaveTask.getRandomTask.queryCount)
             .json(result);
+
+          await updateStats({ $inc: { [`randomTask.${undefined}`]: 1 } });
         }
       }
     },
@@ -192,6 +206,8 @@ const slaveTrainingTasks = (req, res) => {
             res.status(200)
               .header('x-bdsmtools-slave-task-count', req.session.slaveTask.getDailyTask.queryCount)
               .json(result);
+
+            await updateStats({ $inc: { dailyTask: 1 } });
           }
         }
       }
@@ -233,15 +249,20 @@ const completeTask = (isCompleted) => async (req, res) => {
     req.session.slaveTask.failedTasks.push({
       taskId,
       timestamp: moment().toISOString(),
+      daily,
     });
 
+    await updateStats({ $inc: { taskFail: 1, [`tasks.fail.${taskId}`]: 1 } });
   } else {
     if (!req.session?.slaveTask?.completedTasks)
       _.set(req.session, 'slaveTask.completedTasks', []);
 
-    const mostRecentTaskCompleted = moment(req.session?.slaveTask?.completedTasks[req.session?.slaveTask?.completedTasks.leave - 1]).startOf('day');
+    const dailyTasks = req.session?.slaveTask?.completedTasks?.filter((task) => !!task.daily) || [];
+    const mostRecentTaskCompleted = moment(dailyTasks[dailyTasks.length - 1].timestamp).startOf('day');
     if (mostRecentTaskCompleted.diff(moment().startOf('day'), 'days') === 1) {
       req.session.slaveTask.stats.dailyStreak++;
+
+      await updateStats({ $max: { dailyStreakHighScore: req.session.slaveTask.stats.dailyStreak } });
     } else {
       req.session.slaveTask.stats.dailyStreak = 0;
     }
@@ -251,8 +272,10 @@ const completeTask = (isCompleted) => async (req, res) => {
     req.session.slaveTask.completedTasks.push({
       taskId,
       timestamp: moment().toISOString(),
+      daily,
     });
 
+    await updateStats({ $inc: { taskSuccess: 1, [`tasks.success.${taskId}`]: 1 } });
   }
 
   await getStats(req, res);
