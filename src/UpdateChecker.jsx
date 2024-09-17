@@ -7,7 +7,7 @@ export default function UpdateChecker () {
 
   const { status, reloadPage } = useUpdateCheck({
     type: 'interval',
-    interval: 10000
+    interval: 3600000,
   });
 
   React.useEffect(() => {
@@ -15,9 +15,9 @@ export default function UpdateChecker () {
       notification.warn({
         message: 'New version available',
         description: `
-        You're using an old version of BDSM Tools. Not updating may cause 
-        unknown errors to occur. Plus, it means there's probably new features
-        you're missing out on.
+          You're using an old version of BDSM Tools. Not updating may cause 
+          unknown errors to occur. Plus, it means there's probably new features
+          you're missing out on.
         `,
         placement: 'bottomRight',
         duration: 0,
@@ -33,7 +33,7 @@ export default function UpdateChecker () {
           >
             Update now!
           </Button>
-        )
+        ),
       });
     }
   }, [status]);
