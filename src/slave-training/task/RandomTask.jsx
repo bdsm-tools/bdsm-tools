@@ -6,6 +6,7 @@ import api from '../../services/slave-training-api';
 import { hash } from '../../util';
 import { useLocalStorageState } from 'ahooks';
 import { ReloadOutlined } from '@ant-design/icons';
+import ReactGA from 'react-ga4';
 
 export default function RandomTask({ completedTasks = [], failedTasks = [], onCompleteTask, onFailTask }) {
   const [task, setTask] = useLocalStorageState('slave-task-random-task', {
@@ -14,6 +15,8 @@ export default function RandomTask({ completedTasks = [], failedTasks = [], onCo
   });
 
   const getTask = () => {
+    ReactGA.event('task_generation_random', {});
+
     setTask({ loading: true });
     api.getTask()
       .then((task) => setTask({

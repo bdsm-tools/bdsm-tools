@@ -43,6 +43,11 @@ jobs:
     - name: GCP Cloud Storage - Deploy
       run: gsutil -m cp -r ./dist/* gs://www.bdsmtools.org
 
+    - name: GCP Cloud Storage - Set Cache Control
+      run: |-
+        gcloud storage objects update gs://www.bdsmtools.org/index.html --cache-control=no-cache,no-store,max-age=0 && \
+        gcloud storage objects update gs://www.bdsmtools.org/version.json --cache-control=no-cache,no-store,max-age=0 &&
+
     - name: Add Scene Negotiation API Function
       run: |-
         cd api/scene-negotiation && gcloud functions deploy scene-negotiation \

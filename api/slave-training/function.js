@@ -55,6 +55,16 @@ async function mongo (collection, func) {
     return await func((await client()).db(MONGO_DB).collection(collection));
 }
 
+async function updateStats(update) {
+  return await mongo('stats', (collection) => {
+    collection.updateOne(
+      { _id: 'slave-training' },
+      update,
+      { upsert: true }
+    )
+  });
+}
+
 const slaveTrainingTasks = (req, res) => {
   const equipment = req.cookies['my-equipment']?.split('|') ?? [];
   const bodyParts = req.cookies['body-parts']?.split('|') ?? [];
@@ -99,6 +109,8 @@ const slaveTrainingTasks = (req, res) => {
           res.status(200)
             .header('x-bdsmtools-slave-task-count', req.session.slaveTask.getTask.queryCount)
             .json(result);
+
+          await updateStats({ $inc: { [`randomTask.${bodyPart}`]: 1 } });
         }
       }
     },
@@ -141,6 +153,8 @@ const slaveTrainingTasks = (req, res) => {
           res.status(200)
             .header('x-bdsmtools-slave-task-count', req.session.slaveTask.getRandomTask.queryCount)
             .json(result);
+
+          await updateStats({ $inc: { [`randomTask.${undefined}`]: 1 } });
         }
       }
     },
@@ -192,6 +206,8 @@ const slaveTrainingTasks = (req, res) => {
             res.status(200)
               .header('x-bdsmtools-slave-task-count', req.session.slaveTask.getDailyTask.queryCount)
               .json(result);
+
+            await updateStats({ $inc: { dailyTask: 1 } });
           }
         }
       }
@@ -233,15 +249,25 @@ const completeTask = (isCompleted) => async (req, res) => {
     req.session.slaveTask.failedTasks.push({
       taskId,
       timestamp: moment().toISOString(),
+      daily,
     });
 
+    await updateStats({ $inc: {
+      taskFail: 1,
+      dailyTaskFail: daily ? 1 : 0,
+      [`tasks.fail.${taskId}.standard`]: 1,
+      [`tasks.fail.${taskId}.bonus`]: bonus ? 1 : 0,
+    } });
   } else {
     if (!req.session?.slaveTask?.completedTasks)
       _.set(req.session, 'slaveTask.completedTasks', []);
 
-    const mostRecentTaskCompleted = moment(req.session?.slaveTask?.completedTasks[req.session?.slaveTask?.completedTasks.leave - 1]).startOf('day');
+    const dailyTasks = req.session?.slaveTask?.completedTasks?.filter((task) => !!task.daily) || [];
+    const mostRecentTaskCompleted = moment(dailyTasks[dailyTasks.length - 1].timestamp).startOf('day');
     if (mostRecentTaskCompleted.diff(moment().startOf('day'), 'days') === 1) {
       req.session.slaveTask.stats.dailyStreak++;
+
+      await updateStats({ $max: { dailyStreakHighScore: req.session.slaveTask.stats.dailyStreak } });
     } else {
       req.session.slaveTask.stats.dailyStreak = 0;
     }
@@ -251,11 +277,38 @@ const completeTask = (isCompleted) => async (req, res) => {
     req.session.slaveTask.completedTasks.push({
       taskId,
       timestamp: moment().toISOString(),
+      daily,
     });
 
+    await updateStats({ $inc: {
+      taskSuccess: 1,
+      dailyTaskSuccess: daily ? 1 : 0,
+      [`tasks.success.${taskId}.standard`]: 1,
+      [`tasks.success.${taskId}.bonus`]: bonus ? 1 : 0,
+    } });
   }
 
   await getStats(req, res);
+};
+
+const getTaskStats = async (req, res) => {
+  const { id: taskId } = req.query;
+
+  const taskStats = await mongo('stats', (collection) => {
+    const stats = collection.findOne({ _id: 'slave-training' });
+
+    const successes = stats?.tasks?.success??[taskId]?.standard ?? 0;
+    const failures = stats?.tasks?.fail??[taskId]?.standard ?? 0;
+    const successesWithBonus = stats?.tasks?.success??[taskId]?.bonus ?? 0;
+    const failuresWithBonus = stats?.tasks?.fail??[taskId]?.bonus ?? 0;
+
+    const successRate = successes + failures === 0 ? -1 : (successes / (successes + failures)).toFixed(2);
+    const successRateWithBonus = successesWithBonus + failuresWithBonus === 0 ? -1 : (successesWithBonus / (successesWithBonus + failuresWithBonus)).toFixed(2);
+
+    return { successRate, successRateWithBonus }
+  });
+
+  res.status(200).json(taskStats);
 };
 
 const app = express();
@@ -293,6 +346,7 @@ app.use(session({
 app.use(cookieParser());
 app.get('/stats', getStats);
 app.get('/task', getTask);
+app.get('/task/stats', getTaskStats);
 app.get('/daily-task', getDailyTask);
 app.post('/complete-task', requireSession(completeTask(true)));
 app.post('/fail-task', requireSession(completeTask(false)));
