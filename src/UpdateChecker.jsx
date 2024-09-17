@@ -1,6 +1,7 @@
 import React from 'react';
 import { useUpdateCheck } from 'react-update-notification';
 import { Button, notification } from 'antd';
+import ReactGA from 'react-ga4';
 
 const key = 'update';
 export default function UpdateChecker () {
@@ -27,6 +28,7 @@ export default function UpdateChecker () {
             type="primary"
             size="small"
             onClick={() => {
+              ReactGA.event('new_version_reload');
               notification.close(key);
               reloadPage();
             }}
