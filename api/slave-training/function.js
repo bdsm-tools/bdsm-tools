@@ -252,7 +252,12 @@ const completeTask = (isCompleted) => async (req, res) => {
       daily,
     });
 
-    await updateStats({ $inc: { taskFail: 1, [`tasks.fail.${taskId}`]: 1 } });
+    await updateStats({ $inc: {
+      taskFail: 1,
+      dailyTaskFail: daily ? 1 : 0,
+      [`tasks.fail.${taskId}.standard`]: 1,
+      [`tasks.fail.${taskId}.bonus`]: bonus ? 1 : 0,
+    } });
   } else {
     if (!req.session?.slaveTask?.completedTasks)
       _.set(req.session, 'slaveTask.completedTasks', []);
@@ -275,10 +280,35 @@ const completeTask = (isCompleted) => async (req, res) => {
       daily,
     });
 
-    await updateStats({ $inc: { taskSuccess: 1, [`tasks.success.${taskId}`]: 1 } });
+    await updateStats({ $inc: {
+      taskSuccess: 1,
+      dailyTaskSuccess: daily ? 1 : 0,
+      [`tasks.success.${taskId}.standard`]: 1,
+      [`tasks.success.${taskId}.bonus`]: bonus ? 1 : 0,
+    } });
   }
 
   await getStats(req, res);
+};
+
+const getTaskStats = async (req, res) => {
+  const { id: taskId } = req.query;
+
+  const taskStats = await mongo('stats', (collection) => {
+    const stats = collection.findOne({ _id: 'slave-training' });
+
+    const successes = stats?.tasks?.success??[taskId]?.standard ?? 0;
+    const failures = stats?.tasks?.fail??[taskId]?.standard ?? 0;
+    const successesWithBonus = stats?.tasks?.success??[taskId]?.bonus ?? 0;
+    const failuresWithBonus = stats?.tasks?.fail??[taskId]?.bonus ?? 0;
+
+    const successRate = successes + failures === 0 ? -1 : (successes / (successes + failures)).toFixed(2);
+    const successRateWithBonus = successesWithBonus + failuresWithBonus === 0 ? -1 : (successesWithBonus / (successesWithBonus + failuresWithBonus)).toFixed(2);
+
+    return { successRate, successRateWithBonus }
+  });
+
+  res.status(200).json(taskStats);
 };
 
 const app = express();
@@ -316,6 +346,7 @@ app.use(session({
 app.use(cookieParser());
 app.get('/stats', getStats);
 app.get('/task', getTask);
+app.get('/task/stats', getTaskStats);
 app.get('/daily-task', getDailyTask);
 app.post('/complete-task', requireSession(completeTask(true)));
 app.post('/fail-task', requireSession(completeTask(false)));

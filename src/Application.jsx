@@ -13,6 +13,7 @@ import NegotiationFormWrapper from './scene-negotiation/NegotiationFormWrapper';
 import ViewingTemplates from './scene-negotiation/ViewingTemplates';
 import api from './services/feature-flag-api';
 import { convertMongoTimestamp } from './util';
+import UpdateChecker from './UpdateChecker';
 
 ReactGA.initialize('G-SKBSEEBLCP');
 
@@ -66,31 +67,34 @@ export default function Application () {
         </Route>
       </Routing>
     </Router>
-  )
+  );
 }
 
 function AppLayout () {
   return (
-    <Layout className="fullpage hideoverflow">
-      <Layout.Header className="header">
-        <Header/>
-      </Layout.Header>
-      <Layout.Content className="fullpage-w" style={{ paddingTop: 64 }}>
-        <Layout>
-          <Layout.Sider width={250}>
-            <NavMenu vertical/>
-          </Layout.Sider>
-          <Layout.Content className="content">
-            <React.Suspense fallback={<Spin size="large"/>}>
-              <Alert.ErrorBoundary>
-                <Outlet/>
-              </Alert.ErrorBoundary>
-            </React.Suspense>
-          </Layout.Content>
-        </Layout>
-      </Layout.Content>
-    </Layout>
-  )
+    <>
+      <Layout className="fullpage hideoverflow">
+        <Layout.Header className="header">
+          <Header/>
+        </Layout.Header>
+        <Layout.Content className="fullpage-w" style={{ paddingTop: 64 }}>
+          <Layout>
+            <Layout.Sider width={250}>
+              <NavMenu vertical/>
+            </Layout.Sider>
+            <Layout.Content className="content">
+              <React.Suspense fallback={<Spin size="large"/>}>
+                <Alert.ErrorBoundary>
+                  <Outlet/>
+                </Alert.ErrorBoundary>
+              </React.Suspense>
+            </Layout.Content>
+          </Layout>
+        </Layout.Content>
+      </Layout>
+      <UpdateChecker/>
+    </>
+  );
 }
 
 function FeatureFlagLayout() {
