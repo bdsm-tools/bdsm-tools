@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader, Col, Row, Divider, notification } from 'antd';
+import { PageHeader, Col, Row, Divider, notification, Alert } from 'antd';
 import useAnalytics from '../hooks/useAnalytics'
 import DailyTask from './task/DailyTask';
 import TaskStats from './stats/TaskStats';
@@ -65,6 +65,10 @@ export default function Entry() {
     <React.Fragment>
       <PageHeader
         title={'Slave Training'}
+        subTitle={<Alert
+          message={`Currently limited tasks - more a being written all the time`}
+          type='warning'
+        />}
         // onBack={params.type ? () => navigate('.') : undefined}
       />
         <div>
