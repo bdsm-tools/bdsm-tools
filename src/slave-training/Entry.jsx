@@ -65,10 +65,12 @@ export default function Entry() {
     <React.Fragment>
       <PageHeader
         title={'Slave Training'}
-        subTitle={<Alert
-          message={`Currently limited tasks - more a being written all the time`}
-          type='warning'
-        />}
+        subTitle={(
+          <Alert
+            message={`Currently limited tasks - more a being written all the time`}
+            type='warning'
+          />
+        )}
         // onBack={params.type ? () => navigate('.') : undefined}
       />
         <div>

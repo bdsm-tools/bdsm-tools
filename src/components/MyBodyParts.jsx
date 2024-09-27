@@ -27,6 +27,9 @@ export const bodyParts = [
   },{
     'label': 'Balls',
     'value': 'balls',
+  },{
+    'label': 'Clothing',
+    'value': 'clothing',
   },
 ].sort(alphabeticalSort(({ label }) => label));
 
