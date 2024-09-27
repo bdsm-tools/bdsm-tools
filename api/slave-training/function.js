@@ -263,7 +263,7 @@ const completeTask = (isCompleted) => async (req, res) => {
       _.set(req.session, 'slaveTask.completedTasks', []);
 
     const dailyTasks = req.session?.slaveTask?.completedTasks?.filter((task) => !!task.daily) || [];
-    const mostRecentTaskCompleted = daily.length > 0 ? moment(dailyTasks[dailyTasks.length - 1].timestamp).startOf('day') : undefined;
+    const mostRecentTaskCompleted = dailyTasks.length > 0 ? moment(dailyTasks[dailyTasks.length - 1].timestamp).startOf('day') : undefined;
     if (mostRecentTaskCompleted && mostRecentTaskCompleted.diff(moment().startOf('day'), 'days') === 1) {
       req.session.slaveTask.stats.dailyStreak++;
 
