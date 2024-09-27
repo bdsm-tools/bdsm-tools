@@ -31,12 +31,6 @@ const SceneNegotiationEntry = React.lazy(
       /* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry'
     ),
 );
-const SceneNegotiationEntry = React.lazy(
-  () =>
-    import(
-      /* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry'
-    ),
-);
 
 const ScenarioPickerEntry = React.lazy(
   () =>
@@ -51,19 +45,7 @@ const SlaveTrainingEntry = React.lazy(
       /* webpackChunkName: "SlaveTraining", webpackPrefetch: true */ './slave-training/Entry'
     ),
 );
-const ScenarioPickerEntry = React.lazy(
-  () =>
-    import(
-      /* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry'
-    ),
-);
 
-const AboutEntry = React.lazy(
-  () =>
-    import(
-      /* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry'
-    ),
-);
 const TubePlannerEntry = React.lazy(
   () =>
     import(

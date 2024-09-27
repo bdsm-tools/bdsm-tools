@@ -1,33 +1,30 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "es2020": true,
-    "node": true,
+  env: {
+    browser: true,
+    es2020: true,
+    node: true,
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:css-modules/recommended"
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:css-modules/recommended',
   ],
-  "parserOptions": {
-    "ecmaFeatures": {
-      "jsx": true
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: true,
     },
-    "ecmaVersion": 11,
-    "sourceType": "module"
+    ecmaVersion: 11,
+    sourceType: 'module',
   },
-  "plugins": [
-    "react",
-    "css-modules"
-  ],
-  "settings": {
-    "react": {
-      "version": "18"
-    }
+  plugins: ['react', 'css-modules'],
+  settings: {
+    react: {
+      version: '18',
+    },
   },
-  "rules": {
-    "react/prop-types": ["off"],
-    "react/no-unescaped-entities": ["off"],
-    "react/display-name": ["off"],
-  }
+  rules: {
+    'react/prop-types': ['off'],
+    'react/no-unescaped-entities': ['off'],
+    'react/display-name': ['off'],
+  },
 };

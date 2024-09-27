@@ -40,11 +40,11 @@ export default function NavMenu({ vertical }) {
           <Menu.Item key='bdsm-scenarios' icon={<ProfileOutlined />}>
             <Link to='/tools/bdsm-scenarios'>Scenario Picker</Link>
           </Menu.Item>
-          <Menu.Item key='tube-planner' icon={<EditOutlined />}>
-            <Link to='/tools/tube-planner'>Tube Clamp Planner</Link>
-          </Menu.Item>
           <Menu.Item key='slave-training' icon={<TeamOutlined />}>
             <Link to='/tools/slave-training'>Slave Training</Link>
+          </Menu.Item>
+          <Menu.Item key='tube-planner' icon={<EditOutlined />}>
+            <Link to='/tools/tube-planner'>Tube Clamp Planner</Link>
           </Menu.Item>
         </Menu.SubMenu>
         <Menu.SubMenu key='about' title='About' icon={<BulbOutlined />}>
