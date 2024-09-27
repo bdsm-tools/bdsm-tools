@@ -10,10 +10,11 @@ module.exports = {
       url: false,
       http: false,
       https: false,
-      buffer: false,
-    },
-    alias: {
-      process: 'process/browser',
+      buffer: require.resolve('buffer'),
+      crypto: require.resolve('crypto-browserify'),
+      stream: require.resolve('stream-browserify'),
+      vm: require.resolve('vm-browserify'),
+      'process/browser': require.resolve('process/browser'),
     },
   },
 
@@ -136,6 +137,9 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new webpack.ids.HashedModuleIdsPlugin(),
+    new webpack.ProvidePlugin({
+      Buffer: ['buffer', 'Buffer'],
+    }),
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),

@@ -16,44 +16,44 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
 
   return (
     <group ref={groupRef} position={position}>
-    <group ref={tubeRotateRef}>
-      <Tube
-        id={tube.id}
-        tube={tube.node}
-        length={tube.node.length}
-        size={size}
-      />
-      {tube.children.middle
-        ?.map((id) => chain[id])
-        .map((middle, index) => (
+      <group ref={tubeRotateRef}>
+        <Tube
+          id={tube.id}
+          tube={tube.node}
+          length={tube.node.length}
+          size={size}
+        />
+        {tube.children.middle
+          ?.map((id) => chain[id])
+          .map((middle, index) => (
+            <ChainNode
+              chain={chain}
+              key={middle.id}
+              connection={middle}
+              position={[0, middle.node.position, 0]}
+              rotation={{ y: middle.node.rotation }}
+              size={size}
+            />
+          ))}
+        {end1 && (
           <ChainNode
             chain={chain}
-            key={middle.id}
-            connection={middle}
-            position={[0, middle.node.position, 0]}
-            rotation={{ y: middle.node.rotation }}
+            connection={chain[end1]}
+            position={[0, tube.node.length, 0]}
+            rotation={{ x: 180, y: chain[end1]?.node?.rotation || 0 }}
             size={size}
           />
-        ))}
-      {end1 && (
-        <ChainNode
-          chain={chain}
-          connection={chain[end1]}
-          position={[0, tube.node.length, 0]}
-          rotation={{ x: 180, y: chain[end1]?.node?.rotation || 0 }}
-          size={size}
-        />
-      )}
-      {end2 && (
-        <ChainNode
-          chain={chain}
-          connection={chain[end2]}
-          position={[0, 0, 0]}
-          rotation={{ x: 0, y: chain[end2]?.node?.rotation || 0 }}
-          size={size}
-        />
-      )}
-    </group>
+        )}
+        {end2 && (
+          <ChainNode
+            chain={chain}
+            connection={chain[end2]}
+            position={[0, 0, 0]}
+            rotation={{ x: 0, y: chain[end2]?.node?.rotation || 0 }}
+            size={size}
+          />
+        )}
+      </group>
     </group>
   );
 };

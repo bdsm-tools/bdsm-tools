@@ -9,6 +9,8 @@ import {
   InfoCircleOutlined,
   HomeOutlined,
   BulbOutlined,
+  ProfileOutlined,
+  TeamOutlined,
   EditOutlined,
 } from '@ant-design/icons';
 import MenuUnfoldOutlined from '@ant-design/icons/lib/icons/MenuUnfoldOutlined';
@@ -35,11 +37,14 @@ export default function NavMenu({ vertical }) {
           <Menu.Item key='scene-negotiation' icon={<FileDoneOutlined />}>
             <Link to='/tools/scene-negotiation'>Scene Negotiation</Link>
           </Menu.Item>
-          <Menu.Item key='bdsm-scenarios' icon={<FileDoneOutlined />}>
+          <Menu.Item key='bdsm-scenarios' icon={<ProfileOutlined />}>
             <Link to='/tools/bdsm-scenarios'>Scenario Picker</Link>
           </Menu.Item>
           <Menu.Item key='tube-planner' icon={<EditOutlined />}>
             <Link to='/tools/tube-planner'>Tube Clamp Planner</Link>
+          </Menu.Item>
+          <Menu.Item key='slave-training' icon={<TeamOutlined />}>
+            <Link to='/tools/slave-training'>Slave Training</Link>
           </Menu.Item>
         </Menu.SubMenu>
         <Menu.SubMenu key='about' title='About' icon={<BulbOutlined />}>

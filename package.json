@@ -1,14 +1,17 @@
 {
   "name": "bdsm-tools",
-  "version": "1.2.6",
+  "version": "1.3.2",
   "description": "BDSM Tools Web Application",
   "main": "index.js",
   "scripts": {
-    "start": "webpack serve --config webpack-dev.config.js --progress --bail",
-    "build": "webpack --config webpack-prod.config.js --bail",
+    "start": "webpack serve --config webpack-local.config.js --progress --bail",
+    "build": "webpack --config webpack-prod.config.js --bail && npm run update-version",
+    "test-build": "webpack --config webpack-dev.config.js --bail && npm run update-version",
     "test": "npm run lint && npm run test-compile",
     "test-compile": "webpack --config webpack-common.config.js --bail --mode development",
-    "lint": "jshint src/",
+    "lint:fix": "npm run lint -- --fix",
+    "update-version": "generate-version -s package -b dist",
+    "lint": "jshint src/ && eslint './**/*.{js,jsx}'",
     "format": "prettier . --write"
   },
   "author": "keepsafemaster",
@@ -22,6 +25,9 @@
     "clean-webpack-plugin": "4.0.0",
     "compression-webpack-plugin": "11.1.0",
     "css-loader": "7.1.2",
+    "eslint": "8.52.0",
+    "eslint-plugin-css-modules": "2.12.0",
+    "eslint-plugin-react": "7.33.2",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "5.6.0",
     "jshint": "^2.13.6",
@@ -41,6 +47,7 @@
   "dependencies": {
     "@ant-design/icons": "4.8.3",
     "@babel/runtime": "7.24.7",
+    "@hirohe/react-watermark": "0.5.0",
     "@jsonforms/core": "3.3.0",
     "@jsonforms/react": "3.3.0",
     "@jsonforms/vanilla-renderers": "3.3.0",
@@ -49,9 +56,13 @@
     "@react-three/fiber": "8.16.8",
     "@react-three/postprocessing": "^2.16.2",
     "@tweenjs/tween.js": "23.1.2",
-    "ahooks": "^3.8.0",
+    "ahooks": "3.8.0",
     "antd": "4.24.16",
-    "immer": "^10.1.1",
+    "axios": "1.7.4",
+    "buffer": "6.0.3",
+    "crypto-browserify": "3.12.0",
+    "crypto-js": "4.2.0",
+    "immer": "10.1.1",
     "js-cookie": "3.0.5",
     "leva": "0.9.35",
     "lodash": "4.17.21",
@@ -65,8 +76,11 @@
     "react-ga4": "2.1.0",
     "react-linkify": "1.0.0-alpha",
     "react-router-dom": "6.23.1",
+    "react-update-notification": "1.2.0",
+    "stream-browserify": "3.0.0",
     "three": "0.165.0",
     "uuid": "9.0.1",
-    "zustand": "^4.5.2"
+    "vm-browserify": "1.1.2",
+    "zustand": "4.5.2"
   }
 }

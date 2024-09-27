@@ -11,8 +11,16 @@ const takeSnapshot = (canvas) =>
       ?.getElementsByTagName('canvas')[0]
   )?.toDataURL('image/png');
 
-export default function SceneControls({ scene: propsScene, setScene: propsSetScene, basicOnly = false }) {
-  const { scene: storeScene, setScene: storeSetScene, canvasData } = useSceneStore();
+export default function SceneControls({
+  scene: propsScene,
+  setScene: propsSetScene,
+  basicOnly = false,
+}) {
+  const {
+    scene: storeScene,
+    setScene: storeSetScene,
+    canvasData,
+  } = useSceneStore();
 
   const scene = propsScene ?? storeScene;
   const setScene = propsSetScene ?? storeSetScene;

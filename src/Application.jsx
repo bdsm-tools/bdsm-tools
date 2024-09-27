@@ -13,16 +13,24 @@ import ReactGA from 'react-ga4';
 import Header from './Header';
 import NavMenu from './NavMenu';
 import ConsentModal from './ConsentModal';
+import { convertMongoTimestamp } from './util';
+import UpdateChecker from './UpdateChecker';
+import api from './services/feature-flag-api';
 import ScenarioTable from './scenario-picker/ScenarioTable';
 import ScenarioEntry from './scenario-picker/ScenarioEntry';
 import NegotiationFormWrapper from './scene-negotiation/NegotiationFormWrapper';
 import ViewingTemplates from './scene-negotiation/ViewingTemplates';
-import api from './services/feature-flag-api';
 import TubePlanViewer from './tube-clamp-planner/TubePlanViewer';
 import TubePlannerDashboard from './tube-clamp-planner/TubePlannerDashboard';
 
 ReactGA.initialize('G-SKBSEEBLCP');
 
+const SceneNegotiationEntry = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SceneNegotiation", webpackPrefetch: true */ './scene-negotiation/Entry'
+    ),
+);
 const SceneNegotiationEntry = React.lazy(
   () =>
     import(
@@ -37,6 +45,25 @@ const ScenarioPickerEntry = React.lazy(
     ),
 );
 
+const SlaveTrainingEntry = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "SlaveTraining", webpackPrefetch: true */ './slave-training/Entry'
+    ),
+);
+const ScenarioPickerEntry = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "ScenarioPicker", webpackPrefetch: true */ './scenario-picker/Entry'
+    ),
+);
+
+const AboutEntry = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "About", webpackPrefetch: true */ './about/Entry'
+    ),
+);
 const TubePlannerEntry = React.lazy(
   () =>
     import(
@@ -80,6 +107,7 @@ export default function Application() {
               <Route index element={<ScenarioTable />} />
               <Route path=':type' element={<ScenarioEntry />} />
             </Route>
+            <Route path='slave-training' element={<SlaveTrainingEntry />} />
             <Route path='tube-planner' element={<TubePlannerEntry />}>
               <Route index element={<TubePlannerDashboard />} />
               <Route path=':sceneId' element={<TubePlanViewer />} />
@@ -93,25 +121,28 @@ export default function Application() {
 
 function AppLayout() {
   return (
-    <Layout className='fullpage hideoverflow'>
-      <Layout.Header className='header'>
-        <Header />
-      </Layout.Header>
-      <Layout.Content className='fullpage-w' style={{ paddingTop: 64 }}>
-        <Layout>
-          <Layout.Sider width={250}>
-            <NavMenu vertical />
-          </Layout.Sider>
-          <Layout.Content className='content'>
-            <React.Suspense fallback={<Spin size='large' />}>
-              <Alert.ErrorBoundary>
-                <Outlet />
-              </Alert.ErrorBoundary>
-            </React.Suspense>
-          </Layout.Content>
-        </Layout>
-      </Layout.Content>
-    </Layout>
+    <>
+      <Layout className='fullpage hideoverflow'>
+        <Layout.Header className='header'>
+          <Header />
+        </Layout.Header>
+        <Layout.Content className='fullpage-w' style={{ paddingTop: 64 }}>
+          <Layout>
+            <Layout.Sider width={250}>
+              <NavMenu vertical />
+            </Layout.Sider>
+            <Layout.Content className='content'>
+              <React.Suspense fallback={<Spin size='large' />}>
+                <Alert.ErrorBoundary>
+                  <Outlet />
+                </Alert.ErrorBoundary>
+              </React.Suspense>
+            </Layout.Content>
+          </Layout>
+        </Layout.Content>
+      </Layout>
+      <UpdateChecker />
+    </>
   );
 }
 
@@ -128,15 +159,15 @@ function FeatureFlagLayout() {
     console.error(e);
     setFlag({
       enabled: false,
-      lastChanged: {
-        _seconds: moment().seconds(),
-      },
+      lastChanged: moment(),
       reason:
         'An error occurred when fetching this feature flag. Check the console for more details.',
     });
   };
 
   const check = (cache) => {
+    ReactGA.event('feature_flag_check', { feature: params.id, cache });
+
     setFlag(null);
     if (cache) {
       return api.getFeatureFlag(params.id).then(setFlag).catch(error);
@@ -152,9 +183,9 @@ function FeatureFlagLayout() {
   if (!flag || id !== params.id) return <Spin size='large' />;
   if (flag.enabled) return <Outlet />;
 
-  const time = moment
-    .utc(flag.lastChanged._seconds * 1000)
-    .format('Do MMMM YYYY [at] hh:mm:ss');
+  const time = convertMongoTimestamp(flag.lastChanged).format(
+    'Do MMMM YYYY [at] hh:mm:ss',
+  );
   return (
     <Result
       status='error'

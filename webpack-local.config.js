@@ -1,3 +1,4 @@
+const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
@@ -21,9 +22,6 @@ module.exports = merge(common, {
     historyApiFallback: {
       index: '/',
     },
-    client: {
-      overlay: false,
-    },
   },
 
   devtool: 'inline-cheap-source-map',
@@ -38,9 +36,7 @@ module.exports = merge(common, {
         FEATURE_FLAG_API_ROOT: JSON.stringify(
           'https://feature-flag.api.test.bdsmtools.org',
         ),
-        SLAVE_TRAINING_API_ROOT: JSON.stringify(
-          'https://slave-training.api.test.bdsmtools.org',
-        ),
+        SLAVE_TRAINING_API_ROOT: JSON.stringify('http://localhost:3300'),
       },
     }),
     new WebpackCdnPlugin({

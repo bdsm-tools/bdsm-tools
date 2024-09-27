@@ -36,10 +36,13 @@ module.exports = merge(common, {
       'process.env': {
         VERSION: JSON.stringify(version),
         SCENE_NEGOTIATION_API_ROOT: JSON.stringify(
-          'https://europe-west2-bdsm-tools.cloudfunctions.net/scene-negotiation',
+          'https://scene-negotiation.api.bdsmtools.org',
         ),
         FEATURE_FLAG_API_ROOT: JSON.stringify(
-          'https://europe-west2-bdsm-tools.cloudfunctions.net/feature-flag',
+          'https://feature-flag.api.bdsmtools.org',
+        ),
+        SLAVE_TRAINING_API_ROOT: JSON.stringify(
+          'https://slave-training.api.bdsmtools.org',
         ),
       },
     }),

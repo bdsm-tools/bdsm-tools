@@ -43,7 +43,7 @@ export default function TubePlanCard({ sceneId, onDelete }) {
           </Tooltip>
           <Tooltip title='Delete'>
             <Popconfirm
-              title="Are you sure to delete this design?"
+              title='Are you sure to delete this design?'
               onConfirm={() => {
                 onDelete();
                 localStorage.removeItem(`tube-plan-${sceneId}`);
@@ -53,14 +53,14 @@ export default function TubePlanCard({ sceneId, onDelete }) {
                 });
               }}
               okType='danger'
-              okText="Delete"
-              cancelText="Cancel"
+              okText='Delete'
+              cancelText='Cancel'
             >
-            <Button
-              shape='circle'
-              icon={<DeleteOutlined />}
-              style={{ marginLeft: 5 }}
-            />
+              <Button
+                shape='circle'
+                icon={<DeleteOutlined />}
+                style={{ marginLeft: 5 }}
+              />
             </Popconfirm>
           </Tooltip>
         </>
@@ -73,7 +73,7 @@ export default function TubePlanCard({ sceneId, onDelete }) {
       </Typography>
       {tubePlan.previewImage && (
         <div style={{ aspectRatio: 3 / 2, overflowY: 'auto' }}>
-          <Image width='100%' height="100%" src={tubePlan.previewImage} />
+          <Image width='100%' height='100%' src={tubePlan.previewImage} />
         </div>
       )}
       {!tubePlan.previewImage && (

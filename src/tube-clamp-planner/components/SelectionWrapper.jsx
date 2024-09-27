@@ -33,10 +33,13 @@ const SelectionWrapper = React.forwardRef(({ children }, ref) => {
 
   const selectionStore = useSelectionStore();
 
-  React.useEffect(() => () => {
-    selectionStore.setSelectedNode(undefined);
-    selectionStore.setSelectedNode(undefined);
-  }, []);
+  React.useEffect(
+    () => () => {
+      selectionStore.setSelectedNode(undefined);
+      selectionStore.setSelectedNode(undefined);
+    },
+    [],
+  );
 
   return (
     <Select ref={ref} filter={filter}>

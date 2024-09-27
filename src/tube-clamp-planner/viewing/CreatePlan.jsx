@@ -55,7 +55,11 @@ export default function CreatePlan({ onCreate }) {
         onOk={create}
         onCancel={onClose}
       >
-        <SceneControls scene={scene} setScene={(data) => setScene((old) => ({ ...old, ...data }))} basicOnly />
+        <SceneControls
+          scene={scene}
+          setScene={(data) => setScene((old) => ({ ...old, ...data }))}
+          basicOnly
+        />
         <div style={{ marginTop: 40, marginBottom: -20 }}>
           <Typography.Text type='secondary'>
             You can change all these values later
