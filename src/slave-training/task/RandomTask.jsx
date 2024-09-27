@@ -50,7 +50,7 @@ export default function RandomTask({ completedTasks = [], failedTasks = [], onCo
           </Tooltip>
         )}
         task={task}
-        randomNumber={parseInt(hash(moment().format('YYYY-MM-DD')))}
+        randomNumber={parseInt(hash(task.generatedOn))}
         onCompleteTask={onCompleteTask}
         onFailTask={onFailTask}
         isCompleted={!!completedTasks.find(({ taskId }) => taskId === task._id)}
