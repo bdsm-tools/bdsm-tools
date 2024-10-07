@@ -6,13 +6,15 @@ export default function ProvideFeedback({
   feedbackPrompt,
   feedbackContext = Math.random(),
   onSendFeedback,
-  quickResponses = []
+  quickResponses = [],
 }) {
-
   const [open, setOpen] = React.useState(false);
   const [feedback, setFeedback] = React.useState('');
   const [checkedQuickResponses, setCheckedQuickResponses] = React.useState([]);
-  const [rating, setRating] = useLocalStorageState(`feedback-${feedbackContext}`, { deserializer: Number });
+  const [rating, setRating] = useLocalStorageState(
+    `feedback-${feedbackContext}`,
+    { deserializer: Number },
+  );
 
   return (
     <>
@@ -35,9 +37,10 @@ export default function ProvideFeedback({
           setOpen(false);
           onSendFeedback({
             rating,
-            feedback: checkedQuickResponses.length > 0
-              ? `${feedback}\n${checkedQuickResponses.map(text => ` - ${text}`).join('\n')}`
-              : feedback,
+            feedback:
+              checkedQuickResponses.length > 0
+                ? `${feedback}\n${checkedQuickResponses.map((text) => ` - ${text}`).join('\n')}`
+                : feedback,
           });
         }}
         onCancel={() => {
@@ -47,11 +50,7 @@ export default function ProvideFeedback({
           });
         }}
       >
-        <Rate
-          value={rating}
-          onChange={setRating}
-          allowClear={false}
-        />
+        <Rate value={rating} onChange={setRating} allowClear={false} />
 
         <Input.TextArea
           rows={4}
@@ -71,5 +70,5 @@ export default function ProvideFeedback({
         )}
       </Modal>
     </>
-  )
+  );
 }

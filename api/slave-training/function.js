@@ -343,8 +343,8 @@ const completeTask = (isCompleted) => async (req, res) => {
         dailyTaskFail: daily ? 1 : 0,
         [`tasks.fail.${taskId}.standard`]: 1,
         [`tasks.fail.${taskId}.bonus`]: bonus ? 1 : 0,
-      [`tasks.fail.${taskId}.daily`]: daily ? 1 : 0,
-    },
+        [`tasks.fail.${taskId}.daily`]: daily ? 1 : 0,
+      },
     });
   } else {
     if (!req.session?.slaveTask?.completedTasks)
@@ -353,10 +353,14 @@ const completeTask = (isCompleted) => async (req, res) => {
     const dailyTasks =
       req.session?.slaveTask?.completedTasks?.filter((task) => !!task.daily) ||
       [];
-    const mostRecentTaskCompleted = dailyTasks.length > 0 ? moment(
-      dailyTasks[dailyTasks.length - 1].timestamp,
-    ).startOf('day') : undefined;
-    if (mostRecentTaskCompleted && mostRecentTaskCompleted.diff(moment().startOf('day'), 'days') === 1) {
+    const mostRecentTaskCompleted =
+      dailyTasks.length > 0
+        ? moment(dailyTasks[dailyTasks.length - 1].timestamp).startOf('day')
+        : undefined;
+    if (
+      mostRecentTaskCompleted &&
+      mostRecentTaskCompleted.diff(moment().startOf('day'), 'days') === 1
+    ) {
       req.session.slaveTask.stats.dailyStreak++;
 
       await updateStats({
@@ -381,8 +385,8 @@ const completeTask = (isCompleted) => async (req, res) => {
         dailyTaskSuccess: daily ? 1 : 0,
         [`tasks.success.${taskId}.standard`]: 1,
         [`tasks.success.${taskId}.bonus`]: bonus ? 1 : 0,
-      [`tasks.success.${taskId}.daily`]: daily ? 1 : 0,
-    },
+        [`tasks.success.${taskId}.daily`]: daily ? 1 : 0,
+      },
     });
   }
 
@@ -437,27 +441,29 @@ const giveFeedback = async (req, res) => {
   });
 
   await mongo('slave-training-tasks', (collection) => {
-    collection.updateOne(
-      { _id: id },
-      [
-        {
-          $set: {
-            "rating.count": { $add: [{ $ifNull: ["$rating.count", 0] }, 1] },
-            "rating.average": {
-              $divide: [
-                {
-                  $add: [
-                    { $multiply: [{ $ifNull: ["$rating.average", 0] }, { $ifNull: ["$rating.count", 0] }] },
-                    Number(rating),
-                  ]
-                },
-                { $add: [{ $ifNull: ["$rating.count", 0] }, 1] }
-              ]
-            }
-          }
-        }
-      ],
-    );
+    collection.updateOne({ _id: id }, [
+      {
+        $set: {
+          'rating.count': { $add: [{ $ifNull: ['$rating.count', 0] }, 1] },
+          'rating.average': {
+            $divide: [
+              {
+                $add: [
+                  {
+                    $multiply: [
+                      { $ifNull: ['$rating.average', 0] },
+                      { $ifNull: ['$rating.count', 0] },
+                    ],
+                  },
+                  Number(rating),
+                ],
+              },
+              { $add: [{ $ifNull: ['$rating.count', 0] }, 1] },
+            ],
+          },
+        },
+      },
+    ]);
   });
 
   res.status(204).end();

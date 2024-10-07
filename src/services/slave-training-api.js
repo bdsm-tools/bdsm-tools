@@ -37,12 +37,15 @@ const post = (url, body) =>
     .then(captureHeader('x-bdsmtools-slave-task-count'))
     .then((res) => res.data);
 
-const postText = (url, body) => axios.post(baseUrl + url, body, {
-  headers: {
-    'Content-Type': 'text/plain',
-  },
-  withCredentials: true,
-}).then(res => res.data);
+const postText = (url, body) =>
+  axios
+    .post(baseUrl + url, body, {
+      headers: {
+        'Content-Type': 'text/plain',
+      },
+      withCredentials: true,
+    })
+    .then((res) => res.data);
 
 const getStats = () => get('/stats');
 const getTask = (bodyPart) =>
@@ -52,7 +55,8 @@ const completeTask = (taskId, bonus, daily = false) =>
   post(`/complete-task?${queryString.stringify({ id: taskId, bonus, daily })}`);
 const failTask = (taskId, bonus, daily = false) =>
   post(`/fail-task?${queryString.stringify({ id: taskId, bonus, daily })}`);
-const giveFeedback = (taskId, rating, feedback) => postText(`/feedback?${queryString.stringify({ taskId, rating })}`, feedback);
+const giveFeedback = (taskId, rating, feedback) =>
+  postText(`/feedback?${queryString.stringify({ taskId, rating })}`, feedback);
 
 export default {
   getStats,
