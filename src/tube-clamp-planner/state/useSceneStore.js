@@ -67,11 +67,12 @@ export const useInitScene = (sceneId) => {
   });
 
   const saveToLocalStorage = () => {
-    if (store.scene.id === sceneId) {
+    const data = useStore.getState();
+    if (data.scene.id === sceneId) {
       setLocalScene({
-        ...store.scene,
+        ...JSON.parse(JSON.stringify(data.scene)),
         version: 1,
-        chains: store.chains.map((chain) => exportChain(chain)),
+        chains: data.chains.map((chain) => exportChain(chain)),
       });
     }
   };
@@ -85,6 +86,7 @@ export const useInitScene = (sceneId) => {
       store.setScene(scene);
       store.importChains(...scene.chains);
     }
+    store.setCanvasData({});
 
     return () => {
       saveToLocalStorage();
