@@ -22,7 +22,7 @@ const session = require('express-session');
 const cors = require('cors');
 const MongoDBStore = require('connect-mongodb-session')(session);
 const cookieParser = require('cookie-parser');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const crypto = require('crypto');
 const moment = require('moment');
 
@@ -343,7 +343,8 @@ const completeTask = (isCompleted) => async (req, res) => {
         dailyTaskFail: daily ? 1 : 0,
         [`tasks.fail.${taskId}.standard`]: 1,
         [`tasks.fail.${taskId}.bonus`]: bonus ? 1 : 0,
-      },
+      [`tasks.fail.${taskId}.daily`]: daily ? 1 : 0,
+    },
     });
   } else {
     if (!req.session?.slaveTask?.completedTasks)
@@ -352,10 +353,10 @@ const completeTask = (isCompleted) => async (req, res) => {
     const dailyTasks =
       req.session?.slaveTask?.completedTasks?.filter((task) => !!task.daily) ||
       [];
-    const mostRecentTaskCompleted = moment(
+    const mostRecentTaskCompleted = dailyTasks.length > 0 ? moment(
       dailyTasks[dailyTasks.length - 1].timestamp,
-    ).startOf('day');
-    if (mostRecentTaskCompleted.diff(moment().startOf('day'), 'days') === 1) {
+    ).startOf('day') : undefined;
+    if (mostRecentTaskCompleted && mostRecentTaskCompleted.diff(moment().startOf('day'), 'days') === 1) {
       req.session.slaveTask.stats.dailyStreak++;
 
       await updateStats({
@@ -380,7 +381,8 @@ const completeTask = (isCompleted) => async (req, res) => {
         dailyTaskSuccess: daily ? 1 : 0,
         [`tasks.success.${taskId}.standard`]: 1,
         [`tasks.success.${taskId}.bonus`]: bonus ? 1 : 0,
-      },
+      [`tasks.success.${taskId}.daily`]: daily ? 1 : 0,
+    },
     });
   }
 
@@ -416,6 +418,51 @@ const getTaskStats = async (req, res) => {
   res.status(200).json(taskStats);
 };
 
+const giveFeedback = async (req, res) => {
+  const { taskId, rating } = req.query;
+  const text = req.body;
+
+  const id = new ObjectId(taskId);
+
+  await mongo('feedback', (collection) => {
+    collection.insertOne({
+      type: 'star',
+      rating,
+      text,
+      for: 'slave-training-task',
+      context: {
+        taskId: id,
+      },
+    });
+  });
+
+  await mongo('slave-training-tasks', (collection) => {
+    collection.updateOne(
+      { _id: id },
+      [
+        {
+          $set: {
+            "rating.count": { $add: [{ $ifNull: ["$rating.count", 0] }, 1] },
+            "rating.average": {
+              $divide: [
+                {
+                  $add: [
+                    { $multiply: [{ $ifNull: ["$rating.average", 0] }, { $ifNull: ["$rating.count", 0] }] },
+                    Number(rating),
+                  ]
+                },
+                { $add: [{ $ifNull: ["$rating.count", 0] }, 1] }
+              ]
+            }
+          }
+        }
+      ],
+    );
+  });
+
+  res.status(204).end();
+};
+
 const app = express();
 app.use(
   cors({
@@ -447,11 +494,14 @@ app.use(
   }),
 );
 app.use(cookieParser());
+app.use(express.json({ type: 'application/json' }));
+app.use(express.text({ type: 'text/plain' }));
 app.get('/stats', getStats);
 app.get('/task', getTask);
 app.get('/task/stats', getTaskStats);
 app.get('/daily-task', getDailyTask);
 app.post('/complete-task', requireSession(completeTask(true)));
 app.post('/fail-task', requireSession(completeTask(false)));
+app.post('/feedback', giveFeedback);
 
 module.exports = { app };
