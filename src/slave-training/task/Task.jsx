@@ -1,10 +1,11 @@
 import React from 'react';
-import { Card, Divider, Typography, Button, Checkbox, Skeleton } from 'antd';
+import { Card, Divider, Typography, Button, Checkbox, Skeleton, Rate, Tooltip } from 'antd';
 import { Watermark } from '@hirohe/react-watermark';
-
 import Tags from '../../components/Tags';
+import ProvideFeedback from '../../components/ProvideFeedback';
+import api from '../../services/slave-training-api';
 
-export default function Task({ title, subTitle, action, task, randomNumber = (Math.random() * 1000000), isCompleted = false, isFailed = false, onCompleteTask, onFailTask }) {
+export default function Task ({ title, subTitle, action, task, randomNumber = (Math.random() * 1000000), isCompleted = false, isFailed = false, onCompleteTask, onFailTask }) {
 
   const [showBonusTask, setShowBonusTask] = React.useState(false);
 
@@ -25,9 +26,9 @@ export default function Task({ title, subTitle, action, task, randomNumber = (Ma
 
   return (
     <div style={{ width: 400, marginBottom: 20 }}>
-      <Watermark show={isCompleted || isFailed} text={isCompleted ? "Complete" : isFailed ? "Failed" : ""}>
+      <Watermark show={isCompleted || isFailed} text={isCompleted ? 'Complete' : isFailed ? 'Failed' : ''}>
         <Card
-          title={<Card.Meta title={title} description={subTitle} />}
+          title={<Card.Meta title={title} description={subTitle}/>}
           extra={action}
         >
           <Typography.Paragraph>
@@ -59,8 +60,8 @@ export default function Task({ title, subTitle, action, task, randomNumber = (Ma
           )}
 
           <br/>
-          <Tags values={task.requiresBodyPart} colourFunction={{ undefined: 'blue' }} />
-          <Tags values={task.requiresEquipment} colourFunction={{ undefined: 'red' }} />
+          <Tags values={task.requiresBodyPart} colourFunction={{ undefined: 'blue' }}/>
+          <Tags values={task.requiresEquipment} colourFunction={{ undefined: 'red' }}/>
 
           {!(isCompleted || isFailed) && (
             <>
@@ -79,6 +80,39 @@ export default function Task({ title, subTitle, action, task, randomNumber = (Ma
                 )}
               </div>
             </>
+          )}
+
+          <Divider style={{ marginTop: 0, marginBottom: 10 }}/>
+          <div className='flex' style={{ justifyContent: 'space-around', alignItems: 'baseline' }}>
+            <Typography>Rate this task:</Typography>
+            <ProvideFeedback
+              style={{ margin: '0px auto' }}
+              feedbackPrompt='Tell us what is you like about this task or how we could improve it. Or expand on any option you select below'
+              feedbackContext={task._id}
+              onSendFeedback={({ rating, feedback }) => api.giveFeedback(task._id, rating, feedback).catch()}
+              quickResponses={[
+                'Well balanced',
+                'I don\'t have the equipment for this task',
+                'I don\'t have the body parts for this task',
+                'Easy to follow',
+                'Too complicated',
+                'Too difficult',
+                'Too easy',
+                'Spelling mistake',
+                'Requires rewording'
+              ]}
+            />
+          </div>
+          {task.rating && task.rating.count > 1 && task.rating.average && (
+            <Tooltip
+              title={`This task has been rated ${task.rating.count} times with an average of ${task.rating.average.toFixed(2)} stars`}
+              placement='left'
+            >
+              <div className='flex' style={{ justifyContent: 'space-around', alignItems: 'baseline' }}>
+                <Typography>Community rating:</Typography>
+                <Rate defaultValue={Math.round(task.rating.average)} disabled/>
+              </div>
+            </Tooltip>
           )}
         </Card>
       </Watermark>
