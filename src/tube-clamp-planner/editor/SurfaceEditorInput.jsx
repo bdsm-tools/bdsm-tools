@@ -10,7 +10,7 @@ const surfaceSizes = {
   floor: (scene) => ({ x: scene.width, y: scene.length }),
 };
 
-export default function SurfaceEditorInput({ node, setNode, surfaceId }) {
+export default function SurfaceEditorInput({ node, setNode, surfaceId, autoFocus = false }) {
   const { scene } = useSceneStore();
   const surfaceSize = surfaceSizes[surfaceId](scene);
 
@@ -42,7 +42,7 @@ export default function SurfaceEditorInput({ node, setNode, surfaceId }) {
           addonAfter='cm'
           controls
           size='small'
-          autoFocus
+          autoFocus={autoFocus}
           min={0}
           max={surfaceSize.x}
           value={coords[0]}
@@ -61,7 +61,6 @@ export default function SurfaceEditorInput({ node, setNode, surfaceId }) {
           addonAfter='cm'
           controls
           size='small'
-          autoFocus
           min={0}
           max={surfaceSize.y}
           value={coords[1]}

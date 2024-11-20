@@ -53,6 +53,7 @@ export default function StartChainDialog({ surfaceId, onAdd }) {
             }))
           }
           surfaceId={surfaceId}
+          autoFocus
         />
       </Modal>
       <Button onClick={() => setOpen(true)}>Start new Chain</Button>

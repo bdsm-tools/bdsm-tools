@@ -14,11 +14,10 @@ const useStore = create(
 
     setScene: (data = {}) =>
       set((state) => {
-        state.scene = {
-          ...state.scene,
-          ...data,
-        };
+        Object.assign(state.scene, data);
       }),
+
+    resetScene: (data = {}) => set({ scene: data }),
 
     importChains: (...inputChains) =>
       set({
@@ -38,10 +37,7 @@ const useStore = create(
       set((state) => {
         const chain = state.chains.find((chain) => chain[id]);
 
-        chain[id].node = {
-          ...chain[id].node,
-          ...node,
-        };
+        Object.assign(chain[id].node, node);
       }),
     addChain: (chain) =>
       set((state) => {
@@ -50,11 +46,10 @@ const useStore = create(
 
     setCanvasData: (data = {}) =>
       set((state) => {
-        state.canvasData = {
-          ...state.canvasData,
-          ...data,
-        };
+        Object.assign(state.canvasData, data);
       }),
+
+    resetCanvasData: () => set({ canvasData: {} }),
   })),
 );
 
@@ -80,19 +75,19 @@ export const useInitScene = (sceneId) => {
   React.useEffect(() => {
     if (sceneId === '__dev__') {
       setLocalScene(testScene);
-      store.setScene(testScene);
+      store.resetScene(testScene);
       store.importChains(...testScene.chains);
     } else if (scene) {
-      store.setScene(scene);
+      store.resetScene(scene);
       store.importChains(...scene.chains);
     }
-    store.setCanvasData({});
+    store.resetCanvasData();
 
     return () => {
       saveToLocalStorage();
-      store.setScene({});
+      store.resetScene();
       store.importChains();
-      store.setCanvasData({});
+      store.resetCanvasData();
     };
   }, [sceneId, !scene]);
 
@@ -101,28 +96,11 @@ export const useInitScene = (sceneId) => {
 
 export default function useSceneStore() {
   const store = useStore();
-  const { run: setScene, flush: flushSetScene } = useThrottleFn(
-    store.setScene,
-    { wait: 50 },
-  );
-  const { run: setChainNodeThrottled, flush: flushSetChain } = useThrottleFn(
-    store.setChainNode,
-    { wait: 50 },
-  );
-
-  React.useEffect(
-    () => () => {
-      flushSetScene();
-      flushSetChain();
-    },
-    [],
-  );
 
   return {
     ...store,
 
-    setScene,
     getNode: (id) => store.chains.find((chain) => !!chain[id])?.[id],
-    setChainNode: (id) => (node) => setChainNodeThrottled(id, node),
+    setChainNode: (id) => (node) => store.setChainNode(id, node),
   };
 }

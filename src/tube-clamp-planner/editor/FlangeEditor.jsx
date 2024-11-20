@@ -19,6 +19,8 @@ export default function FlangeEditor({
     ? getNode(connection.children.end[0])
     : undefined;
 
+  const parent = connection.parent ? getNode(connection.parent) : undefined;
+
   return (
     <>
       <Descriptions
@@ -37,11 +39,13 @@ export default function FlangeEditor({
         }
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
       ></Descriptions>
-      <SurfaceEditorInput
-        node={node}
-        setNode={setNode}
-        surfaceId={node.surface.type}
-      />
+      {node.surface && (
+        <SurfaceEditorInput
+          node={node}
+          setNode={setNode}
+          surfaceId={node.surface.type}
+        />
+      )}
       {end && (
         <Collapse ghost>
           <Collapse.Panel key={1} header='End Connections'>
@@ -49,7 +53,14 @@ export default function FlangeEditor({
           </Collapse.Panel>
         </Collapse>
       )}
-      {!end && (
+      {parent && (
+        <Collapse ghost>
+          <Collapse.Panel key={1} header='End Connections'>
+            <NodeSelector id={parent.id} />
+          </Collapse.Panel>
+        </Collapse>
+      )}
+      {!end && !parent && (
         <AddTubeDialog
           parent={connection.id}
           parentSlot='end'

@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Descriptions, Image, Input, InputNumber, Slider } from 'antd';
 import useSceneStore from '../state/useSceneStore';
 import ReactGA from 'react-ga4';
+import { useDebounce, useDebounceFn } from 'ahooks';
 
 const takeSnapshot = (canvas) =>
   (
@@ -9,7 +10,7 @@ const takeSnapshot = (canvas) =>
     document
       .getElementById('tube-planner-canvas')
       ?.getElementsByTagName('canvas')[0]
-  )?.toDataURL('image/png');
+  )?.toDataURL('image/jpeg', 0.5);
 
 export default function SceneControls({
   scene: propsScene,

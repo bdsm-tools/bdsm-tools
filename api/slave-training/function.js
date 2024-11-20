@@ -433,6 +433,7 @@ const giveFeedback = async (req, res) => {
       type: 'star',
       rating,
       text,
+      when: moment().toISOString(),
       for: 'slave-training-task',
       context: {
         taskId: id,
