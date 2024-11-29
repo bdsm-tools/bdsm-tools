@@ -20,7 +20,7 @@ module.exports = {
 
   entry: './src/index.jsx',
   output: {
-    filename: 'bundle/[name]/[fullhash].bundle.js',
+    filename: 'bundle/[name]/[contenthash].bundle.js',
     chunkFilename: 'bundle/[name]/[contenthash].chunk.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',

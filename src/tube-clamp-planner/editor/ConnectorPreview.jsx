@@ -30,6 +30,7 @@ const PreviewNode = ({ connectorType }) => {
         middleConnections={[]}
         endConnections={[]}
         size={B}
+        length={5}
         setEndConnectionPosition={() => {}}
         setMiddleConnectionPosition={() => {}}
         setEndConnectionRotation={() => {}}

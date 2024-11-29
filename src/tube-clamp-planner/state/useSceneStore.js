@@ -39,6 +39,22 @@ const useStore = create(
 
         Object.assign(chain[id].node, node);
       }),
+    removeChainNode: (id) =>
+      set((state) => {
+        const chain = state.chains.find((chain) => chain[id]);
+
+        Object.keys(chain).forEach(key => {
+          const middleIndex = chain[key].children.middle.indexOf(id);
+          if (middleIndex !== -1) {
+            chain[key].children.middle.splice(middleIndex, 1);
+          }
+          const endIndex = chain[key].children.end.indexOf(id);
+          if (endIndex !== -1) {
+            chain[key].children.end.splice(endIndex, 1);
+          }
+        });
+        delete chain[id];
+      }),
     addChain: (chain) =>
       set((state) => {
         state.chains = [...state.chains, importChain(chain)];

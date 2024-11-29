@@ -8,7 +8,6 @@ import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import useSelectionStore from '../state/useSelectionStore';
 import { Select } from '@react-three/postprocessing';
 import useRotate from '../controls/useRotate';
-import { PI } from 'three/examples/jsm/nodes/math/MathNode';
 import { mapObject } from '../../util';
 
 export default function Tube({ id, length, size }) {

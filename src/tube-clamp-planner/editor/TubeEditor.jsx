@@ -5,6 +5,7 @@ import PositionEditorInput from './PositionEditorInput';
 import LengthEditorInput from './LengthEditorInput';
 import RotationEditorInput from './RotationEditorInput';
 import AddConnectorDialog from './AddConnectorDialog';
+import RemoveNodeDialog from './RemoveNodeDialog';
 
 export default function TubeEditor({
   node,
@@ -12,7 +13,6 @@ export default function TubeEditor({
   connection,
   onDeselect,
   addChainNode,
-  NodeSelector,
 }) {
   return (
     <>
@@ -21,6 +21,7 @@ export default function TubeEditor({
         layout='vertical'
         size='small'
         extra={
+        <>
           <Tooltip title='Deselect' placement='left'>
             <Button
               type='text'
@@ -29,6 +30,8 @@ export default function TubeEditor({
               onClick={onDeselect}
             />
           </Tooltip>
+          <RemoveNodeDialog node={connection} showIconOnly />
+          </>
         }
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
       >
@@ -50,25 +53,6 @@ export default function TubeEditor({
         tube={connection}
         onAdd={addChainNode}
       />
-
-      <Collapse ghost>
-        <Collapse.Panel key={1} header='Middle Connections'>
-          {connection.children.middle.map((node) => (
-            <NodeSelector id={node} key={node} />
-          ))}
-          {connection.parent && connection.parentSlot === 'middle' && (
-            <NodeSelector id={connection.parent} />
-          )}
-        </Collapse.Panel>
-        <Collapse.Panel key={2} header='End Connections'>
-          {connection.children.end.map((node) => (
-            <NodeSelector id={node} key={node} />
-          ))}
-          {connection.parent && connection.parentSlot === 'end' && (
-            <NodeSelector id={connection.parent} />
-          )}
-        </Collapse.Panel>
-      </Collapse>
     </>
   );
 }

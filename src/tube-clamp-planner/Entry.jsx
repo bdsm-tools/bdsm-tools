@@ -1,4 +1,5 @@
 import React from 'react';
+import './connectors/tube';
 import './connectors/flange';
 import './connectors/crossover';
 import './connectors/tee';

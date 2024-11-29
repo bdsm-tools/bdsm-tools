@@ -4,6 +4,7 @@ import CloseSelectionIcon from '@ant-design/icons/CloseCircleOutlined';
 import PositionEditorInput from './PositionEditorInput';
 import RotationEditorInput from './RotationEditorInput';
 import AddTubeDialog from './AddTubeDialog';
+import RemoveNodeDialog from './RemoveNodeDialog';
 
 export default function CornerEditor({
   node,
@@ -25,6 +26,7 @@ export default function CornerEditor({
         layout='vertical'
         size='small'
         extra={
+        <>
           <Tooltip title='Deselect' placement='left'>
             <Button
               type='text'
@@ -33,6 +35,8 @@ export default function CornerEditor({
               onClick={onDeselect}
             />
           </Tooltip>
+          <RemoveNodeDialog node={connection} showIconOnly />
+          </>
         }
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
       >

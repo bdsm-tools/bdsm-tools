@@ -1,19 +1,10 @@
 import React from 'react';
 import { Typography } from 'antd';
 import { getTypeDefinition } from '../connectors/types';
-import TubeEditor from '../editor/TubeEditor';
 import useSelectionStore from '../state/useSelectionStore';
 import SurfaceSelectionEditor from '../editor/SurfaceSelectionEditor';
 import useSceneStore from '../state/useSceneStore';
-
-const tubeDefinition = {
-  Editor: TubeEditor,
-};
-
-const getNodeDefinition = (node) =>
-  node.node.type === 'tube'
-    ? tubeDefinition
-    : getTypeDefinition(node.node.type);
+import ConnectionEditor from '../editor/ConnectionEditor';
 
 const surfaceIds = [
   'side-wall',
@@ -32,9 +23,6 @@ export default function SelectionControls() {
   }
 
   const onDeselect = () => selectionStore.setSelectedNode(undefined);
-  const NodeSelector = ({ id }) => (
-    <Typography>{getNodeDefinition(getNode(id)).name}</Typography>
-  );
 
   if (surfaceIds.includes(selectionStore.selectedNodeId)) {
     return (
@@ -49,7 +37,7 @@ export default function SelectionControls() {
   const node = getNode(selectionStore.selectedNodeId);
   const setNode = setChainNode(selectionStore.selectedNodeId);
 
-  const { Editor = () => null } = getNodeDefinition(node);
+  const { Editor = () => null } = getTypeDefinition(node.node.type);
   return (
     <>
       <Editor
@@ -60,8 +48,8 @@ export default function SelectionControls() {
         getNode={getNode}
         connection={node}
         onDeselect={onDeselect}
-        NodeSelector={NodeSelector}
       />
+      <ConnectionEditor parentConnection={node} />
     </>
   );
 }

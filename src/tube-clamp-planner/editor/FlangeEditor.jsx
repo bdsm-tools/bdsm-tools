@@ -5,6 +5,8 @@ import PositionEditorInput from './PositionEditorInput';
 import RotationEditorInput from './RotationEditorInput';
 import AddTubeDialog from './AddTubeDialog';
 import SurfaceEditorInput from './SurfaceEditorInput';
+import { DeleteOutlined } from '@ant-design/icons';
+import RemoveNodeDialog from './RemoveNodeDialog';
 
 export default function FlangeEditor({
   node,
@@ -13,7 +15,6 @@ export default function FlangeEditor({
   addChainNode,
   connection,
   onDeselect,
-  NodeSelector,
 }) {
   const end = connection.children.end[0]
     ? getNode(connection.children.end[0])
@@ -28,6 +29,7 @@ export default function FlangeEditor({
         layout='vertical'
         size='small'
         extra={
+        <>
           <Tooltip title='Deselect' placement='left'>
             <Button
               type='text'
@@ -36,6 +38,8 @@ export default function FlangeEditor({
               onClick={onDeselect}
             />
           </Tooltip>
+            <RemoveNodeDialog node={connection} showIconOnly />
+        </>
         }
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
       ></Descriptions>
@@ -45,20 +49,6 @@ export default function FlangeEditor({
           setNode={setNode}
           surfaceId={node.surface.type}
         />
-      )}
-      {end && (
-        <Collapse ghost>
-          <Collapse.Panel key={1} header='End Connections'>
-            <NodeSelector id={end.id} />
-          </Collapse.Panel>
-        </Collapse>
-      )}
-      {parent && (
-        <Collapse ghost>
-          <Collapse.Panel key={1} header='End Connections'>
-            <NodeSelector id={parent.id} />
-          </Collapse.Panel>
-        </Collapse>
       )}
       {!end && !parent && (
         <AddTubeDialog

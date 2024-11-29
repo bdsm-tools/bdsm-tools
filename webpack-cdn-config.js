@@ -14,12 +14,12 @@ module.exports = (mode) => [
   {
     name: 'react-redux',
     var: 'ReactRedux',
-    path: `dist/react-redux${extra('')}.js`,
+    path: `dist/react-redux.js`,
   },
   {
     name: 'lodash',
     var: '_',
-    path: `lodash${extra('')}.js`,
+    path: `lodash.js`,
   },
   {
     name: 'moment',
@@ -29,6 +29,22 @@ module.exports = (mode) => [
   {
     name: 'antd',
     var: 'antd',
-    path: `dist/antd${extra('')}.js`,
+    path: `dist/antd.js`,
   },
+  // TODO: Seems to be in the wrong format, so causes errors. Must be something to fix but I don't have the time right now
+  // {
+  //   name: '@react-three/postprocessing',
+  //   var: '@react-three/postprocessing',
+  //   path: `dist/index.cjs.js`,
+  // },
+  // {
+  //   name: '@react-three/drei',
+  //   var: '@react-three/drei',
+  //   path: `index.cjs.js`,
+  // },
+  // {
+  //   name: '@react-three/csg',
+  //   var: '@react-three/csg',
+  //   path: `dist/index.cjs.js`,
+  // },
 ];
