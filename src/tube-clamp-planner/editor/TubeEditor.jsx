@@ -21,16 +21,16 @@ export default function TubeEditor({
         layout='vertical'
         size='small'
         extra={
-        <>
-          <Tooltip title='Deselect' placement='left'>
-            <Button
-              type='text'
-              shape='circle'
-              icon={<CloseSelectionIcon />}
-              onClick={onDeselect}
-            />
-          </Tooltip>
-          <RemoveNodeDialog node={connection} showIconOnly />
+          <>
+            <Tooltip title='Deselect' placement='left'>
+              <Button
+                type='text'
+                shape='circle'
+                icon={<CloseSelectionIcon />}
+                onClick={onDeselect}
+              />
+            </Tooltip>
+            <RemoveNodeDialog node={connection} showIconOnly />
           </>
         }
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}

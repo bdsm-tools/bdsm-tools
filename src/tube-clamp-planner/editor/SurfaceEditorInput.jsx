@@ -10,7 +10,12 @@ const surfaceSizes = {
   floor: (scene) => ({ x: scene.width, y: scene.length }),
 };
 
-export default function SurfaceEditorInput({ node, setNode, surfaceId, autoFocus = false }) {
+export default function SurfaceEditorInput({
+  node,
+  setNode,
+  surfaceId,
+  autoFocus = false,
+}) {
   const { scene } = useSceneStore();
   const surfaceSize = surfaceSizes[surfaceId](scene);
 

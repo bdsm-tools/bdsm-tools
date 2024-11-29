@@ -17,11 +17,13 @@ export default function RemoveNodeDialog({ node, showIconOnly = false }) {
     const childNode = getNode(id);
     const childNodeDef = getTypeDefinition(childNode.node.type);
 
-    return ({
+    return {
       key: id,
       title: childNodeDef.name + (root === 'this' ? ' (this)' : ''),
-      children: [...childNode.children.middle, ...childNode.children.end].map(getTreeNode),
-    });
+      children: [...childNode.children.middle, ...childNode.children.end].map(
+        getTreeNode,
+      ),
+    };
   };
 
   return (
@@ -60,28 +62,27 @@ export default function RemoveNodeDialog({ node, showIconOnly = false }) {
           dataSource={[node]}
           renderItem={({ id }) => <NodeListItem id={id} key={id} hideActions />}
         />
-<br/>
+        <br />
         <Alert
           type='warning'
           showIcon
           description='Removing this node will also remove all connected child nodes. See below for details.'
         />
-<br/>
+        <br />
         <Tree
           defaultExpandAll
           showLine
           treeData={[getTreeNode(node.id, 'this')]}
         />
-
       </Modal>
       {showIconOnly && (
         <Tooltip title='Remove' placement='left'>
-        <Button
-          type='text'
-          shape='circle'
-          icon={<DeleteOutlined />}
-          onClick={() => setOpen(true)}
-        />
+          <Button
+            type='text'
+            shape='circle'
+            icon={<DeleteOutlined />}
+            onClick={() => setOpen(true)}
+          />
         </Tooltip>
       )}
       {!showIconOnly && (
@@ -94,5 +95,5 @@ export default function RemoveNodeDialog({ node, showIconOnly = false }) {
         </Button>
       )}
     </>
-  )
+  );
 }

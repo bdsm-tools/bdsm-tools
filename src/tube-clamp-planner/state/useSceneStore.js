@@ -43,7 +43,7 @@ const useStore = create(
       set((state) => {
         const chain = state.chains.find((chain) => chain[id]);
 
-        Object.keys(chain).forEach(key => {
+        Object.keys(chain).forEach((key) => {
           const middleIndex = chain[key].children.middle.indexOf(id);
           if (middleIndex !== -1) {
             chain[key].children.middle.splice(middleIndex, 1);

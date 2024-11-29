@@ -8,28 +8,29 @@ import RemoveNodeDialog from './RemoveNodeDialog';
 import ConnectorPreview from './ConnectorPreview';
 
 const NodePropertyView = (node) => {
-  const v = (data, prefix = '') => Object.entries(data)
-    .filter(([k]) => k !== 'type')
-    .map(([key, value]) => {
-      if (typeof value !== 'object') {
-        return `${prefix}${key}=${value}`;
-      }
-      return v(value, `${prefix}${key}.`);
-    })
-    .join(', ');
+  const v = (data, prefix = '') =>
+    Object.entries(data)
+      .filter(([k]) => k !== 'type')
+      .map(([key, value]) => {
+        if (typeof value !== 'object') {
+          return `${prefix}${key}=${value}`;
+        }
+        return v(value, `${prefix}${key}.`);
+      })
+      .join(', ');
 
   return v(node.node);
-}
+};
 
 export default function NodeListItem({ id, hideActions = false }) {
-
   const { getNode } = useSceneStore();
 
-    const node = getNode(id);
-    const nodeDef = getTypeDefinition(getNode(id).node.type);
-    return(
-      <List.Item
-        actions={!hideActions && [
+  const node = getNode(id);
+  const nodeDef = getTypeDefinition(getNode(id).node.type);
+  return (
+    <List.Item
+      actions={
+        !hideActions && [
           <Button
             icon={<SelectOutlined />}
             size='small'
@@ -40,13 +41,14 @@ export default function NodeListItem({ id, hideActions = false }) {
             Select (WIP)
           </Button>,
           <RemoveNodeDialog node={node} />,
-        ]}
-      >
-        <List.Item.Meta
-          avatar={<ConnectorPreview connectorType={nodeDef.type} />}
-          title={nodeDef.name}
-          description={<NodePropertyView node={node.node} />}
-        />
-      </List.Item>
-    );
+        ]
+      }
+    >
+      <List.Item.Meta
+        avatar={<ConnectorPreview connectorType={nodeDef.type} />}
+        title={nodeDef.name}
+        description={<NodePropertyView node={node.node} />}
+      />
+    </List.Item>
+  );
 }

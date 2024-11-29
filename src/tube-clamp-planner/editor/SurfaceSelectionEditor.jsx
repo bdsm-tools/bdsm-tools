@@ -1,5 +1,12 @@
 import React from 'react';
-import { Button, Collapse, Descriptions, List, Tooltip, Typography } from 'antd';
+import {
+  Button,
+  Collapse,
+  Descriptions,
+  List,
+  Tooltip,
+  Typography,
+} from 'antd';
 import CloseSelectionIcon from '@ant-design/icons/CloseCircleOutlined';
 import useSceneStore from '../state/useSceneStore';
 import StartChainDialog from './StartChainDialog';
@@ -13,10 +20,7 @@ const surfaceIds = {
   floor: 'Floor',
 };
 
-export default function SurfaceSelectionEditor({
-  surfaceId,
-  onDeselect,
-}) {
+export default function SurfaceSelectionEditor({ surfaceId, onDeselect }) {
   const { chains, addChain } = useSceneStore();
   console.log(chains);
 

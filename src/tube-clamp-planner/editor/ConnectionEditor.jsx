@@ -12,17 +12,24 @@ export default function ConnectionEditor({ parentConnection }) {
   const nodeDef = getTypeDefinition(getNode(parentConnection.id).node.type);
   const middleConnections = [
     ...parentConnection.children.middle,
-    parentConnection.parent && parentConnection.parentSlot === 'middle' ? parentConnection.parent : undefined,
+    parentConnection.parent && parentConnection.parentSlot === 'middle'
+      ? parentConnection.parent
+      : undefined,
   ].filter(Boolean);
   const endConnections = [
-      ...parentConnection.children.end,
-      parentConnection.parent && parentConnection.parentSlot === 'end' ? parentConnection.parent : undefined
+    ...parentConnection.children.end,
+    parentConnection.parent && parentConnection.parentSlot === 'end'
+      ? parentConnection.parent
+      : undefined,
   ].filter(Boolean);
 
   return (
     <Collapse ghost>
       {nodeDef.middleConnections !== 0 && (
-        <Collapse.Panel key={1} header={`Middle Connections (${middleConnections.length}/${nodeDef.middleConnections})`}>
+        <Collapse.Panel
+          key={1}
+          header={`Middle Connections (${middleConnections.length}/${nodeDef.middleConnections})`}
+        >
           <List
             size='large'
             bordered
@@ -33,7 +40,10 @@ export default function ConnectionEditor({ parentConnection }) {
         </Collapse.Panel>
       )}
       {nodeDef.endConnections !== 0 && (
-        <Collapse.Panel key={2} header={`End Connections (${endConnections.length}/${nodeDef.endConnections})`}>
+        <Collapse.Panel
+          key={2}
+          header={`End Connections (${endConnections.length}/${nodeDef.endConnections})`}
+        >
           <List
             size='large'
             bordered
