@@ -22,7 +22,7 @@ export default function SurfaceEditorInput({
   const coords = node?.surface?.coords || [0, 0, 1];
 
   React.useEffect(() => {
-    if (!!coords[2]) {
+    if (coords[2]) {
       setNode({
         surface: {
           type: surfaceId,
