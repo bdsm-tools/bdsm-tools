@@ -1,7 +1,7 @@
 import React from 'react';
 import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
-import { useInterval, useLocalStorageState, useThrottleFn } from 'ahooks';
+import { useInterval, useLocalStorageState } from 'ahooks';
 import { v4 as uuidv4 } from 'uuid';
 import { exportChain, importChain } from '../data/chain';
 import testScene from '../data/testScene';

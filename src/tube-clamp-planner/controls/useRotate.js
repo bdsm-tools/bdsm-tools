@@ -6,6 +6,7 @@ import { MathUtils } from 'three';
 // axis - the axis of rotation (normalized THREE.Vector3)
 // theta - radian value of rotation
 // pointIsWorld - boolean indicating the point is in world coordinates (default = false)
+// eslint-disable-next-line no-unused-vars
 function rotateAboutPoint(obj, point, axis, theta, pointIsWorld) {
   pointIsWorld = pointIsWorld === undefined ? false : pointIsWorld;
 

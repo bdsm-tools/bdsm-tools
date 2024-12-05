@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const WebpackCdnPlugin = require('webpack-cdn-plugin');
+const path = require('path');
 
 const common = require('./webpack-common.config');
 const cdnModules = require('./webpack-cdn-config');
