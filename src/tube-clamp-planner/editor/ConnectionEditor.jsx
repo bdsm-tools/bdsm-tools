@@ -24,7 +24,7 @@ export default function ConnectionEditor({ parentConnection }) {
   ].filter(Boolean);
 
   return (
-    <Collapse ghost>
+    <Collapse ghost activeKey={[1, 2]}>
       {nodeDef.middleConnections !== 0 && (
         <Collapse.Panel
           key={1}

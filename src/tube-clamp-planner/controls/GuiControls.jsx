@@ -5,6 +5,7 @@ import SceneControls from './SceneControls';
 import SelectionControls from './SelectionControls';
 import ControlsDialog from './ControlsDialog';
 import useSelectionStore from '../state/useSelectionStore';
+import CameraControls from './CameraControls';
 
 export default function GuiControls() {
   const [tab, setTab] = React.useState('Scene');
@@ -43,6 +44,7 @@ export default function GuiControls() {
       >
         {tab === 'Scene' && <SceneControls />}
         {tab === 'Selection' && <SelectionControls />}
+        {tab === 'Camera' && <CameraControls />}
       </div>
       <ControlsDialog />
     </Card>

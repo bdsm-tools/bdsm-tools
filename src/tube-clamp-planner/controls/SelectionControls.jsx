@@ -29,7 +29,6 @@ export default function SelectionControls() {
       <SurfaceSelectionEditor
         surfaceId={selectionStore.selectedNodeId}
         onDeselect={onDeselect}
-        NodeSelector={NodeSelector}
       />
     );
   }

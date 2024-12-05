@@ -22,11 +22,10 @@ const surfaceIds = {
 
 export default function SurfaceSelectionEditor({ surfaceId, onDeselect }) {
   const { chains, addChain } = useSceneStore();
-  console.log(chains);
 
   const surfaceConnections = chains
     .flatMap((chain) => Object.values(chain))
-    .filter((connection) => !connection.node?.surface?.type === surfaceId)
+    .filter((connection) => connection.node?.surface?.type === surfaceId)
     .map((connection) => connection.id);
 
   return (
@@ -47,7 +46,7 @@ export default function SurfaceSelectionEditor({ surfaceId, onDeselect }) {
         }
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
       />
-      <Collapse ghost>
+      <Collapse ghost activeKey={[1]}>
         <Collapse.Panel key={1} header='Surface Connections'>
           <List
             size='large'
