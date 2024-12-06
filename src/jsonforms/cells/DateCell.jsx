@@ -1,6 +1,6 @@
 import React from 'react';
-import {withJsonFormsCellProps} from '@jsonforms/react';
-import {DatePicker, Typography} from 'antd';
+import { withJsonFormsCellProps } from '@jsonforms/react';
+import { DatePicker, Typography } from 'antd';
 import moment from 'moment';
 
 function DateCell(props) {
@@ -12,7 +12,7 @@ function DateCell(props) {
     visible,
     uischema,
     path,
-    handleChange
+    handleChange,
   } = props;
 
   if (!visible) {
@@ -24,15 +24,15 @@ function DateCell(props) {
   return (
     <React.Fragment>
       <Typography>
-        <Typography.Text>
-          {uischema.label}
-        </Typography.Text>
+        <Typography.Text>{uischema.label}</Typography.Text>
       </Typography>
       <DatePicker
         value={date}
         format={format}
         picker={uischema.picker}
-        onChange={date => handleChange(path, date ? date.format(format) : null)}
+        onChange={(date) =>
+          handleChange(path, date ? date.format(format) : null)
+        }
         className={className}
         id={id}
         disabled={!enabled}

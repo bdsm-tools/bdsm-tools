@@ -1,30 +1,35 @@
 import queryString from 'query-string';
 
 const baseUrl = process.env.SCENE_NEGOTIATION_API_ROOT;
-const get = (url) => fetch(baseUrl + url, {
-  method: 'GET',
-  headers: {
-    'accept': 'application/json',
-    'content-type': 'application/json',
-  },
-}).then(res => res.json());
+const get = (url) =>
+  fetch(baseUrl + url, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      'content-type': 'application/json',
+    },
+  }).then((res) => res.json());
 
-const post = (url, body) => fetch(baseUrl + url, {
-  method: 'POST',
-  headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(body),
-}).then(res => res.json());
+const post = (url, body) =>
+  fetch(baseUrl + url, {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
+  }).then((res) => res.json());
 
 const getNegotiationTypes = () => get('/negotiation-types');
-const getNegotiationType = (id) => get(`/negotiation-types?${queryString.stringify({ id })}`);
-const getNegotiation = (id) => get(`/negotiation?${queryString.stringify({ id })}`);
+const getNegotiationType = (id) =>
+  get(`/negotiation-types?${queryString.stringify({ id })}`);
+const getNegotiation = (id) =>
+  get(`/negotiation?${queryString.stringify({ id })}`);
 
 const saveNegotiation = (data) => post('/negotiation', data);
 const saveNegotiationTypes = (type) => post('/negotiation-types', type);
-const activateNegotiationType = (typeId) => post(`/negotiation-types/activate?id=${typeId}&active=true`);
+const activateNegotiationType = (typeId) =>
+  post(`/negotiation-types/activate?id=${typeId}&active=true`);
 
 export default {
   getNegotiationTypes,
@@ -33,4 +38,4 @@ export default {
   saveNegotiation,
   saveNegotiationTypes,
   activateNegotiationType,
-}
+};

@@ -4,7 +4,7 @@ import { immer } from 'zustand/middleware/immer';
 const useGlobalHeader = create(
   immer((set) => ({
     setHeader: (name, value) => set(() => ({ [name]: value })),
-  }))
+  })),
 );
 
 export default useGlobalHeader;

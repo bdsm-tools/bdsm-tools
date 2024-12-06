@@ -6,19 +6,28 @@ import api from '../../services/slave-training-api';
 import { hash } from '../../util';
 import ReactGA from 'react-ga4';
 
-export default function DailyTask({ completedTasks = [], failedTasks = [], onCompleteTask, onFailTask }) {
+export default function DailyTask({
+  completedTasks = [],
+  failedTasks = [],
+  onCompleteTask,
+  onFailTask,
+}) {
   const [task, setTask] = React.useState({ loading: true });
 
   React.useEffect(() => {
-    ReactGA.event('task_generation_daily', { });
+    ReactGA.event('task_generation_daily', {});
 
     setTask({ loading: true });
-    api.getDailyTask()
+    api
+      .getDailyTask()
       .then(setTask)
-      .catch(() => notification.error({
-        message: 'Error fetching daily task',
-        description: 'Our server may be experiencing issues. Please try again later',
-      }));
+      .catch(() =>
+        notification.error({
+          message: 'Error fetching daily task',
+          description:
+            'Our server may be experiencing issues. Please try again later',
+        }),
+      );
   }, []);
 
   return (

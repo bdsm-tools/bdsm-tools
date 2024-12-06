@@ -1,20 +1,21 @@
 import React from 'react';
-import {withJsonFormsCellProps} from "@jsonforms/react";
+import { withJsonFormsCellProps } from '@jsonforms/react';
 import { Typography } from 'antd';
-import {CheckCircleOutlined, CloseCircleOutlined} from '@ant-design/icons';
+import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 
 const processData = (type) => (data) => {
   switch (type) {
     case 'boolean':
-      return data
-        ? <CheckCircleOutlined style={{ color: 'green'}} />
-        : <CloseCircleOutlined style={{ color: 'red'}} />;
+      return data ? (
+        <CheckCircleOutlined style={{ color: 'green' }} />
+      ) : (
+        <CloseCircleOutlined style={{ color: 'red' }} />
+      );
     case 'object':
       if (Array.isArray(data)) {
         return data.map(processData('string'));
       }
-      return Object.keys(data)
-        .map(processData('string'));
+      return Object.keys(data).map(processData('string'));
     case 'string':
     case 'number':
     default:
@@ -28,9 +29,7 @@ function GenericReadOnlyCell(props) {
   return (
     <div style={{ marginBottom: 50 }}>
       <Typography>
-        <Typography.Paragraph>
-          {uischema.label}
-        </Typography.Paragraph>
+        <Typography.Paragraph>{uischema.label}</Typography.Paragraph>
         <Typography.Paragraph style={{ marginLeft: 10 }}>
           {processData(schema.type)(data) || '<No Answer Given>'}
         </Typography.Paragraph>

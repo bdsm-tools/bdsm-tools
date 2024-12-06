@@ -1,4 +1,3 @@
-
 name: Build and Deploy to Google Cloud Platform
 
 on:
@@ -16,72 +15,71 @@ jobs:
       id-token: write
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: Checkout
-      uses: actions/checkout@v4
+      - id: auth
+        name: Authenticate with the Cloud SDK
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GC_KEY }}
 
-    - id: auth
-      name: Authenticate with the Cloud SDK
-      uses: google-github-actions/auth@v1
-      with:
-        credentials_json: ${{ secrets.GC_KEY }}
+      - name: Set up the Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          version: '>= 363.0.0'
 
-    - name: Set up the Cloud SDK
-      uses: google-github-actions/setup-gcloud@v1
-      with:
-        version: '>= 363.0.0'
-        
-    - name: Build
-      uses: actions/setup-node@v3
-      with:
-        node-version: 18.x
-    - run: npm ci && npm run build
+      - name: Build
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - run: npm ci && npm run build
 
-    - name: Clean Bucket
-      run: gsutil rm gs://www.bdsmtools.org/**
+      - name: Clean Bucket
+        run: gsutil rm gs://www.bdsmtools.org/**
 
-    - name: GCP Cloud Storage - Deploy
-      run: gsutil -m cp -r ./dist/* gs://www.bdsmtools.org
+      - name: GCP Cloud Storage - Deploy
+        run: gsutil -m cp -r ./dist/* gs://www.bdsmtools.org
 
-    - name: GCP Cloud Storage - Set Cache Control
-      run: |-
-        gcloud storage objects update gs://www.bdsmtools.org/index.html --cache-control=no-cache,no-store,max-age=0 && \
-        gcloud storage objects update gs://www.bdsmtools.org/version.json --cache-control=no-cache,no-store,max-age=0
+      - name: GCP Cloud Storage - Set Cache Control
+        run: |-
+          gcloud storage objects update gs://www.bdsmtools.org/index.html --cache-control=no-cache,no-store,max-age=0 && \
+          gcloud storage objects update gs://www.bdsmtools.org/version.json --cache-control=no-cache,no-store,max-age=0
 
-    - name: Add Scene Negotiation API Function
-      run: |-
-        cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
-          --gen2 \
-          --entry-point app \
-          --runtime nodejs18 \
-          --trigger-http \
-          --allow-unauthenticated \
-          --memory 128Mi \
-          --timeout 10s \
-          --region europe-west1
+      - name: Add Scene Negotiation API Function
+        run: |-
+          cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
+            --gen2 \
+            --entry-point app \
+            --runtime nodejs18 \
+            --trigger-http \
+            --allow-unauthenticated \
+            --memory 128Mi \
+            --timeout 10s \
+            --region europe-west1
 
-    - name: Add Feature Flag API Function
-      run: |-
-        cd api/feature-flags && gcloud functions deploy feature-flag \
-          --gen2 \
-          --entry-point app \
-          --runtime nodejs18 \
-          --trigger-http \
-          --allow-unauthenticated \
-          --memory 128Mi \
-          --timeout 5s \
-          --region europe-west1 \
-          --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }}",SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"
+      - name: Add Feature Flag API Function
+        run: |-
+          cd api/feature-flags && gcloud functions deploy feature-flag \
+            --gen2 \
+            --entry-point app \
+            --runtime nodejs18 \
+            --trigger-http \
+            --allow-unauthenticated \
+            --memory 128Mi \
+            --timeout 5s \
+            --region europe-west1 \
+            --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }}",SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"
 
-    - name: Add Slave Training Tasks API Function
-      run: |-
-        cd api/slave-training && gcloud functions deploy slave-training \
-          --gen2 \
-          --entry-point app \
-          --runtime nodejs18 \
-          --trigger-http \
-          --allow-unauthenticated \
-          --memory 128Mi \
-          --timeout 5s \
-          --region europe-west1 \
-          --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }}",SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"
+      - name: Add Slave Training Tasks API Function
+        run: |-
+          cd api/slave-training && gcloud functions deploy slave-training \
+            --gen2 \
+            --entry-point app \
+            --runtime nodejs18 \
+            --trigger-http \
+            --allow-unauthenticated \
+            --memory 128Mi \
+            --timeout 5s \
+            --region europe-west1 \
+            --set-env-vars MONGO_CLUSTER_PASSWORD="${{ secrets.MONGO_CLUSTER_PASSWORD }}",MONGO_CLUSTER_URI="${{ vars.MONGO_CLUSTER_URI }}",MONGO_DB="${{ vars.MONGO_DB }}",SESSION_KEY_V1="${{ secrets.SESSION_KEY_V1 }}"

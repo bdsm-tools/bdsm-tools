@@ -1,13 +1,12 @@
 export default {
   title: 'Kink.com: BDSM Checklist for Submissive',
-  description: 'This is a digital version of the checklist found here: ' +
-      'https://cdnp.kink.com/assets/misc/bdsm-checklist-for-submissives.pdf',
+  description:
+    'This is a digital version of the checklist found here: ' +
+    'https://cdnp.kink.com/assets/misc/bdsm-checklist-for-submissives.pdf',
   active: true,
   schema: {
     type: 'object',
-    required: [
-      'performer',
-    ],
+    required: ['performer'],
     intro: {
       type: 'object',
       performer: {
@@ -80,89 +79,109 @@ export default {
         label: 'Introduction',
         elements: [
           {
-            type: "VerticalLayout",
+            type: 'VerticalLayout',
             elements: [
               {
-                type: "Control",
-                scope: "#/intro/performer",
-                label: "Performer Name",
-              },{
-                type: "Control",
-                scope: "#/intro/director",
-                label: "Director Name",
-              },{
-                type: "Control",
-                scope: "#/intro/company",
-                label: "Production Company Name",
-              },{
-                type: "Control",
-                scope: "#/intro/brand",
-                label: "Brand/Site",
-              },{
-                type: "Control",
-                scope: "#/intro/title",
-                label: "Production Title (subject to change)",
-              },{
-                type: "Control",
-                scope: "#/intro/production",
-                label: "Date of Production",
+                type: 'Control',
+                scope: '#/intro/performer',
+                label: 'Performer Name',
+              },
+              {
+                type: 'Control',
+                scope: '#/intro/director',
+                label: 'Director Name',
+              },
+              {
+                type: 'Control',
+                scope: '#/intro/company',
+                label: 'Production Company Name',
+              },
+              {
+                type: 'Control',
+                scope: '#/intro/brand',
+                label: 'Brand/Site',
+              },
+              {
+                type: 'Control',
+                scope: '#/intro/title',
+                label: 'Production Title (subject to change)',
+              },
+              {
+                type: 'Control',
+                scope: '#/intro/production',
+                label: 'Date of Production',
               },
             ],
           },
         ],
-      }, {
+      },
+      {
         type: 'Category',
         label: 'BDSM Activities',
         elements: [
           {
-            type: "VerticalLayout",
+            type: 'VerticalLayout',
             elements: [
               {
                 type: 'Typography',
                 subtype: 'Title',
                 props: { level: 3 },
                 text: 'Introduction',
-              },{
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'The purpose of this checklist is to document the adult performer’s understanding of the activities below and serve as a\n' +
+                text:
+                  'The purpose of this checklist is to document the adult performer’s understanding of the activities below and serve as a\n' +
                   'starting point for a discussion regarding the adult scene they will participate in on the date(s) of production.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'All participants maintain the right to refuse any activity, re-negotiate terms or ask for clarification at any time, with no\n' +
+                text:
+                  'All participants maintain the right to refuse any activity, re-negotiate terms or ask for clarification at any time, with no\n' +
                   'questions asked, regardless of what is contained in this or any other document.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'This checklist is not comprehensive and includes space for additions. It is also not an indication that every activity listed\n' +
+                text:
+                  'This checklist is not comprehensive and includes space for additions. It is also not an indication that every activity listed\n' +
                   'will be requested during the scene.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Title',
                 props: { level: 3 },
                 text: 'Definitions',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
                 text: 'Yes: You understand and are willing to participate in the activity indicated.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
                 text: 'No: You understand and are NOT willing to participate in this activity.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'Needs Discussion: You might participate in this activity, but some clarification is required in order to make an\n' +
+                text:
+                  'Needs Discussion: You might participate in this activity, but some clarification is required in order to make an\n' +
                   'informed decision. The level of intensity or the circumstances under which the action occurs are two examples\n' +
                   'of negotiable points that may be defined on the set, at the relevant time, between the performer, the director,\n' +
                   'and any other participant. Feel free to use the space provided to include comments.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'If you are inexperienced or otherwise unsure about any activity on this list, please check "No" or "Needs\n' +
+                text:
+                  'If you are inexperienced or otherwise unsure about any activity on this list, please check "No" or "Needs\n' +
                   'Discussion"',
-              }, {
+              },
+              {
                 type: 'Control',
                 scope: '#/bdsm/receiving',
                 label: 'Receiving/Experiencing',
@@ -192,12 +211,9 @@ export default {
                   'Pissing on the face and head',
                   'Pissing in the mouth',
                 ],
-                answers: [
-                  'Yes',
-                  'No',
-                  'Needs Discussion',
-                ],
-              },{
+                answers: ['Yes', 'No', 'Needs Discussion'],
+              },
+              {
                 type: 'Control',
                 scope: '#/bdsm/performing',
                 label: 'Performing',
@@ -205,44 +221,49 @@ export default {
                   'Foot worship (sucking/licking toes & feet)',
                   'Animal role play (“bark like a dog”, etc.)',
                 ],
-                answers: [
-                  'Yes',
-                  'No',
-                  'Needs Discussion',
-                ],
-              }, {
+                answers: ['Yes', 'No', 'Needs Discussion'],
+              },
+              {
                 type: 'Typography',
                 subtype: 'Title',
                 props: { level: 3 },
                 text: 'Physical Sensitivity',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'This section describes the level of sensitivity of your specific body parts. Intensity is widely variable and largely adjustable\n' +
+                text:
+                  'This section describes the level of sensitivity of your specific body parts. Intensity is widely variable and largely adjustable\n' +
                   'to individual comfort levels. Sensation may include but is not limited to: hitting, spanking, smacking, pinching, pulling,\n' +
                   'sucking, and fucking.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Title',
                 props: { level: 3 },
                 text: 'Definitions for this Section',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
                 text: 'Strong: I can handle or am fond of heavy/above-average levels of intensity/sensation in this area.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
                 text: 'Medium: My tolerance level is average in this area.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
                 text: 'Low: My tolerance to sensation or pain in this area is particularly low.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
                 text: 'No: This area of the body is off-limits.',
-              }, {
+              },
+              {
                 type: 'Control',
                 scope: '#/sensitivity/general',
                 label: 'General Sensitivity',
@@ -256,13 +277,9 @@ export default {
                   'Neck / Choking',
                   'Upper back / Shoulders',
                 ],
-                answers: [
-                  'Strong',
-                  'Medium',
-                  'Low',
-                  'No',
-                ],
-              },{
+                answers: ['Strong', 'Medium', 'Low', 'No'],
+              },
+              {
                 type: 'Control',
                 scope: '#/sensitivity/vagina',
                 label: 'Vagina',
@@ -272,48 +289,38 @@ export default {
                   'Inner labia',
                   'Clitoris / hood',
                 ],
-                answers: [
-                  'Strong',
-                  'Medium',
-                  'Low',
-                  'No',
-                ],
-              },{
+                answers: ['Strong', 'Medium', 'Low', 'No'],
+              },
+              {
                 type: 'Control',
                 scope: '#/sensitivity/penis',
                 label: 'Penis',
-                questions: [
-                  'Head (glans)',
-                  'Shaft',
-                  'Balls (scrotum)',
-                ],
-                answers: [
-                  'Strong',
-                  'Medium',
-                  'Low',
-                  'No',
-                ],
+                questions: ['Head (glans)', 'Shaft', 'Balls (scrotum)'],
+                answers: ['Strong', 'Medium', 'Low', 'No'],
               },
             ],
           },
         ],
-      }, {
+      },
+      {
         type: 'Category',
         label: 'Finally',
         elements: [
           {
-            type: "VerticalLayout",
+            type: 'VerticalLayout',
             elements: [
               {
                 type: 'Control',
                 scope: '#/more/comments',
                 label: 'Additional Comments / Notes',
                 area: true,
-              }, {
+              },
+              {
                 type: 'Control',
                 scope: '#/more/nomarks',
                 label: 'I cannot be marked',
-              }, {
+              },
+              {
                 type: 'Control',
                 scope: '#/more/marks',
                 label: 'I can be marked in the following areas',
@@ -324,11 +331,14 @@ export default {
                     schema: { const: true },
                   },
                 },
-              }, {
+              },
+              {
                 type: 'Control',
                 scope: '#/more/universalsafeword',
-                label: 'I will use the universally recognized safeword “RED” during this shoot',
-              }, {
+                label:
+                  'I will use the universally recognized safeword “RED” during this shoot',
+              },
+              {
                 type: 'Control',
                 scope: '#/more/mysafeword',
                 label: 'I will use the safeword',
@@ -339,15 +349,19 @@ export default {
                     schema: { const: true },
                   },
                 },
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'If a performer or crew member says the safeword, all activities stop and action ceases while the\n' +
+                text:
+                  'If a performer or crew member says the safeword, all activities stop and action ceases while the\n' +
                   'scene can be adjusted until the performer can consent to continue.',
-              }, {
+              },
+              {
                 type: 'Typography',
                 subtype: 'Paragraph',
-                text: 'If a performer cannot say their safeword (for instance, because of a gag), they can signal by shaking\n' +
+                text:
+                  'If a performer cannot say their safeword (for instance, because of a gag), they can signal by shaking\n' +
                   'their head back and forth three times, or looking directly at the director or other crew member.',
               },
             ],

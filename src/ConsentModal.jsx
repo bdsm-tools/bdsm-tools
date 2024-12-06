@@ -1,6 +1,6 @@
 import React from 'react';
-import Cookies from "js-cookie";
-import {Typography, Modal} from 'antd';
+import Cookies from 'js-cookie';
+import { Typography, Modal } from 'antd';
 import ReactGA from 'react-ga4';
 
 const cookieName = 'consent';
@@ -13,10 +13,10 @@ export default function ConsentModal() {
   };
   return (
     <Modal
-      title="Content Warning"
+      title='Content Warning'
       open={!consent}
-      okText="I Agree"
-      cancelText="I Do Not Agree"
+      okText='I Agree'
+      cancelText='I Do Not Agree'
       onOk={onConsent}
       onCancel={() => {
         ReactGA.event('non_consent');
@@ -28,10 +28,10 @@ export default function ConsentModal() {
     >
       <Typography>
         <Typography.Paragraph>
-          This site depicts and references BDSM and sexual activities that may not be
-          suitable for everyone. If you are NOT of the legal age to consent or it
-          is illegal to access this type of material in your area, please leave
-          immediately.
+          This site depicts and references BDSM and sexual activities that may
+          not be suitable for everyone. If you are NOT of the legal age to
+          consent or it is illegal to access this type of material in your area,
+          please leave immediately.
         </Typography.Paragraph>
         <Typography.Paragraph>
           The type of content you may see:
@@ -42,10 +42,10 @@ export default function ConsentModal() {
             <li>References to BDSM Activities</li>
           </ul>
         </Typography.Paragraph>
-        <Typography.Paragraph type="warning">
+        <Typography.Paragraph type='warning'>
           By clicking 'I Agree' you are stating that you are permitted to access
-          this type of material in accordance with your local laws. You also understand
-          the type of content you may see on this site.
+          this type of material in accordance with your local laws. You also
+          understand the type of content you may see on this site.
         </Typography.Paragraph>
       </Typography>
     </Modal>

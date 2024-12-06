@@ -1,5 +1,8 @@
 import React from 'react';
-import { ResolvedJsonFormsDispatch, withJsonFormsLayoutProps} from '@jsonforms/react';
+import {
+  ResolvedJsonFormsDispatch,
+  withJsonFormsLayoutProps,
+} from '@jsonforms/react';
 
 function VerticalLayoutRenderer(props) {
   const { schema, uischema, path } = props;

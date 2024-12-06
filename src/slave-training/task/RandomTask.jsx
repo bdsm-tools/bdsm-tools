@@ -8,7 +8,12 @@ import { useLocalStorageState } from 'ahooks';
 import { ReloadOutlined } from '@ant-design/icons';
 import ReactGA from 'react-ga4';
 
-export default function RandomTask({ completedTasks = [], failedTasks = [], onCompleteTask, onFailTask }) {
+export default function RandomTask({
+  completedTasks = [],
+  failedTasks = [],
+  onCompleteTask,
+  onFailTask,
+}) {
   const [task, setTask] = useLocalStorageState('slave-task-random-task', {
     serializer: JSON.stringify,
     deserializer: JSON.parse,
@@ -18,15 +23,21 @@ export default function RandomTask({ completedTasks = [], failedTasks = [], onCo
     ReactGA.event('task_generation_random', {});
 
     setTask({ loading: true });
-    api.getTask()
-      .then((task) => setTask({
-      ...task,
-      generatedOn: moment().format('HH:mm:ss [on] MMMM Do, YYYY'),
-    }))
-      .catch(() => notification.error({
-        message: 'Error fetching random task',
-        description: 'Our server may be experiencing issues. Please try again later',
-      }));
+    api
+      .getTask()
+      .then((task) =>
+        setTask({
+          ...task,
+          generatedOn: moment().format('HH:mm:ss [on] MMMM Do, YYYY'),
+        }),
+      )
+      .catch(() =>
+        notification.error({
+          message: 'Error fetching random task',
+          description:
+            'Our server may be experiencing issues. Please try again later',
+        }),
+      );
   };
 
   React.useEffect(() => {
@@ -39,16 +50,20 @@ export default function RandomTask({ completedTasks = [], failedTasks = [], onCo
     return (
       <Task
         title='Random Task'
-        subTitle={<Tooltip title={task.generatedOn}>Generated on {task.generatedOn}</Tooltip>}
-        action={(
+        subTitle={
+          <Tooltip title={task.generatedOn}>
+            Generated on {task.generatedOn}
+          </Tooltip>
+        }
+        action={
           <Tooltip title='Get a new random task'>
             <Button
-              shape="circle"
+              shape='circle'
               icon={<ReloadOutlined />}
               onClick={getTask}
             />
           </Tooltip>
-        )}
+        }
         task={task}
         randomNumber={parseInt(hash(task.generatedOn))}
         onCompleteTask={onCompleteTask}
@@ -58,11 +73,5 @@ export default function RandomTask({ completedTasks = [], failedTasks = [], onCo
       />
     );
   }
-  return (
-    <Button
-      onClick={getTask}
-    >
-      Get Random Task
-    </Button>
-  );
+  return <Button onClick={getTask}>Get Random Task</Button>;
 }
