@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const AntdMomentWebpackPlugin = require('@ant-design/moment-webpack-plugin');
 
 module.exports = {
   resolve: {
@@ -20,8 +21,8 @@ module.exports = {
 
   entry: './src/index.jsx',
   output: {
-    filename: 'bundle/[name]/[contenthash].bundle.js',
-    chunkFilename: 'bundle/[name]/[contenthash].chunk.js',
+    filename: 'bundle/[contenthash]/[name].bundle.js',
+    chunkFilename: 'bundle/[contenthash]/[name].chunk.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
@@ -143,5 +144,6 @@ module.exports = {
     new webpack.ProvidePlugin({
       process: 'process/browser',
     }),
+    new AntdMomentWebpackPlugin(),
   ],
 };

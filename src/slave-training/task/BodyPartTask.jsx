@@ -1,5 +1,5 @@
 import React from 'react';
-import { Input, Select, Button, Tooltip, notification } from 'antd';
+import { Space, Select, Button, Tooltip, App } from 'antd';
 import moment from 'moment';
 import Task from './Task';
 import api from '../../services/slave-training-api';
@@ -24,6 +24,8 @@ export default function BodyPartTask({
     },
   );
   const [bodyPartState, setBodyPart] = React.useState(undefined);
+
+  const { notification } = App.useApp();
 
   const getTask = (bodyPart) => {
     ReactGA.event('task_generation_body_part', { bodyPart });
@@ -64,7 +66,7 @@ export default function BodyPartTask({
 
   return (
     <>
-      <Input.Group compact style={{ marginBottom: 20 }}>
+      <Space.Compact style={{ marginBottom: 20 }}>
         <Select
           options={bodyParts}
           style={{ width: 180 }}
@@ -72,7 +74,7 @@ export default function BodyPartTask({
           onChange={(value) => setBodyPart(value)}
         />
         <Button onClick={() => getTask(bodyPartState)}>Get Random Task</Button>
-      </Input.Group>
+      </Space.Compact>
       {Object.values(tasks)
         .filter(Boolean)
         .map((task) => (

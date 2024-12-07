@@ -1,5 +1,14 @@
 import React from 'react';
-import { Layout, Spin, Button, Result, Alert } from 'antd';
+import {
+  App,
+  ConfigProvider,
+  Layout,
+  Spin,
+  Button,
+  Result,
+  Alert,
+  theme,
+} from 'antd';
 import moment from 'moment';
 import { useLocalStorageState } from 'ahooks';
 import {
@@ -103,28 +112,39 @@ export default function Application() {
 
 function AppLayout() {
   return (
-    <>
-      <Layout className='fullpage hideoverflow'>
-        <Layout.Header className='header'>
-          <Header />
-        </Layout.Header>
-        <Layout.Content className='fullpage-w' style={{ paddingTop: 64 }}>
-          <Layout>
-            <Layout.Sider width={250}>
-              <NavMenu vertical />
-            </Layout.Sider>
-            <Layout.Content className='content'>
-              <React.Suspense fallback={<Spin size='large' />}>
-                <Alert.ErrorBoundary>
-                  <Outlet />
-                </Alert.ErrorBoundary>
-              </React.Suspense>
-            </Layout.Content>
-          </Layout>
-        </Layout.Content>
-      </Layout>
-      <UpdateChecker />
-    </>
+    <ConfigProvider
+      theme={{
+        algorithm: theme.darkAlgorithm,
+        token: {
+          colorPrimary: '#d71616',
+          colorLink: '#d71616',
+          colorBgLayout: '#1f1f1f',
+        },
+      }}
+    >
+      <App>
+        <Layout className='fullpage hideoverflow'>
+          <Layout.Header className='header'>
+            <Header />
+          </Layout.Header>
+          <Layout.Content className='fullpage-w' style={{ paddingTop: 64 }}>
+            <Layout>
+              <Layout.Sider width={250} collapsible>
+                <NavMenu vertical />
+              </Layout.Sider>
+              <Layout.Content className='content'>
+                <React.Suspense fallback={<Spin size='large' />}>
+                  <Alert.ErrorBoundary>
+                    <Outlet />
+                  </Alert.ErrorBoundary>
+                </React.Suspense>
+              </Layout.Content>
+            </Layout>
+          </Layout.Content>
+        </Layout>
+        <UpdateChecker />
+      </App>
+    </ConfigProvider>
   );
 }
 

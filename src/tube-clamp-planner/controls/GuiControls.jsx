@@ -1,5 +1,6 @@
 import React from 'react';
-import { Card, PageHeader, Segmented } from 'antd';
+import { Card, Segmented } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
 import { useNavigate } from 'react-router-dom';
 import SceneControls from './SceneControls';
 import SelectionControls from './SelectionControls';
@@ -21,7 +22,9 @@ export default function GuiControls() {
   return (
     <Card
       style={{ width: 400 }}
-      bodyStyle={{ padding: 0, height: '100%', width: 400 }}
+      styles={{
+        body: { padding: 0, height: '100%', width: 400 },
+      }}
     >
       <PageHeader
         title={'Tube Planner'}
