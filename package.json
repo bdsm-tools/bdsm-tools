@@ -58,7 +58,7 @@
     "@jsonforms/react": "3.4.1",
     "@jsonforms/vanilla-renderers": "3.4.1",
     "@react-three/csg": "^3.2.0",
-    "@react-three/drei": "9.120.1",
+    "@react-three/drei": "9.120.2",
     "@react-three/fiber": "8.17.10",
     "@react-three/postprocessing": "^2.16.3",
     "@tweenjs/tween.js": "25.0.0",

@@ -111,7 +111,6 @@ export default function Application() {
 }
 
 function AppLayout() {
-  const [collapsed, setCollapsed] = React.useState(false);
   return (
     <ConfigProvider
       theme={{
@@ -130,12 +129,7 @@ function AppLayout() {
           </Layout.Header>
           <Layout.Content className='fullpage-w' style={{ paddingTop: 64 }}>
             <Layout>
-              <Layout.Sider
-                width={250}
-                collapsible
-                collapsed={collapsed}
-                onCollapse={setCollapsed}
-              >
+              <Layout.Sider width={250} collapsible>
                 <NavMenu vertical />
               </Layout.Sider>
               <Layout.Content className='content'>
