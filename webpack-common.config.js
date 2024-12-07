@@ -21,8 +21,8 @@ module.exports = {
 
   entry: './src/index.jsx',
   output: {
-    filename: 'bundle/[name]/[contenthash].bundle.js',
-    chunkFilename: 'bundle/[name]/[contenthash].chunk.js',
+    filename: 'bundle/[contenthash]/[name].bundle.js',
+    chunkFilename: 'bundle/[contenthash]/[name].chunk.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
   },
