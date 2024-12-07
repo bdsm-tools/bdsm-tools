@@ -1,6 +1,6 @@
 import React from 'react';
 import { useUpdateCheck } from 'react-update-notification';
-import { Button, notification } from 'antd';
+import { App, Button } from 'antd';
 import ReactGA from 'react-ga4';
 
 const key = 'update';
@@ -10,9 +10,11 @@ export default function UpdateChecker() {
     interval: 3600000,
   });
 
+  const { notification } = App.useApp();
+
   React.useEffect(() => {
     if (!(status === 'checking' || status === 'current')) {
-      notification.warn({
+      notification.warning({
         message: 'New version available',
         description: `
           You're using an old version of BDSM Tools. Not updating may cause 

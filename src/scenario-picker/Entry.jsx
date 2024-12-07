@@ -1,5 +1,5 @@
 import React from 'react';
-import { PageHeader } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
 import { useMatch, useNavigate, Outlet } from 'react-router-dom';
 import scenarioData from './scenarios/scenario-index';
 import useAnalytics from '../hooks/useAnalytics';

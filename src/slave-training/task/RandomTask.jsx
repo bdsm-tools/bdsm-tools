@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, notification, Tooltip } from 'antd';
+import { App, Button, Tooltip } from 'antd';
 import moment from 'moment';
 import Task from './Task';
 import api from '../../services/slave-training-api';
@@ -18,6 +18,8 @@ export default function RandomTask({
     serializer: JSON.stringify,
     deserializer: JSON.parse,
   });
+
+  const { notification } = App.useApp();
 
   const getTask = () => {
     ReactGA.event('task_generation_random', {});

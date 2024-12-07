@@ -1,10 +1,10 @@
 import React from 'react';
-import { notification } from 'antd';
+import { App } from 'antd';
 import moment from 'moment';
+import ReactGA from 'react-ga4';
 import Task from './Task';
 import api from '../../services/slave-training-api';
 import { hash } from '../../util';
-import ReactGA from 'react-ga4';
 
 export default function DailyTask({
   completedTasks = [],
@@ -13,6 +13,8 @@ export default function DailyTask({
   onFailTask,
 }) {
   const [task, setTask] = React.useState({ loading: true });
+
+  const { notification } = App.useApp();
 
   React.useEffect(() => {
     ReactGA.event('task_generation_daily', {});

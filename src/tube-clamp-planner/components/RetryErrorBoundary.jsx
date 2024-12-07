@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Spin, notification, Collapse } from 'antd';
+import { Alert, Spin, notification } from 'antd';
 
 class RetryErrorBoundary extends React.Component {
   constructor(props) {

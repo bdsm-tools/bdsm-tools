@@ -26,11 +26,11 @@ module.exports = (mode) => [
     var: 'moment',
     path: mode === 'production' ? 'min/moment.min.js' : 'moment.js',
   },
-  {
-    name: 'antd',
-    var: 'antd',
-    path: `dist/antd.js`,
-  },
+  // {
+  //   name: 'antd',
+  //   var: 'antd',
+  //   path: `dist/antd.js`,
+  // },
   // TODO: Seems to be in the wrong format, so causes errors. Must be something to fix but I don't have the time right now
   // {
   //   name: '@react-three/postprocessing',

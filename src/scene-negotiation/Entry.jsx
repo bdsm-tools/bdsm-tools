@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, useNavigate, useMatch } from 'react-router-dom';
-import { PageHeader, Spin } from 'antd';
+import { Spin } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
 import api from '../services/scene-negotiation-api';
 import useAnalytics from '../hooks/useAnalytics';
 

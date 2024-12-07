@@ -65,10 +65,6 @@ const controls = [
     ],
   },
   {
-    title: 'Orbit Controls',
-    controls: [],
-  },
-  {
     title: 'Misc Controls',
     controls: [],
   },
@@ -87,6 +83,10 @@ export default function ControlsDialog() {
         cancelText='Close'
         okButtonProps={{ style: { display: 'none' } }}
         width={640}
+        styles={{
+          body: { overflowY: 'scroll' },
+          content: { height: 'calc(100vh - 150px)' },
+        }}
       >
         {controls.map((controlGroup) => (
           <React.Fragment key={controlGroup.title}>

@@ -105,8 +105,10 @@ export default function MyBodyParts() {
         onOk={() => setOpen(false)}
         onCancel={() => setOpen(false)}
         cancelButtonProps={{ style: { display: 'none' } }}
-        style={{ height: 'calc(100vh - 150px)' }}
-        bodyStyle={{ overflowY: 'scroll' }}
+        styles={{
+          body: { overflowY: 'scroll' },
+          content: { height: 'calc(100vh - 150px)' },
+        }}
       >
         <Typography.Paragraph>
           Let us know what body parts you have and are willing to use so we can

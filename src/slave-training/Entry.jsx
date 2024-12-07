@@ -1,5 +1,6 @@
 import React from 'react';
-import { PageHeader, Col, Row, Divider, notification, Alert } from 'antd';
+import { Col, Row, Divider, Alert, App } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
 import useAnalytics from '../hooks/useAnalytics';
 import DailyTask from './task/DailyTask';
 import TaskStats from './stats/TaskStats';
@@ -14,6 +15,8 @@ import ReactGA from 'react-ga4';
 
 export default function Entry() {
   useAnalytics('Slave Training');
+
+  const { notification } = App.useApp();
 
   const [stats, setStats] = React.useState({
     stats: {

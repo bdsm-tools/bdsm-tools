@@ -1,5 +1,6 @@
 import React from 'react';
-import { PageHeader, Tag, Affix } from 'antd';
+import { Tag, Affix } from 'antd';
+import { PageHeader } from '@ant-design/pro-components';
 import { DeploymentUnitOutlined } from '@ant-design/icons';
 import { useLocation, useNavigate } from 'react-router-dom';
 
