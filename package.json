@@ -58,10 +58,10 @@
     "@jsonforms/react": "3.4.1",
     "@jsonforms/vanilla-renderers": "3.4.1",
     "@react-three/csg": "^3.2.0",
-    "@react-three/drei": "9.120.0",
+    "@react-three/drei": "9.120.1",
     "@react-three/fiber": "8.17.10",
     "@react-three/postprocessing": "^2.16.3",
-    "@tweenjs/tween.js": "23.1.2",
+    "@tweenjs/tween.js": "25.0.0",
     "ahooks": "3.8.4",
     "antd": "5.22.3",
     "axios": "1.7.9",
@@ -87,6 +87,6 @@
     "three": "0.170.0",
     "uuid": "11.0.3",
     "vm-browserify": "1.1.2",
-    "zustand": "4.5.5"
+    "zustand": "5.0.2"
   }
 }

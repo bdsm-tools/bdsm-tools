@@ -40,7 +40,7 @@ export default function SceneCanvas() {
     );
   }
 
-  if (!WebGL.isWebGLAvailable())
+  if (!WebGL.isWebGL2Available())
     return (
       <Alert>The browser you are using in unable to display this content</Alert>
     );
