@@ -52,10 +52,14 @@ export default function Task({
         >
           <Typography.Paragraph>{task.task}</Typography.Paragraph>
 
-          <Typography.Text strong>Time requirement:</Typography.Text>
-          <Typography.Paragraph>
-            {task.timeOptions[randomNumber % task.timeOptions.length]}
-          </Typography.Paragraph>
+          {task.timeOptions && task.timeOptions.length > 0 && (
+            <>
+              <Typography.Text strong>Time requirement:</Typography.Text>
+              <Typography.Paragraph>
+                {task.timeOptions[randomNumber % task.timeOptions.length]}
+              </Typography.Paragraph>
+            </>
+          )}
 
           {!(showBonusTask || isCompleted) && (
             <Button

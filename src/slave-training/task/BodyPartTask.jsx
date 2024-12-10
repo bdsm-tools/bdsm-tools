@@ -101,7 +101,7 @@ export default function BodyPartTask({
               </Tooltip>
             }
             task={task}
-            randomNumber={parseInt(hash(task.generatedOn))}
+            randomNumber={parseInt(hash(task.generatedOn), 16)}
             onCompleteTask={onCompleteTask}
             onFailTask={onFailTask}
             isCompleted={

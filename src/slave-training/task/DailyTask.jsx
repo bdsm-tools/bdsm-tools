@@ -36,7 +36,7 @@ export default function DailyTask({
     <Task
       title={`Daily Task for ${moment().format('MMMM Do, YYYY')}`}
       task={task}
-      randomNumber={parseInt(hash(moment().format('YYYY-MM-DD')))}
+      randomNumber={parseInt(hash(moment().format('YYYY-MM-DD')), 16)}
       onCompleteTask={onCompleteTask}
       onFailTask={onFailTask}
       isCompleted={!!completedTasks.find(({ taskId }) => taskId === task._id)}
