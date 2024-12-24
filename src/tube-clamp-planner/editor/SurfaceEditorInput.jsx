@@ -1,6 +1,7 @@
 import React from 'react';
 import { Descriptions, InputNumber } from 'antd';
 import useSceneStore from '../state/useSceneStore';
+import RotationEditorInput from './RotationEditorInput';
 
 const surfaceSizes = {
   'side-wall': (scene) => ({ x: scene.length, y: scene.height }),
@@ -78,6 +79,9 @@ export default function SurfaceEditorInput({
             })
           }
         />
+      </Descriptions.Item>
+      <Descriptions.Item label='Rotation'>
+        <RotationEditorInput node={node} setNode={setNode} />
       </Descriptions.Item>
     </Descriptions>
   );

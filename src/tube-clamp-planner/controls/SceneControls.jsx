@@ -10,7 +10,7 @@ const takeSnapshot = (canvas) =>
     document
       .getElementById('tube-planner-canvas')
       ?.getElementsByTagName('canvas')[0]
-  )?.toDataURL('image/jpeg', 0.5);
+  )?.toDataURL('image/jpeg', 0.3);
 
 export default function SceneControls({
   scene: propsScene,

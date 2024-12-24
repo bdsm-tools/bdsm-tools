@@ -30,7 +30,7 @@ export default function UpdateChecker() {
             size='small'
             onClick={() => {
               ReactGA.event('new_version_reload');
-              notification.close(key);
+              notification.destroy(key);
               reloadPage();
             }}
           >

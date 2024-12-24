@@ -4,6 +4,7 @@ import './connectors/flange';
 import './connectors/crossover';
 import './connectors/tee';
 import './connectors/corner';
+import './connectors/handrail-bracket';
 import { useMatch } from 'react-router-dom';
 import { PageHeader } from '@ant-design/pro-components';
 import { Outlet, useNavigate } from 'react-router';

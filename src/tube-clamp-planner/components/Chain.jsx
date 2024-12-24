@@ -186,7 +186,7 @@ export default function Chain({ chain, scene }) {
         connection={firstNode}
         size={B}
         position={[0, 0, 0]}
-        rotation={{ x: 0, y: 0, z: 0 }}
+        rotation={{ x: 0, y: firstNode.node.rotation || 0, z: 0 }}
       />
     </group>
   );
