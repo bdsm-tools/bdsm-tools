@@ -1,43 +1,45 @@
 import React from 'react';
-import { DoubleSide, RepeatWrapping } from 'three';
+import { RepeatWrapping } from 'three';
 import { useTexture } from '@react-three/drei';
 import tubeMap from '../textures/Metal_Galvanized_1K_albedo.png';
 import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
-import useRotate from '../controls/useRotate';
+import { mapObject } from '../../util';
+import TubeSleeveCylinder from './TubeSleeveCylinder';
+import { Base, Subtraction } from '@react-three/csg';
+import CacheGeometry from '../components/CacheGeometry';
 
-export default function Flange({ id, size, setMiddleConnectionPosition }) {
+export default function Flange({ id, size, setEndConnectionPosition }) {
   const groupRef = React.useRef();
-  const neckRingRef = React.useRef();
-  const baseRingStartRef = React.useRef();
-  const baseRingEndRef = React.useRef();
 
   const baseRadius = size * 1.5;
-  const baseHeight = 1;
+  const baseHeight = size / 3;
 
   const neckRadius = size / 2 + 0.25;
-  const neckHeight = 5;
+  const neckHeight = size * 1.1;
 
-  const textureProps = useTexture({
-    map: tubeMap,
-    normalMap: tubeNormalMap,
-    roughnessMap: tubeRoughness,
-    metalnessMap: tubeMetalic,
-  });
-  Object.values(textureProps).forEach((texture) => {
-    texture.wrapS = RepeatWrapping;
-    texture.wrapT = RepeatWrapping;
-  });
+  const screwHoleRadius = size * 0.1;
 
-  useRotate(neckRingRef, { x: 90 });
-  useRotate(baseRingStartRef, { x: 90 });
-  useRotate(baseRingEndRef, { x: 90 });
+  const textureProps = mapObject(
+    useTexture({
+      map: tubeMap,
+      normalMap: tubeNormalMap,
+      roughnessMap: tubeRoughness,
+      metalnessMap: tubeMetalic,
+    }),
+    (t) => t.clone(),
+    (texture) => {
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+      texture.repeat.setX((size * 3.14) / 8);
+      texture.repeat.setY((baseHeight + neckHeight) / 8);
 
-  React.useEffect(
-    () => setMiddleConnectionPosition(0, [0, baseHeight / 2, 0]),
-    [],
+      return texture;
+    },
   );
+
+  React.useEffect(() => setEndConnectionPosition(0, [0, baseHeight, 0]), []);
 
   return (
     <group
@@ -46,45 +48,51 @@ export default function Flange({ id, size, setMiddleConnectionPosition }) {
       layers={1}
       userData={{ id, selectable: true }}
     >
-      <mesh position={[0, baseHeight / 2, 0]} castShadow={true}>
-        <cylinderGeometry
-          args={[baseRadius, baseRadius, baseHeight, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
       <mesh
-        ref={baseRingStartRef}
-        position={[0, baseHeight, 0]}
+        position={[0, baseHeight / 2, 0]}
         castShadow={true}
+        receiveShadow={true}
       >
-        <ringGeometry args={[baseRadius, neckRadius - 1, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
+        <meshPhysicalMaterial {...textureProps} />
+        <CacheGeometry cacheKey={['flange', size]}>
+          <Base>
+            <cylinderGeometry
+              args={[baseRadius, baseRadius, baseHeight, 64, 1]}
+            />
+          </Base>
+          <Subtraction>
+            <cylinderGeometry
+              args={[neckRadius * 0.75, neckRadius * 0.75, baseHeight, 64, 1]}
+            />
+          </Subtraction>
+          <Subtraction position={[baseRadius / 2, 0, baseRadius / 2]}>
+            <cylinderGeometry
+              args={[screwHoleRadius, screwHoleRadius, baseHeight, 64, 1]}
+            />
+          </Subtraction>
+          <Subtraction position={[-baseRadius / 2, 0, baseRadius / 2]}>
+            <cylinderGeometry
+              args={[screwHoleRadius, screwHoleRadius, baseHeight, 64, 1]}
+            />
+          </Subtraction>
+          <Subtraction position={[baseRadius / 2, 0, -baseRadius / 2]}>
+            <cylinderGeometry
+              args={[screwHoleRadius, screwHoleRadius, baseHeight, 64, 1]}
+            />
+          </Subtraction>
+          <Subtraction position={[-baseRadius / 2, 0, -baseRadius / 2]}>
+            <cylinderGeometry
+              args={[screwHoleRadius, screwHoleRadius, baseHeight, 64, 1]}
+            />
+          </Subtraction>
+        </CacheGeometry>
       </mesh>
-      <mesh ref={baseRingEndRef} position={[0, 0, 0]} castShadow={true}>
-        <ringGeometry args={[baseRadius, neckRadius - 1, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-
-      <mesh position={[0, neckHeight / 2 + baseHeight, 0]} castShadow={true}>
-        <cylinderGeometry
-          args={[neckRadius, neckRadius, neckHeight, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh position={[0, neckHeight / 2 + baseHeight, 0]} castShadow={true}>
-        <cylinderGeometry
-          args={[neckRadius - 0.2, neckRadius - 0.2, neckHeight, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh
-        ref={neckRingRef}
-        position={[0, neckHeight + baseHeight, 0]}
-        castShadow={true}
-      >
-        <ringGeometry args={[neckRadius, neckRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
+      <TubeSleeveCylinder
+        name='flange_neck'
+        size={size}
+        length={neckHeight}
+        position={[0, neckHeight / 2, 0]}
+      />
     </group>
   );
 }

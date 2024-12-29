@@ -1,5 +1,5 @@
 import React from 'react';
-import { DoubleSide, Euler, MathUtils } from 'three';
+import { DoubleSide, Euler, MathUtils, RepeatWrapping } from 'three';
 import { Addition, Base, Geometry, Subtraction } from '@react-three/csg';
 import { useTexture } from '@react-three/drei';
 import tubeMap from '../textures/Metal_Galvanized_1K_albedo.png';
@@ -7,6 +7,9 @@ import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import useRotate from '../controls/useRotate';
+import TubeSleeveCylinder from './TubeSleeveCylinder';
+import { mapObject } from '../../util';
+import CacheGeometry, { useGeometryCache } from '../components/CacheGeometry';
 
 export default function Tee({
   id,
@@ -22,24 +25,25 @@ export default function Tee({
 
   const ref = React.useRef();
   const endRef = React.useRef();
-  const endInnerRef = React.useRef();
-  const endRingStartRef = React.useRef();
-  const endRingEndRef = React.useRef();
-  const middleRef = React.useRef();
-  const middleInnerRef = React.useRef();
-  const middleRingEndRef = React.useRef();
 
-  useRotate(endRef, { x: 90 });
-  useRotate(endInnerRef, { x: 90 });
-  useRotate(endRingStartRef, { y: 180 });
-  useRotate(middleRingEndRef, { x: 90 });
+  useRotate(endRef, { x: 270 });
 
-  const textureProps = useTexture({
-    map: tubeMap,
-    normalMap: tubeNormalMap,
-    roughnessMap: tubeRoughness,
-    metalnessMap: tubeMetalic,
-  });
+  const textureProps = mapObject(
+    useTexture({
+      map: tubeMap,
+      normalMap: tubeNormalMap,
+      roughnessMap: tubeRoughness,
+      metalnessMap: tubeMetalic,
+    }),
+    (t) => t.clone(),
+    (texture) => {
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+      texture.repeat.setY((size * 3.14) / 40);
+
+      return texture;
+    },
+  );
 
   const tubeRadius = size / 2 + 0.25;
   const tubeHeight = 4;
@@ -58,11 +62,11 @@ export default function Tee({
   React.useEffect(() => setEndConnectionPosition(0, [0, 0, -tubeRadius]), []);
   React.useEffect(() => setEndConnectionRotation(0, { x: 270 }), []);
 
-  const isMiddle = React.useCallback(
-    () => connectionSlot === 'middle',
+  const isEnd = React.useCallback(
+    () => connectionSlot === 'end',
     [connectionSlot],
   );
-  useRotate(ref, { x: 270 }, isMiddle);
+  useRotate(ref, { x: 90 }, isEnd);
 
   return (
     <group
@@ -70,16 +74,26 @@ export default function Tee({
       name='tee'
       layers={1}
       userData={{ id, selectable: true }}
-      position={isMiddle() ? [0, 0, -(tubeHeight / 2)] : [0, 0, 0]}
+      position={isEnd() ? [0, -tubeRadius, 0] : [0, 0, 0]}
     >
-      <mesh ref={middleRef} position={[0, 0, 0]}>
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-        <Geometry>
+      <mesh
+        ref={endRef}
+        position={[0, 0, -(tubeHeight / 2)]}
+        castShadow={true}
+        receiveShadow={true}
+      >
+        <meshStandardMaterial {...textureProps} />
+        <CacheGeometry cacheKey={['tee', size]}>
           <Base>
             <cylinderGeometry
-              args={[tubeRadius, tubeRadius, tubeHeight, 64, 1, true]}
+              args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}
             />
           </Base>
+          <Subtraction>
+            <cylinderGeometry
+              args={[tubeRadius - 0.2, tubeRadius - 0.2, tubeHeight, 64, 1]}
+            />
+          </Subtraction>
           <Subtraction
             position={[0, -tubeRadius, 0]}
             rotation={new Euler(MathUtils.degToRad(90), 0, 0)}
@@ -88,65 +102,10 @@ export default function Tee({
               args={[tubeRadius - 0.2, tubeRadius - 0.2, tubeRadius * 2, 64, 1]}
             />
           </Subtraction>
-        </Geometry>
-      </mesh>
-      <mesh ref={middleInnerRef} position={[0, 0, 0]}>
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-        <Geometry>
-          <Base>
-            <cylinderGeometry
-              args={[
-                tubeRadius - 0.2,
-                tubeRadius - 0.2,
-                tubeHeight,
-                64,
-                1,
-                true,
-              ]}
-            />
-          </Base>
-          <Subtraction
-            position={[0, -tubeRadius, 0]}
-            rotation={new Euler(MathUtils.degToRad(90), 0, 0)}
-          >
-            <cylinderGeometry
-              args={[tubeRadius - 0.2, tubeRadius - 0.2, tubeRadius * 2, 64, 1]}
-            />
-          </Subtraction>
-        </Geometry>
-      </mesh>
-      <mesh ref={middleRingEndRef} position={[0, tubeHeight / 2, 0]}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
+        </CacheGeometry>
       </mesh>
 
-      <mesh ref={endRef} position={[0, -tubeRadius, 0]}>
-        <cylinderGeometry
-          args={[tubeRadius, tubeRadius, tubeRadius * 2, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh ref={endInnerRef} position={[0, -tubeRadius, 0]}>
-        <cylinderGeometry
-          args={[
-            tubeRadius - 0.2,
-            tubeRadius - 0.2,
-            tubeRadius * 2,
-            64,
-            1,
-            true,
-          ]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh ref={endRingStartRef} position={[0, -tubeRadius, tubeRadius]}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh ref={endRingEndRef} position={[0, -tubeRadius, -tubeRadius]}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
+      <TubeSleeveCylinder size={size} />
     </group>
   );
 }

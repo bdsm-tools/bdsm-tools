@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Button, Empty } from 'antd';
 import WebGL from 'three/examples/jsm/capabilities/WebGL';
 import { Canvas, extend } from '@react-three/fiber';
-import { Html, OrbitControls, useProgress } from '@react-three/drei';
+import { Html, OrbitControls, Preload, useProgress } from '@react-three/drei';
 import {
   EffectComposer,
   N8AO,
@@ -19,6 +19,7 @@ import CameraControls from './components/CameraControls';
 import GuiControls from './controls/GuiControls';
 import useSceneStore from './state/useSceneStore';
 import SelectionWrapper from './components/SelectionWrapper';
+import { useWhyDidYouUpdate } from 'ahooks';
 
 extend({ OrbitControls });
 
@@ -54,15 +55,48 @@ export default function SceneCanvas() {
       }}
     >
       <RetryErrorBoundary message='Error when rendering the canvas. Please refresh and try again'>
-        <Canvas id='tube-planner-canvas' gl={{ preserveDrawingBuffer: true }}>
+        <Canvas
+          id='tube-planner-canvas'
+          gl={{
+            preserveDrawingBuffer: true,
+            powerPreference: 'high-performance',
+          }}
+        >
           <React.Suspense fallback={<Loader />}>
             <SelectionWrapper>
               <ambientLight intensity={scene.brightness} />
               <pointLight
                 position={[
-                  scene.width / 2,
+                  scene.width * 0.25,
                   scene.height - 20,
-                  scene.length / 2,
+                  scene.length * 0.25,
+                ]}
+                power={1000000 * scene.brightness}
+                castShadow={true}
+              />
+              <pointLight
+                position={[
+                  scene.width * 0.75,
+                  scene.height - 20,
+                  scene.length * 0.75,
+                ]}
+                power={1000000 * scene.brightness}
+                castShadow={true}
+              />
+              <pointLight
+                position={[
+                  scene.width * 0.25,
+                  scene.height - 20,
+                  scene.length * 0.75,
+                ]}
+                power={1000000 * scene.brightness}
+                castShadow={true}
+              />
+              <pointLight
+                position={[
+                  scene.width * 0.75,
+                  scene.height - 20,
+                  scene.length * 0.25,
                 ]}
                 power={1000000 * scene.brightness}
                 castShadow={true}
@@ -88,6 +122,7 @@ export default function SceneCanvas() {
               <Controls />
               <CameraControls />
             </SelectionWrapper>
+            <Preload all />
           </React.Suspense>
         </Canvas>
       </RetryErrorBoundary>

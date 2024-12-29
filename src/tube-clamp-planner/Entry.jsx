@@ -1,13 +1,16 @@
 import React from 'react';
+import { useMatch } from 'react-router-dom';
+import { PageHeader } from '@ant-design/pro-components';
+import { Outlet, useNavigate } from 'react-router';
 import './connectors/tube';
 import './connectors/flange';
 import './connectors/crossover';
 import './connectors/tee';
 import './connectors/corner';
 import './connectors/handrail-bracket';
-import { useMatch } from 'react-router-dom';
-import { PageHeader } from '@ant-design/pro-components';
-import { Outlet, useNavigate } from 'react-router';
+import './connectors/single-male-swivel';
+import useAnalytics from '../hooks/useAnalytics';
+import ConnectorPreviewCanvas from './components/ConnectorPreviewCanvas';
 
 const exampleChain = {
   type: 'flange',
@@ -233,8 +236,13 @@ const ControlsEnum = {
 };
 
 export default function Entry() {
+  useAnalytics('Tube Clamp Planner');
   const navigate = useNavigate();
   const { params } = useMatch('/tools/tube-planner/:sceneId') || { params: {} };
+
+  if (params.sceneId === '__dev_pregen_connector_geometry') {
+    return <ConnectorPreviewCanvas />;
+  }
 
   return (
     <React.Fragment>

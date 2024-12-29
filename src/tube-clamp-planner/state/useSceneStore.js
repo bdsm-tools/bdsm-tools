@@ -66,6 +66,11 @@ const useStore = create(
       }),
 
     resetCanvasData: () => set({ canvasData: {} }),
+
+    setSettings: (data = {}) =>
+      set((state) => {
+        Object.assign(state.settings, data);
+      }),
   })),
 );
 

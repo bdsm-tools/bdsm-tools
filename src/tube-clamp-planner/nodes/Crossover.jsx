@@ -6,6 +6,7 @@ import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import useRotate from '../controls/useRotate';
 import { DoubleSide } from 'three';
+import TubeSleeveCylinder from './TubeSleeveCylinder';
 
 export default function Crossover({
   id,
@@ -17,32 +18,12 @@ export default function Crossover({
   const [connectedTube] = middleConnections;
 
   const ref = React.useRef();
-  const secondSideRef = React.useRef();
-  const secondSideInnerRef = React.useRef();
-  const firstSideStartRingRef = React.useRef();
-  const firstSideEndRingRef = React.useRef();
-  const secondSideStartRingRef = React.useRef();
-  const secondSideEndRingRef = React.useRef();
+  const secondSleeveRef = React.useRef();
 
-  useRotate(firstSideStartRingRef, { x: 90, y: 180 });
-  useRotate(firstSideEndRingRef, { x: 90 });
-  useRotate(secondSideRef, { x: 90 });
-  useRotate(secondSideInnerRef, { x: 90 });
-  useRotate(secondSideEndRingRef, { y: 180 });
-
-  const textureProps = useTexture({
-    map: tubeMap,
-    normalMap: tubeNormalMap,
-    roughnessMap: tubeRoughness,
-    metalnessMap: tubeMetalic,
-  });
+  useRotate(secondSleeveRef, { x: 90 });
 
   const tubeRadius = size / 2 + 0.25;
-  const tubeHeight = 4;
-
   const endPosition = [tubeRadius * 2 - 0.5, 0, 0];
-  const endRingPosition = [tubeRadius * 2 - 0.5, 0, -(tubeHeight / 2)];
-  const endRingPositionEnd = [tubeRadius * 2 - 0.5, 0, tubeHeight / 2];
 
   React.useEffect(
     () =>
@@ -62,49 +43,12 @@ export default function Crossover({
       name='crossover'
       userData={{ id, selectable: true }}
     >
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry
-          args={[tubeRadius, tubeRadius, tubeHeight, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh position={[0, 0, 0]}>
-        <cylinderGeometry
-          args={[tubeRadius - 0.2, tubeRadius - 0.2, tubeHeight, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-
-      <mesh ref={firstSideStartRingRef} position={[0, -(tubeHeight / 2), 0]}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh ref={firstSideEndRingRef} position={[0, tubeHeight / 2, 0]}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-
-      <mesh ref={secondSideRef} position={endPosition}>
-        <cylinderGeometry
-          args={[tubeRadius, tubeRadius, tubeHeight, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh ref={secondSideInnerRef} position={endPosition}>
-        <cylinderGeometry
-          args={[tubeRadius - 0.2, tubeRadius - 0.2, tubeHeight, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-
-      <mesh ref={secondSideStartRingRef} position={endRingPosition}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
-      <mesh ref={secondSideEndRingRef} position={endRingPositionEnd}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]} />
-        <meshStandardMaterial {...textureProps} side={DoubleSide} />
-      </mesh>
+      <TubeSleeveCylinder size={size} />
+      <TubeSleeveCylinder
+        ref={secondSleeveRef}
+        size={size}
+        position={endPosition}
+      />
     </group>
   );
 }

@@ -3,6 +3,12 @@ import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { v4 as uuidv4 } from 'uuid';
 import { getTypeDefinition } from '../connectors/types';
 import { B } from '../sizes';
+import { Html, useProgress } from '@react-three/drei';
+
+function Loader() {
+  const { progress } = useProgress();
+  return <Html center>{Math.floor(progress)} % loaded</Html>;
+}
 
 const PreviewNode = ({ connectorType }) => {
   const ref = useRef();
@@ -41,13 +47,24 @@ const PreviewNode = ({ connectorType }) => {
 };
 
 export default function ConnectorPreview({ connectorType }) {
-  return (
-    <div style={{ height: '80px', width: '80px' }}>
-      <Canvas>
-        <ambientLight intensity={0.75} />
-        <pointLight position={[5, 20, 5]} power={1000} castShadow={true} />
-        <PreviewNode connectorType={connectorType} />
-      </Canvas>
-    </div>
+  return React.useMemo(
+    () => (
+      <div style={{ height: '80px', width: '80px' }}>
+        <Canvas id={'connector-preview-' + connectorType}>
+          <React.Suspense fallback={<Loader />}>
+            <>
+              <ambientLight intensity={0.75} />
+              <pointLight
+                position={[5, 20, 5]}
+                power={1000}
+                castShadow={true}
+              />
+              <PreviewNode connectorType={connectorType} />
+            </>
+          </React.Suspense>
+        </Canvas>
+      </div>
+    ),
+    [connectorType],
   );
 }

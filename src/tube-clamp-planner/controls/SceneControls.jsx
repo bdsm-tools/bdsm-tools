@@ -1,5 +1,13 @@
 import React from 'react';
-import { Button, Descriptions, Image, Input, InputNumber, Slider } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Descriptions,
+  Image,
+  Input,
+  InputNumber,
+  Slider,
+} from 'antd';
 import useSceneStore from '../state/useSceneStore';
 import ReactGA from 'react-ga4';
 import { useDebounce, useDebounceFn } from 'ahooks';
@@ -122,39 +130,75 @@ export default function SceneControls({
           </div>
         </Descriptions.Item>
         {!basicOnly && (
-          <Descriptions.Item
-            label='Preview Image'
-            contentStyle={{ flexDirection: 'column' }}
-          >
-            {scene.previewImage && (
-              <div
-                style={{ aspectRatio: 3 / 2, overflowY: 'auto', width: '100%' }}
-              >
-                <Image width='100%' src={scene.previewImage} />
+          <>
+            <Descriptions.Item label='Post Processing'>
+              <div style={{ width: '100%', paddingRight: 20 }}>
+                <Checkbox
+                  checked={scene.settings?.n8ao}
+                  onChange={({ target }) =>
+                    setScene({
+                      settings: {
+                        ...(scene.settings || {}),
+                        n8ao: target.checked,
+                      },
+                    })
+                  }
+                >
+                  Enable N8AO
+                </Checkbox>
+                <Checkbox
+                  checked={scene.settings?.smaa}
+                  onChange={({ target }) =>
+                    setScene({
+                      settings: {
+                        ...(scene.settings || {}),
+                        smaa: target.checked,
+                      },
+                    })
+                  }
+                >
+                  Enable SMAA
+                </Checkbox>
               </div>
-            )}
-            <Button
-              style={{ marginTop: 5, width: '100%' }}
-              onClick={() => {
-                setScene({
-                  camera: {
-                    position: {
-                      x: canvasData?.camera?.canvasCamera?.position?.x,
-                      y: canvasData?.camera?.canvasCamera?.position?.y,
-                      z: canvasData?.camera?.canvasCamera?.position?.z,
-                    },
-                    up: canvasData?.camera?.canvasCamera?.up,
-                    focusPoint: { ...canvasData?.camera?.focusPoint },
-                  },
-                  previewImage: takeSnapshot(canvasData.domElement),
-                });
-
-                ReactGA.event('take_canvas_snapshot');
-              }}
+            </Descriptions.Item>
+            <Descriptions.Item
+              label='Preview Image'
+              contentStyle={{ flexDirection: 'column' }}
             >
-              Take {scene.previewImage ? 'new' : 'a'} Snapshot
-            </Button>
-          </Descriptions.Item>
+              {scene.previewImage && (
+                <div
+                  style={{
+                    aspectRatio: 3 / 2,
+                    overflowY: 'auto',
+                    width: '100%',
+                  }}
+                >
+                  <Image width='100%' src={scene.previewImage} />
+                </div>
+              )}
+              <Button
+                style={{ marginTop: 5, width: '100%' }}
+                onClick={() => {
+                  setScene({
+                    camera: {
+                      position: {
+                        x: canvasData?.camera?.canvasCamera?.position?.x,
+                        y: canvasData?.camera?.canvasCamera?.position?.y,
+                        z: canvasData?.camera?.canvasCamera?.position?.z,
+                      },
+                      up: canvasData?.camera?.canvasCamera?.up,
+                      focusPoint: { ...canvasData?.camera?.focusPoint },
+                    },
+                    previewImage: takeSnapshot(canvasData.domElement),
+                  });
+
+                  ReactGA.event('take_canvas_snapshot');
+                }}
+              >
+                Take {scene.previewImage ? 'new' : 'a'} Snapshot
+              </Button>
+            </Descriptions.Item>
+          </>
         )}
       </Descriptions>
     </>

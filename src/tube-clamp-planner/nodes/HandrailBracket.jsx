@@ -1,5 +1,5 @@
 import React from 'react';
-import { DoubleSide, Euler, MathUtils } from 'three';
+import { DoubleSide, Euler, MathUtils, RepeatWrapping } from 'three';
 import { Addition, Base, Geometry, Subtraction } from '@react-three/csg';
 import { useTexture } from '@react-three/drei';
 import tubeMap from '../textures/Metal_Galvanized_1K_albedo.png';
@@ -7,60 +7,65 @@ import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import useRotate from '../controls/useRotate';
+import TubeSleeveCylinder from './TubeSleeveCylinder';
+import { mapObject } from '../../util';
+import CacheGeometry, { useGeometryCache } from '../components/CacheGeometry';
 
-export default function Corner({
+export default function HandrailBracket({
   id,
   size,
-  connection,
-  parentConnection,
   connectionSlot,
   middleConnections,
   setMiddleConnectionPosition,
   setMiddleConnectionRotation,
-  setEndConnectionPosition,
-  setEndConnectionRotation,
 }) {
   const [connectedTube] = middleConnections;
 
   const ref = React.useRef();
-  const endRef = React.useRef();
-  const endInnerRef = React.useRef();
-  const endRingStartRef = React.useRef();
-  const endRingEndRef = React.useRef();
+  const baseRef = React.useRef();
 
-  useRotate(endRef, { x: 90 });
-  useRotate(endInnerRef, { x: 90 });
-  useRotate(endRingStartRef, { y: 180 });
+  useRotate(baseRef, { x: 90 });
 
-  const textureProps = useTexture({
-    map: tubeMap,
-    normalMap: tubeNormalMap,
-    roughnessMap: tubeRoughness,
-    metalnessMap: tubeMetalic,
-  });
+  const textureProps = mapObject(
+    useTexture({
+      map: tubeMap,
+      normalMap: tubeNormalMap,
+      roughnessMap: tubeRoughness,
+      metalnessMap: tubeMetalic,
+    }),
+    (t) => t.clone(),
+    (texture) => {
+      texture.wrapS = RepeatWrapping;
+      texture.wrapT = RepeatWrapping;
+      texture.repeat.setY((size * 3.14) / 40);
+
+      return texture;
+    },
+  );
 
   const tubeRadius = size / 2 + 0.25;
-  const tubeHeight = 4;
   const baseDistance = tubeRadius * 1.5;
-  const baseHeight = .5;
+  const baseHeight = 0.5;
+  const screwHoleRadius = size * 0.1;
+  const tubePosition = baseDistance + tubeRadius;
 
   React.useEffect(
     () =>
       setMiddleConnectionPosition(0, [
         0,
-        baseDistance + (baseHeight / 2) + tubeRadius,
+        tubePosition,
         -connectedTube?.node?.position || 0,
       ]),
     [connectedTube?.node?.position],
   );
   React.useEffect(() => setMiddleConnectionRotation(0, { x: 90 }), []);
 
-  const isMiddle = React.useCallback(
-    () => connectionSlot === 'middle',
+  const isSurface = React.useCallback(
+    () => connectionSlot !== 'middle',
     [connectionSlot],
   );
-  useRotate(ref, { x: 270 }, isMiddle);
-  useRotate(ref, { x: 180 }, () => !isMiddle());
+
+  useRotate(ref, { x: 270 }, isSurface);
 
   return (
     <group
@@ -68,56 +73,38 @@ export default function Corner({
       name='handrail-bracket'
       layers={1}
       userData={{ id, selectable: true }}
-      position={isMiddle() ? [0, 0, -(tubeHeight / 2)] : [0, baseDistance + (baseHeight / 2), 0]}
+      position={isSurface() ? [0, tubePosition, 0] : [0, 0, 0]}
     >
-      <mesh ref={endRef} position={[0, -tubeRadius, 0]}>
-        <cylinderGeometry
-          args={[tubeRadius, tubeRadius, tubeRadius, 64, 1, true]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide}/>
-      </mesh>
-      <mesh ref={endInnerRef} position={[0, -tubeRadius, 0]}>
-        <cylinderGeometry
-          args={[
-            tubeRadius - 0.2,
-            tubeRadius - 0.2,
-            tubeRadius,
-            64,
-            1,
-            true,
-          ]}
-        />
-        <meshStandardMaterial {...textureProps} side={DoubleSide}/>
-      </mesh>
-      <mesh ref={endRingStartRef} position={[0, -tubeRadius, tubeRadius / 2]}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]}/>
-        <meshStandardMaterial {...textureProps} side={DoubleSide}/>
-      </mesh>
-      <mesh ref={endRingEndRef} position={[0, -tubeRadius, -tubeRadius / 2]}>
-        <ringGeometry args={[tubeRadius, tubeRadius - 0.2, 64]}/>
-        <meshStandardMaterial {...textureProps} side={DoubleSide}/>
-      </mesh>
+      <TubeSleeveCylinder size={size} length={tubeRadius} />
 
       <mesh
-        position={[0, baseDistance, 0]}
+        ref={baseRef}
+        position={[0, 0, -baseDistance - tubeRadius + baseHeight]}
         castShadow={true}
+        receiveShadow={true}
       >
-        <boxGeometry args={[tubeRadius * 3, baseHeight, tubeRadius]}/>
-        <meshStandardMaterial {...textureProps} side={DoubleSide}/>
-      </mesh>
-      <mesh
-        position={[0, (baseDistance / 2) - .2, 0]}
-        castShadow={true}
-      >
-        <boxGeometry args={[tubeRadius * .75, baseDistance, baseHeight]}/>
-        <meshStandardMaterial {...textureProps} side={DoubleSide}/>
-      </mesh>
-      <mesh
-        position={[0, (baseDistance / 2) - .2, 0]}
-        castShadow={true}
-      >
-        <boxGeometry args={[baseHeight, baseDistance, tubeRadius * .75]}/>
-        <meshStandardMaterial {...textureProps} side={DoubleSide}/>
+        <meshStandardMaterial {...textureProps} />
+        <CacheGeometry cacheKey={['handrail-bracket', size]}>
+          <Base>
+            <boxGeometry args={[tubeRadius * 3, baseHeight, tubeRadius]} />
+          </Base>
+          <Addition position={[0, baseDistance / 2 - 0.2, 0]}>
+            <boxGeometry args={[tubeRadius * 0.75, baseDistance, baseHeight]} />
+          </Addition>
+          <Addition position={[0, baseDistance / 2 - 0.2, 0]}>
+            <boxGeometry args={[baseHeight, baseDistance, tubeRadius * 0.75]} />
+          </Addition>
+          <Subtraction position={[tubeRadius, 0, 0]}>
+            <cylinderGeometry
+              args={[screwHoleRadius, screwHoleRadius, baseHeight, 64, 1]}
+            />
+          </Subtraction>
+          <Subtraction position={[-tubeRadius, 0, 0]}>
+            <cylinderGeometry
+              args={[screwHoleRadius, screwHoleRadius, baseHeight, 64, 1]}
+            />
+          </Subtraction>
+        </CacheGeometry>
       </mesh>
     </group>
   );

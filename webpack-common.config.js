@@ -43,6 +43,17 @@ module.exports = {
           },
           priority: -10,
         },
+        json: {
+          test: /\.json$/,
+          name(module) {
+            const fileName = module.resource.match(
+              /[\\/](.*?)([^\\/]+)\.json$/,
+            );
+            return fileName ? `json/${fileName[2]}` : 'json/unknown';
+          },
+          chunks: 'all',
+          enforce: true,
+        },
         default: {
           minChunks: 2,
           priority: -20,
@@ -56,7 +67,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(tif|png)/,
+        test: /\.(tif|png|glb)/,
         use: [
           {
             loader: 'file-loader',

@@ -5,6 +5,7 @@ import Tube from '../nodes/Tube';
 import useRotate from '../controls/useRotate';
 import useSelectionStore from '../state/useSelectionStore';
 import { Select } from '@react-three/postprocessing';
+import { useWhyDidYouUpdate } from 'ahooks';
 
 const TubeNode = ({ chain, tube, position, size, rotation }) => {
   const groupRef = React.useRef();
@@ -58,10 +59,22 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
   );
 };
 
-const ChainNode = ({ chain, connection, size, position, rotation }) => {
+const ChainNode = ({
+  chain,
+  connection,
+  size,
+  position: positionRaw,
+  rotation: rotationRaw,
+}) => {
   const groupRef = React.useRef();
-  useRotate(groupRef, rotation);
   const { selectedNodeId } = useSelectionStore();
+  const position = React.useMemo(() => positionRaw, [...positionRaw]);
+  const rotation = React.useMemo(
+    () => rotationRaw,
+    [...Object.entries(rotationRaw).join(':')],
+  );
+
+  useRotate(groupRef, rotation);
 
   const { Node } = getTypeDefinition(connection.node.type);
 
