@@ -10,10 +10,10 @@ export function exportChain(normalisedChain) {
     const chain = {
       ...node.node,
       middleConnections: node.children.middle.map((id) =>
-        chainNode(normalisedChain[id]),
+        id ? chainNode(normalisedChain[id]) : undefined,
       ),
       endConnections: node.children.end.map((id) =>
-        chainNode(normalisedChain[id]),
+        id ? chainNode(normalisedChain[id]) : undefined,
       ),
     };
 
@@ -44,8 +44,8 @@ export function importChain(chain) {
       parentSlot,
       children: {
         middle:
-          node?.middleConnections?.map((e) => chainNode(e, id, 'middle')) || [],
-        end: node?.endConnections?.map((e) => chainNode(e, id, 'end')) || [],
+          node?.middleConnections?.map((e) => e ? chainNode(e, id, 'middle') : undefined) || [],
+        end: node?.endConnections?.map((e) => e ? chainNode(e, id, 'end') : undefined) || [],
       },
     };
 

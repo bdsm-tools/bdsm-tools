@@ -24,14 +24,19 @@ const useStore = create(
         chains: inputChains.map(importChain),
       }),
 
-    addChainNode: (node) =>
+    addChainNode: (node, index = -1) =>
       set((state) => {
         if (!node.id) {
           node.id = uuidv4();
         }
         const chain = state.chains.find((chain) => chain[node.parent]);
         chain[node.id] = node;
-        chain[node.parent].children[node.parentSlot].push(node.id);
+        if (index < 0) {
+          chain[node.parent].children[node.parentSlot].push(node.id);
+        } else {
+          chain[node.parent].children[node.parentSlot].length = Math.max(chain[node.parent].children[node.parentSlot].length, index + 1);
+          chain[node.parent].children[node.parentSlot].splice(index, 1, node.id);
+        }
       }),
     setChainNode: (id, node) =>
       set((state) => {

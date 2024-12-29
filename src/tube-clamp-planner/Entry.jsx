@@ -9,6 +9,7 @@ import './connectors/tee';
 import './connectors/corner';
 import './connectors/handrail-bracket';
 import './connectors/single-male-swivel';
+import './connectors/four-way-cross';
 import useAnalytics from '../hooks/useAnalytics';
 import ConnectorPreviewCanvas from './components/ConnectorPreviewCanvas';
 

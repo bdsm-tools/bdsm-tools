@@ -25,8 +25,9 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
           size={size}
         />
         {tube.children.middle
+          ?.filter((id) => !!id)
           ?.map((id) => chain[id])
-          .map((middle, index) => (
+          ?.map((middle, index) => (
             <ChainNode
               chain={chain}
               key={middle.id}
@@ -64,15 +65,11 @@ const ChainNode = ({
   connection,
   size,
   position: positionRaw,
-  rotation: rotationRaw,
+  rotation,
 }) => {
   const groupRef = React.useRef();
   const { selectedNodeId } = useSelectionStore();
   const position = React.useMemo(() => positionRaw, [...positionRaw]);
-  const rotation = React.useMemo(
-    () => rotationRaw,
-    [...Object.entries(rotationRaw).join(':')],
-  );
 
   useRotate(groupRef, rotation);
 
@@ -136,9 +133,10 @@ const ChainNode = ({
         />
       </Select>
       {connection.children.end
+        ?.filter((id) => !!id)
         ?.filter((id) => id !== connection.parent)
-        .map((id) => chain[id])
-        .map((end, index) => (
+        ?.map((id) => chain[id])
+        ?.map((end, index) => (
           <TubeNode
             chain={chain}
             key={end.id}
@@ -149,9 +147,10 @@ const ChainNode = ({
           />
         ))}
       {connection.children.middle
+        ?.filter((id) => !!id)
         ?.filter((id) => id !== connection.parent)
-        .map((id) => chain[id])
-        .map((middle, index) => (
+        ?.map((id) => chain[id])
+        ?.map((middle, index) => (
           <TubeNode
             chain={chain}
             key={middle.id}

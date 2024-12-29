@@ -1,14 +1,15 @@
 import React from 'react';
-import { Button, InputNumber, Modal, Typography } from 'antd';
+import { Button, InputNumber, Modal, Radio, Space, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import ReactGA from 'react-ga4';
 import useSceneStore from '../state/useSceneStore';
 
-export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
+export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
   const sceneStore = useSceneStore();
 
   const [open, setOpen] = React.useState(false);
   const [tube, setTube] = React.useState({});
+  const [selectedOption, setSelectedOption] = React.useState();
 
   React.useEffect(() => {
     if (!open) {
@@ -24,6 +25,9 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
     <>
       <Modal
         open={open}
+        okButtonProps={{
+          disabled: (!!options && !selectedOption) || tube.length < 5,
+        }}
         onOk={() => {
           onAdd({
             id: uuidv4(),
@@ -58,7 +62,7 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
           controls
           size='small'
           autoFocus
-          min={10}
+          min={5}
           max={1000}
           value={tube.length}
           onChange={(value) =>
@@ -69,8 +73,25 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
             }))
           }
         />
+
+        {(!!options) && (
+          <>
+            <br/>
+            <Typography>Pick a slot:</Typography>
+            <Radio.Group
+              value={selectedOption}
+              onChange={({ target }) => setSelectedOption(target.value)}
+            >
+              <Space direction="vertical">
+                {Object.entries(options).map(([option, populated]) => (
+                  <Radio disabled={!!populated} value={option}>Slot {option}</Radio>
+                ))}
+              </Space>
+            </Radio.Group>
+          </>
+        )}
       </Modal>
-      <Button onClick={() => setOpen(true)}>Connect tube</Button>
+      <Button onClick={() => setOpen(true)}>Connect {parentSlot} tube</Button>
     </>
   );
 }
