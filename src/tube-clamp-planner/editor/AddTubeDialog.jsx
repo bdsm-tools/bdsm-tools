@@ -38,16 +38,19 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
             delete node.slot;
           }
 
-          onAdd({
-            id: uuidv4(),
-            node,
-            parent,
-            parentSlot,
-            children: {
-              middle: [],
-              end: [],
+          onAdd(
+            {
+              id: uuidv4(),
+              node,
+              parent,
+              parentSlot,
+              children: {
+                middle: [],
+                end: [],
+              },
             },
-          }, Number(tube.slot));
+            Number(tube.slot),
+          );
 
           try {
             ReactGA.event('add_tube', {
@@ -89,10 +92,12 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
             <Typography>Pick a slot:</Typography>
             <Radio.Group
               value={Number(tube.slot)}
-              onChange={({ target }) => setTube((old) => ({
-                ...old,
-                slot: Number(target.value),
-              }))}
+              onChange={({ target }) =>
+                setTube((old) => ({
+                  ...old,
+                  slot: Number(target.value),
+                }))
+              }
             >
               <Space direction='vertical'>
                 {Object.entries(options).map(([option, populated]) => (

@@ -6,7 +6,9 @@ import { useCookieState } from 'ahooks';
 
 const cookieName = 'consent';
 export default function ConsentModal() {
-  const [consent, setConsent] = useCookieState(cookieName, { defaultValue: 'false' });
+  const [consent, setConsent] = useCookieState(cookieName, {
+    defaultValue: 'false',
+  });
   const onConsent = () => {
     ReactGA.event('consent');
     setConsent('true');

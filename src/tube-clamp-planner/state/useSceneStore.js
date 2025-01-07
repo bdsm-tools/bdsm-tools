@@ -32,14 +32,15 @@ const useStore = create(
         const chain = state.chains.find((chain) => chain[node.parent]);
         chain[node.id] = node;
         if (index < 0) {
-          const indexOfUndefined = chain[node.parent].children[node.parentSlot].indexOf(undefined);
+          const indexOfUndefined =
+            chain[node.parent].children[node.parentSlot].indexOf(undefined);
           if (indexOfUndefined < 0) {
             chain[node.parent].children[node.parentSlot].push(node.id);
           } else {
             chain[node.parent].children[node.parentSlot].splice(
               indexOfUndefined,
               1,
-              node.id
+              node.id,
             );
           }
         } else {

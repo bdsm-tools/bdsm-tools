@@ -12,7 +12,7 @@ import {
   TeamOutlined,
   EditOutlined,
 } from '@ant-design/icons';
-import {isMobile} from 'react-device-detect';
+import { isMobile } from 'react-device-detect';
 
 export default function NavMenu({ vertical = false }) {
   const { pathname } = useLocation();
@@ -23,7 +23,7 @@ export default function NavMenu({ vertical = false }) {
         mode={vertical ? 'inline' : 'horizontal'}
         selectedKeys={pathname === '/' ? '/' : pathname.split('/')}
         defaultOpenKeys={isMobile ? [] : ['tools', ...pathname.split('/')]}
-        style={{ minWidth: 0, flex: "auto" }}
+        style={{ minWidth: 0, flex: 'auto' }}
         items={[
           {
             key: '/',

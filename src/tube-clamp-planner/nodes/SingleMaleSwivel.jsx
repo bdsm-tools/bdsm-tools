@@ -41,10 +41,7 @@ export default function SingleMaleSwivel({ id, size }) {
       layers={1}
       userData={{ id, selectable: true }}
     >
-      <mesh
-        castShadow={true}
-        receiveShadow={true}
-      >
+      <mesh castShadow={true} receiveShadow={true}>
         <meshStandardMaterial {...textureProps} />
         <CacheGeometry cacheKey={['single-male-swivel', size]}>
           <Base>
@@ -52,29 +49,29 @@ export default function SingleMaleSwivel({ id, size }) {
               args={[tubeRadius, tubeRadius, tubeRadius * 2, 64, 1]}
             />
           </Base>
-          <Addition position={[(tubeRadius * 1.5) + swivelHeight, 0, 0]} rotation={[MathUtils.degToRad(90), 0, 0]}>
+          <Addition
+            position={[tubeRadius * 1.5 + swivelHeight, 0, 0]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
+          >
             <cylinderGeometry
-              args={[
-                tubeThickness / 2,
-                tubeThickness / 2,
-                swivelHeight,
-                64,
-                1
-              ]}
+              args={[tubeThickness / 2, tubeThickness / 2, swivelHeight, 64, 1]}
             />
           </Addition>
           <Addition position={[tubeRadius + swivelHeight, 0, 0]}>
-            <boxGeometry
-              args={[tubeRadius, tubeThickness, swivelHeight]}
-            />
+            <boxGeometry args={[tubeRadius, tubeThickness, swivelHeight]} />
           </Addition>
           <Subtraction>
             <cylinderGeometry
               args={[tubeRadius * 0.9, tubeRadius * 0.9, tubeRadius * 2, 64, 1]}
             />
           </Subtraction>
-          <Subtraction position={[(tubeRadius * 1.5) + swivelHeight, 0, 0]} rotation={[MathUtils.degToRad(90), 0, 0]}>
-            <cylinderGeometry args={[screwHoleRadius, screwHoleRadius, swivelHeight, 64, 1]} />
+          <Subtraction
+            position={[tubeRadius * 1.5 + swivelHeight, 0, 0]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
+          >
+            <cylinderGeometry
+              args={[screwHoleRadius, screwHoleRadius, swivelHeight, 64, 1]}
+            />
           </Subtraction>
         </CacheGeometry>
       </mesh>

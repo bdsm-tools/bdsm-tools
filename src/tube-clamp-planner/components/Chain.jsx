@@ -135,29 +135,33 @@ const ChainNode = ({
       {connection.children.end
         ?.filter((id) => id !== connection.parent)
         ?.map((id) => chain[id])
-        ?.map((end, index) => !end ? null : (
-          <TubeNode
-            chain={chain}
-            key={end.id}
-            position={endConnectionPositions[index] || position}
-            rotation={endConnectionRotations[index] || rotation}
-            size={size}
-            tube={end}
-          />
-        ))}
+        ?.map((end, index) =>
+          !end ? null : (
+            <TubeNode
+              chain={chain}
+              key={end.id}
+              position={endConnectionPositions[index] || position}
+              rotation={endConnectionRotations[index] || rotation}
+              size={size}
+              tube={end}
+            />
+          ),
+        )}
       {connection.children.middle
         ?.filter((id) => id !== connection.parent)
         ?.map((id) => chain[id])
-        ?.map((middle, index) => !middle ? null : (
-          <TubeNode
-            chain={chain}
-            key={middle.id}
-            position={middleConnectionPositions[index] || position}
-            rotation={middleConnectionRotations[index] || rotation}
-            size={size}
-            tube={middle}
-          />
-        ))}
+        ?.map((middle, index) =>
+          !middle ? null : (
+            <TubeNode
+              chain={chain}
+              key={middle.id}
+              position={middleConnectionPositions[index] || position}
+              rotation={middleConnectionRotations[index] || rotation}
+              size={size}
+              tube={middle}
+            />
+          ),
+        )}
     </group>
   );
 };
