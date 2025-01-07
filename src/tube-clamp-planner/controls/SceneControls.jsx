@@ -179,15 +179,27 @@ export default function SceneControls({
               <Button
                 style={{ marginTop: 5, width: '100%' }}
                 onClick={() => {
+                  const canvasCameraPosition = canvasData?.camera?.position;
+                  const canvasCameraRotation = canvasData?.camera?.rotation;
+                  const canvasCameraFocusPoint = canvasData?.camera?.focusPoint;
                   setScene({
                     camera: {
                       position: {
-                        x: canvasData?.camera?.canvasCamera?.position?.x,
-                        y: canvasData?.camera?.canvasCamera?.position?.y,
-                        z: canvasData?.camera?.canvasCamera?.position?.z,
+                        x: canvasCameraPosition?.x,
+                        y: canvasCameraPosition?.y,
+                        z: canvasCameraPosition?.z,
                       },
-                      up: canvasData?.camera?.canvasCamera?.up,
-                      focusPoint: { ...canvasData?.camera?.focusPoint },
+                      rotation: {
+                        x: canvasCameraRotation?.x,
+                        y: canvasCameraRotation?.y,
+                        z: canvasCameraRotation?.z,
+                      },
+                      focusPoint: {
+                        x: canvasCameraFocusPoint?.x,
+                        y: canvasCameraFocusPoint?.y,
+                        z: canvasCameraFocusPoint?.z,
+                      },
+                      up: canvasData?.camera?.up,
                     },
                     previewImage: takeSnapshot(canvasData.domElement),
                   });

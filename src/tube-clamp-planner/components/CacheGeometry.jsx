@@ -1,7 +1,6 @@
 import React from 'react';
 import { BufferGeometryLoader } from 'three';
 import { Geometry } from '@react-three/csg';
-import geometryCachePregen from '../data/connector-geometry.pregen.json';
 import { downloadJSON } from '../../util';
 import { useDebounceEffect } from 'ahooks';
 
@@ -10,31 +9,9 @@ export const cacheOptions = {
   createPregen: false,
 };
 
-export let geometryCache = {
-  ...geometryCachePregen,
-};
 const geometryLoader = new BufferGeometryLoader();
 
-const CacheGeometry = React.forwardRef(({ cacheKey, ...props }, fref) => {
-  const ref = React.useRef(fref);
-  const id = cacheKey.join('-').concat(':v1');
-
-  React.useEffect(() => {
-    if (!geometryCache[id] && ref?.current?.geometry?.isBufferGeometry) {
-      geometryCache[id] = ref.current.geometry.toJSON();
-    }
-  }, [ref?.current]);
-
-  if (!cacheOptions.enabled || !geometryCache[id]) {
-    return <Geometry {...props} ref={ref} />;
-  }
-
-  return (
-    <bufferGeometry ref={fref} {...geometryLoader.parse(geometryCache[id])} />
-  );
-});
-
-const CacheGeometryV2 = React.forwardRef(({ cacheKey, ...props }, fref) => {
+export default function CacheGeometry({ ref: fref, cacheKey, ...props }) {
   const ref = React.useRef(fref);
   const id = cacheKey.join('-').concat('_v1');
   const [geometry, setGeometry] = React.useState();
@@ -79,6 +56,4 @@ const CacheGeometryV2 = React.forwardRef(({ cacheKey, ...props }, fref) => {
   }
 
   return <bufferGeometry ref={fref} {...geometry} />;
-});
-
-export default CacheGeometryV2;
+}
