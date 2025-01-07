@@ -6,8 +6,8 @@ import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import { mapObject } from '../../util';
-import TubeSleeveCylinder from './TubeSleeveCylinder';
-import { Base, Subtraction } from '@react-three/csg';
+import TubeSleeveCylinderGeometry from './TubeSleeveCylinderGeometry';
+import { Addition, Base, Subtraction } from '@react-three/csg';
 import CacheGeometry from '../components/CacheGeometry';
 
 export default function Flange({ id, size, setEndConnectionPosition }) {
@@ -16,8 +16,8 @@ export default function Flange({ id, size, setEndConnectionPosition }) {
   const baseRadius = size * 1.5;
   const baseHeight = size / 3;
 
-  const neckRadius = size / 2 + 0.25;
-  const neckHeight = size * 1.1;
+  const neckRadius = size / 2 + size * 0.1;
+  const neckHeight = size * 1.5;
 
   const screwHoleRadius = size * 0.1;
 
@@ -60,6 +60,16 @@ export default function Flange({ id, size, setEndConnectionPosition }) {
               args={[baseRadius, baseRadius, baseHeight, 64, 1]}
             />
           </Base>
+          <Addition position={[0, neckHeight / 2, 0]}>
+            <cylinderGeometry
+              args={[neckRadius, neckRadius, neckHeight, 64, 1]}
+            />
+          </Addition>
+          <Subtraction position={[0, neckHeight / 2, 0]}>
+            <cylinderGeometry
+              args={[neckRadius * 0.9, neckRadius * 0.9, neckHeight, 64, 1]}
+            />
+          </Subtraction>
           <Subtraction>
             <cylinderGeometry
               args={[neckRadius * 0.75, neckRadius * 0.75, baseHeight, 64, 1]}
@@ -87,12 +97,6 @@ export default function Flange({ id, size, setEndConnectionPosition }) {
           </Subtraction>
         </CacheGeometry>
       </mesh>
-      <TubeSleeveCylinder
-        name='flange_neck'
-        size={size}
-        length={neckHeight}
-        position={[0, neckHeight / 2, 0]}
-      />
     </group>
   );
 }

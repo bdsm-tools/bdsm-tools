@@ -32,11 +32,29 @@ const useStore = create(
         const chain = state.chains.find((chain) => chain[node.parent]);
         chain[node.id] = node;
         if (index < 0) {
-          chain[node.parent].children[node.parentSlot].push(node.id);
+          const indexOfUndefined = chain[node.parent].children[node.parentSlot].indexOf(undefined);
+          if (indexOfUndefined < 0) {
+            chain[node.parent].children[node.parentSlot].push(node.id);
+          } else {
+            chain[node.parent].children[node.parentSlot].splice(
+              indexOfUndefined,
+              1,
+              node.id
+            );
+          }
         } else {
-          chain[node.parent].children[node.parentSlot].length = Math.max(chain[node.parent].children[node.parentSlot].length, index + 1);
-          chain[node.parent].children[node.parentSlot].splice(index, 1, node.id);
+          chain[node.parent].children[node.parentSlot].length = Math.max(
+            chain[node.parent].children[node.parentSlot].length,
+            index + 1,
+          );
+          chain[node.parent].children[node.parentSlot].splice(
+            index,
+            1,
+            node.id,
+          );
         }
+
+        console.log(chain[node.parent]);
       }),
     setChainNode: (id, node) =>
       set((state) => {
@@ -51,11 +69,11 @@ const useStore = create(
         Object.keys(chain).forEach((key) => {
           const middleIndex = chain[key].children.middle.indexOf(id);
           if (middleIndex !== -1) {
-            chain[key].children.middle.splice(middleIndex, 1);
+            chain[key].children.middle.splice(middleIndex, 1, undefined);
           }
           const endIndex = chain[key].children.end.indexOf(id);
           if (endIndex !== -1) {
-            chain[key].children.end.splice(endIndex, 1);
+            chain[key].children.end.splice(endIndex, 1, undefined);
           }
         });
         delete chain[id];

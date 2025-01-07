@@ -20,9 +20,9 @@ export default function RemoveNodeDialog({ node, showIconOnly = false }) {
     return {
       key: id,
       title: childNodeDef.name + (root === 'this' ? ' (this)' : ''),
-      children: [...childNode.children.middle, ...childNode.children.end].filter(o => !!o).map(
-        getTreeNode,
-      ),
+      children: [...childNode.children.middle, ...childNode.children.end]
+        .filter((o) => !!o)
+        .map(getTreeNode),
     };
   };
 

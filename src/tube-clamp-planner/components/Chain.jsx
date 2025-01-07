@@ -133,10 +133,9 @@ const ChainNode = ({
         />
       </Select>
       {connection.children.end
-        ?.filter((id) => !!id)
         ?.filter((id) => id !== connection.parent)
         ?.map((id) => chain[id])
-        ?.map((end, index) => (
+        ?.map((end, index) => !end ? null : (
           <TubeNode
             chain={chain}
             key={end.id}
@@ -147,10 +146,9 @@ const ChainNode = ({
           />
         ))}
       {connection.children.middle
-        ?.filter((id) => !!id)
         ?.filter((id) => id !== connection.parent)
         ?.map((id) => chain[id])
-        ?.map((middle, index) => (
+        ?.map((middle, index) => !middle ? null : (
           <TubeNode
             chain={chain}
             key={middle.id}

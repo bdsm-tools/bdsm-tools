@@ -85,7 +85,7 @@ export default function FourWayCrossEditor({
           onAdd={addChainNode}
         />
       )}
-      {slot === 'end' && (!end1 || !end2 || !end4) && (
+      {slot === 'end' && (!end1 || !end2 || !end3) && (
         <AddTubeDialog
           parent={connection.id}
           parentSlot='end'
@@ -93,8 +93,8 @@ export default function FourWayCrossEditor({
           options={{
             0: end1,
             1: end2,
-            2: true,
-            3: end4,
+            2: end3,
+            3: true,
           }}
         />
       )}

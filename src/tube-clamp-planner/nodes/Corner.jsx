@@ -7,8 +7,9 @@ import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import useRotate from '../controls/useRotate';
-import TubeSleeveCylinder from './TubeSleeveCylinder';
+import TubeSleeveCylinderGeometry from './TubeSleeveCylinderGeometry';
 import { mapObject } from '../../util';
+import CacheGeometry from '../components/CacheGeometry';
 
 export default function Corner({
   id,
@@ -17,11 +18,6 @@ export default function Corner({
   setEndConnectionRotation,
 }) {
   const ref = React.useRef();
-  const secondSleeveRef = React.useRef();
-  const middleRef = React.useRef();
-
-  useRotate(secondSleeveRef, { x: 90 });
-  useRotate(middleRef, { x: 135 });
 
   const textureProps = mapObject(
     useTexture({
@@ -34,15 +30,15 @@ export default function Corner({
     (texture) => {
       texture.wrapS = RepeatWrapping;
       texture.wrapT = RepeatWrapping;
-      texture.repeat.setX((size * 3.14) / 2);
-      texture.repeat.setY((size * 3.14) / 2);
+      texture.repeat.setX((size * 3.14) / 40);
+      texture.repeat.setY((size * 3.14) / 40);
 
       return texture;
     },
   );
 
-  const tubeRadius = size / 2 + 0.25;
-  const tubeHeight = 0.04;
+  const tubeRadius = size / 2 + size * 0.1;
+  const tubeHeight = size * 1.2;
   const endPosition = [0, -(tubeHeight / 2), tubeHeight / 2];
 
   React.useEffect(() => setEndConnectionPosition(0, endPosition), []);
@@ -56,21 +52,58 @@ export default function Corner({
       userData={{ id, selectable: true }}
     >
       <mesh
-        ref={middleRef}
         position={[0, -(tubeHeight / 2), 0]}
         castShadow={true}
         receiveShadow={true}
       >
-        <sphereGeometry args={[tubeRadius, 64, 64]} />
         <meshStandardMaterial {...textureProps} />
+        <CacheGeometry cacheKey={['corner', size]}>
+          <Base>
+            <sphereGeometry args={[tubeRadius, 64, 64]} />
+          </Base>
+          <Addition position={[0, tubeRadius, 0]}>
+            <cylinderGeometry
+              args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}
+            />
+          </Addition>
+          <Addition
+            position={[0, 0, tubeRadius]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
+          >
+            <cylinderGeometry
+              args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}
+            />
+          </Addition>
+          <Subtraction position={[0, tubeRadius, 0]}>
+            <cylinderGeometry
+              args={[
+                tubeRadius * 0.9,
+                tubeRadius * 0.9,
+                tubeHeight + 0.1,
+                64,
+                1,
+              ]}
+            />
+          </Subtraction>
+          <Subtraction
+            position={[0, 0, tubeRadius]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
+          >
+            <cylinderGeometry
+              args={[
+                tubeRadius * 0.9,
+                tubeRadius * 0.9,
+                tubeHeight + 0.1,
+                64,
+                1,
+              ]}
+            />
+          </Subtraction>
+          <Subtraction>
+            <sphereGeometry args={[tubeRadius * 0.9, 64, 64]} />
+          </Subtraction>
+        </CacheGeometry>
       </mesh>
-
-      <TubeSleeveCylinder size={size} />
-      <TubeSleeveCylinder
-        ref={secondSleeveRef}
-        size={size}
-        position={endPosition}
-      />
     </group>
   );
 }

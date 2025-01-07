@@ -45,10 +45,14 @@ export default function FourWayCross({
     () => connectionSlot === 'middle',
     [connectionSlot],
   );
+  const isEnd = React.useCallback(
+    () => connectionSlot === 'end',
+    [connectionSlot],
+  );
 
   const tubeRadius = size / 2;
-  const sleeveRadius = tubeRadius + (size * 0.1);
-  const endPosition = isMiddle() ? [0,0,0] : [0, -tubeRadius, 0];
+  const sleeveRadius = tubeRadius + size * 0.1;
+  const endPosition = isMiddle() ? [0, 0, 0] : [0, -tubeRadius, 0];
 
   React.useEffect(() => {
     if (isMiddle()) {
@@ -62,18 +66,17 @@ export default function FourWayCross({
       setEndConnectionRotation(2, { x: 90 });
       setEndConnectionRotation(3, { z: 90 });
     } else {
-      setEndConnectionPosition(0, [0, -tubeRadius, 0]);
-      setEndConnectionPosition(1, [0, -tubeRadius, tubeRadius]);
-      setEndConnectionPosition(3, [0, tubeRadius, tubeRadius]);
+      setEndConnectionPosition(0, [0, -tubeRadius, -tubeRadius]);
+      setEndConnectionPosition(1, [0, -tubeRadius * 2, 0]);
+      setEndConnectionPosition(2, [0, -tubeRadius, tubeRadius]);
 
-      setEndConnectionRotation(0, { x: 0 });
-      setEndConnectionRotation(1, { x: 90 });
-      setEndConnectionRotation(3, { x: 90 });
+      setEndConnectionRotation(0, { x: 270 });
+      setEndConnectionRotation(1, { x: 180 });
+      setEndConnectionRotation(2, { x: 90 });
 
       setMiddleConnectionRotation(0, { z: 90 });
     }
-
-    },[]);
+  }, []);
 
   React.useEffect(
     () =>
@@ -86,6 +89,7 @@ export default function FourWayCross({
   );
 
   useRotate(ref, { z: 90 }, isMiddle);
+  useRotate(ref, { x: 270 }, isEnd);
 
   return (
     <group
@@ -95,34 +99,60 @@ export default function FourWayCross({
       userData={{ id, selectable: true }}
       position={endPosition}
     >
-      <mesh
-        castShadow={true}
-        receiveShadow={true}
-      >
+      <mesh castShadow={true} receiveShadow={true}>
         <meshPhysicalMaterial {...textureProps} />
         <CacheGeometry cacheKey={['4-way-cross', size]}>
           <Base rotation={[0, 0, MathUtils.degToRad(90)]}>
-            <cylinderGeometry args={[sleeveRadius, sleeveRadius, sleeveRadius * 2.2, 64, 1]}/>
+            <cylinderGeometry
+              args={[sleeveRadius, sleeveRadius, sleeveRadius * 2.2, 64, 1]}
+            />
           </Base>
           <Addition>
-            <cylinderGeometry args={[sleeveRadius, sleeveRadius, sleeveRadius * 4, 64, 1]}/>
+            <cylinderGeometry
+              args={[sleeveRadius, sleeveRadius, sleeveRadius * 4, 64, 1]}
+            />
           </Addition>
           <Addition rotation={[MathUtils.degToRad(90), 0, 0]}>
-            <cylinderGeometry args={[sleeveRadius, sleeveRadius, sleeveRadius * 4, 64, 1]}/>
+            <cylinderGeometry
+              args={[sleeveRadius, sleeveRadius, sleeveRadius * 4, 64, 1]}
+            />
           </Addition>
 
           <Subtraction rotation={[0, 0, MathUtils.degToRad(90)]}>
-            <cylinderGeometry args={[sleeveRadius * 0.9, sleeveRadius * 0.9, sleeveRadius * 2.2, 64, 1]} />
+            <cylinderGeometry
+              args={[
+                sleeveRadius * 0.9,
+                sleeveRadius * 0.9,
+                sleeveRadius * 2.2,
+                64,
+                1,
+              ]}
+            />
           </Subtraction>
           <Subtraction>
-            <cylinderGeometry args={[sleeveRadius * 0.9, sleeveRadius * 0.9, sleeveRadius * 4, 64, 1]} />
+            <cylinderGeometry
+              args={[
+                sleeveRadius * 0.9,
+                sleeveRadius * 0.9,
+                sleeveRadius * 4,
+                64,
+                1,
+              ]}
+            />
           </Subtraction>
           <Subtraction rotation={[MathUtils.degToRad(90), 0, 0]}>
-            <cylinderGeometry args={[sleeveRadius * 0.9, sleeveRadius * 0.9, sleeveRadius * 4, 64, 1]} />
+            <cylinderGeometry
+              args={[
+                sleeveRadius * 0.9,
+                sleeveRadius * 0.9,
+                sleeveRadius * 4,
+                64,
+                1,
+              ]}
+            />
           </Subtraction>
         </CacheGeometry>
       </mesh>
-
     </group>
   );
 }

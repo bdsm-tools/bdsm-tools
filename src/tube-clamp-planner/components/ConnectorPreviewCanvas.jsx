@@ -19,11 +19,11 @@ const Controls = ({}) => {
     camera.lookAt(40, 40, 100);
   }, []);
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      downloadJSON(geometryCache, 'connector-geometry.pregen.json');
-    }, 1000);
-  }, []);
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     downloadJSON(geometryCache, 'connector-geometry.pregen.json');
+  //   }, 1000);
+  // }, []);
 
   return null;
 };
@@ -33,12 +33,8 @@ export default function ConnectorPreviewCanvas({}) {
     ({ value }) => getTypeDefinition(value),
   );
 
-  React.useEffect(() => {
-    cacheOptions.enabled = false;
-    return () => {
-      cacheOptions.enabled = true;
-    };
-  }, []);
+  cacheOptions.enabled = false;
+  cacheOptions.createPregen = true;
 
   return (
     <Canvas id='mesh-canvas'>

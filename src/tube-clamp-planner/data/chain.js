@@ -44,8 +44,13 @@ export function importChain(chain) {
       parentSlot,
       children: {
         middle:
-          node?.middleConnections?.map((e) => e ? chainNode(e, id, 'middle') : undefined) || [],
-        end: node?.endConnections?.map((e) => e ? chainNode(e, id, 'end') : undefined) || [],
+          node?.middleConnections?.map((e) =>
+            e ? chainNode(e, id, 'middle') : undefined,
+          ) || [],
+        end:
+          node?.endConnections?.map((e) =>
+            e ? chainNode(e, id, 'end') : undefined,
+          ) || [],
       },
     };
 

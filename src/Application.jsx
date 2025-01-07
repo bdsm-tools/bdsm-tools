@@ -19,9 +19,10 @@ import {
   useMatch,
 } from 'react-router-dom';
 import ReactGA from 'react-ga4';
+import { BrowserView, isMobile } from 'react-device-detect';
 import Header from './Header';
 import NavMenu from './NavMenu';
-import ConsentModal from './ConsentModal';
+import ConsentModal from './components/ConsentModal';
 import { convertMongoTimestamp } from './util';
 import UpdateChecker from './UpdateChecker';
 import api from './services/feature-flag-api';
@@ -31,6 +32,7 @@ import NegotiationFormWrapper from './scene-negotiation/NegotiationFormWrapper';
 import ViewingTemplates from './scene-negotiation/ViewingTemplates';
 import TubePlanViewer from './tube-clamp-planner/TubePlanViewer';
 import TubePlannerDashboard from './tube-clamp-planner/TubePlannerDashboard';
+import MobileUserWarning from './components/MobileUserWarning';
 
 ReactGA.initialize('G-SKBSEEBLCP');
 
@@ -129,7 +131,7 @@ function AppLayout() {
           </Layout.Header>
           <Layout.Content className='fullpage-w' style={{ paddingTop: 64 }}>
             <Layout>
-              <Layout.Sider width={250} collapsible>
+              <Layout.Sider width={250} collapsible collapsed={isMobile}>
                 <NavMenu vertical />
               </Layout.Sider>
               <Layout.Content className='content'>
@@ -143,6 +145,7 @@ function AppLayout() {
           </Layout.Content>
         </Layout>
         <UpdateChecker />
+        <MobileUserWarning />
       </App>
     </ConfigProvider>
   );

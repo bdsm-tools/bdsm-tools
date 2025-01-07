@@ -9,7 +9,6 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
 
   const [open, setOpen] = React.useState(false);
   const [tube, setTube] = React.useState({});
-  const [selectedOption, setSelectedOption] = React.useState();
 
   React.useEffect(() => {
     if (!open) {
@@ -17,6 +16,7 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
         length: 0,
         type: 'tube',
         position: 0,
+        slot: -1,
       });
     }
   }, [open]);
@@ -26,19 +26,28 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
       <Modal
         open={open}
         okButtonProps={{
-          disabled: (!!options && !selectedOption) || tube.length < 5,
+          disabled: (!!options && tube.slot < 0) || tube.length < 2,
         }}
         onOk={() => {
+          const node = { ...tube };
+
+          if (parentSlot !== 'middle') {
+            delete node.position;
+          }
+          if (parentSlot !== 'end' || node.slot < 0) {
+            delete node.slot;
+          }
+
           onAdd({
             id: uuidv4(),
-            node: tube,
+            node,
             parent,
             parentSlot,
             children: {
               middle: [],
               end: [],
             },
-          });
+          }, Number(tube.slot));
 
           try {
             ReactGA.event('add_tube', {
@@ -74,17 +83,22 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
           }
         />
 
-        {(!!options) && (
+        {!!options && (
           <>
-            <br/>
+            <br />
             <Typography>Pick a slot:</Typography>
             <Radio.Group
-              value={selectedOption}
-              onChange={({ target }) => setSelectedOption(target.value)}
+              value={Number(tube.slot)}
+              onChange={({ target }) => setTube((old) => ({
+                ...old,
+                slot: Number(target.value),
+              }))}
             >
-              <Space direction="vertical">
+              <Space direction='vertical'>
                 {Object.entries(options).map(([option, populated]) => (
-                  <Radio disabled={!!populated} value={option}>Slot {option}</Radio>
+                  <Radio disabled={!!populated} value={Number(option)}>
+                    Slot {option}
+                  </Radio>
                 ))}
               </Space>
             </Radio.Group>

@@ -7,7 +7,7 @@ import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import useRotate from '../controls/useRotate';
-import TubeSleeveCylinder from './TubeSleeveCylinder';
+import TubeSleeveCylinderGeometry from './TubeSleeveCylinderGeometry';
 import { mapObject } from '../../util';
 import CacheGeometry, { useGeometryCache } from '../components/CacheGeometry';
 
@@ -45,8 +45,8 @@ export default function Tee({
     },
   );
 
-  const tubeRadius = size / 2 + 0.25;
-  const tubeHeight = 4;
+  const tubeRadius = size / 2 + size * 0.1;
+  const tubeHeight = size * 1.5;
 
   React.useEffect(
     () =>
@@ -89,23 +89,37 @@ export default function Tee({
               args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}
             />
           </Base>
-          <Subtraction>
-            <cylinderGeometry
-              args={[tubeRadius - 0.2, tubeRadius - 0.2, tubeHeight, 64, 1]}
-            />
-          </Subtraction>
-          <Subtraction
-            position={[0, -tubeRadius, 0]}
-            rotation={new Euler(MathUtils.degToRad(90), 0, 0)}
+          <Addition
+            position={[0, -(tubeHeight / 2), 0]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
           >
             <cylinderGeometry
-              args={[tubeRadius - 0.2, tubeRadius - 0.2, tubeRadius * 2, 64, 1]}
+              args={[tubeRadius, tubeRadius, tubeRadius * 2, 64, 1]}
+            />
+          </Addition>
+          <Subtraction
+            position={[0, -(tubeHeight / 2), 0]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
+          >
+            <cylinderGeometry
+              args={[tubeRadius * 0.9, tubeRadius * 0.9, tubeRadius * 2, 64, 1]}
             />
           </Subtraction>
+          <Subtraction>
+            <cylinderGeometry
+              args={[tubeRadius * 0.9, tubeRadius * 0.9, tubeHeight, 64, 1]}
+            />
+          </Subtraction>
+          {/*<Subtraction*/}
+          {/*  position={[0, -tubeRadius, 0]}*/}
+          {/*  rotation={new Euler(MathUtils.degToRad(90), 0, 0)}*/}
+          {/*>*/}
+          {/*  <cylinderGeometry*/}
+          {/*    args={[tubeRadius, tubeRadius, tubeRadius * 2, 64, 1]}*/}
+          {/*  />*/}
+          {/*</Subtraction>*/}
         </CacheGeometry>
       </mesh>
-
-      <TubeSleeveCylinder size={size} />
     </group>
   );
 }

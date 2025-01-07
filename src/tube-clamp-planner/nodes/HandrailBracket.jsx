@@ -7,7 +7,7 @@ import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import useRotate from '../controls/useRotate';
-import TubeSleeveCylinder from './TubeSleeveCylinder';
+import TubeSleeveCylinderGeometry from './TubeSleeveCylinderGeometry';
 import { mapObject } from '../../util';
 import CacheGeometry, { useGeometryCache } from '../components/CacheGeometry';
 
@@ -43,7 +43,7 @@ export default function HandrailBracket({
     },
   );
 
-  const tubeRadius = size / 2 + 0.25;
+  const tubeRadius = size / 2 + size * 0.1;
   const baseDistance = tubeRadius * 1.5;
   const baseHeight = 0.5;
   const screwHoleRadius = size * 0.1;
@@ -75,8 +75,6 @@ export default function HandrailBracket({
       userData={{ id, selectable: true }}
       position={isSurface() ? [0, tubePosition, 0] : [0, 0, 0]}
     >
-      <TubeSleeveCylinder size={size} length={tubeRadius} />
-
       <mesh
         ref={baseRef}
         position={[0, 0, -baseDistance - tubeRadius + baseHeight]}
@@ -94,6 +92,22 @@ export default function HandrailBracket({
           <Addition position={[0, baseDistance / 2 - 0.2, 0]}>
             <boxGeometry args={[baseHeight, baseDistance, tubeRadius * 0.75]} />
           </Addition>
+          <Addition
+            position={[0, baseDistance + tubeRadius - baseHeight, 0]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
+          >
+            <cylinderGeometry
+              args={[tubeRadius, tubeRadius, tubeRadius, 64, 1]}
+            />
+          </Addition>
+          <Subtraction
+            position={[0, baseDistance + tubeRadius - baseHeight, 0]}
+            rotation={[MathUtils.degToRad(90), 0, 0]}
+          >
+            <cylinderGeometry
+              args={[tubeRadius * 0.9, tubeRadius * 0.9, tubeRadius, 64, 1]}
+            />
+          </Subtraction>
           <Subtraction position={[tubeRadius, 0, 0]}>
             <cylinderGeometry
               args={[screwHoleRadius, screwHoleRadius, baseHeight, 64, 1]}
