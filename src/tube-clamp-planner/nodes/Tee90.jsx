@@ -11,7 +11,7 @@ import TubeSleeveCylinderGeometry from './TubeSleeveCylinderGeometry';
 import { mapObject } from '../../util';
 import CacheGeometry, { useGeometryCache } from '../components/CacheGeometry';
 
-export default function Tee({
+export default function Tee90({
   id,
   size,
   connectionSlot,
@@ -83,7 +83,7 @@ export default function Tee({
         receiveShadow={true}
       >
         <meshStandardMaterial {...textureProps} />
-        <CacheGeometry cacheKey={['tee', size]}>
+        <CacheGeometry cacheKey={['tee-90', size]}>
           <Base>
             <cylinderGeometry
               args={[tubeRadius, tubeRadius, tubeHeight, 64, 1]}

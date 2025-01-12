@@ -6,7 +6,7 @@ import RotationEditorInput from './RotationEditorInput';
 import AddTubeDialog from './AddTubeDialog';
 import RemoveNodeDialog from './RemoveNodeDialog';
 
-export default function TeeEditor({
+export default function Tee90Editor({
   node,
   getNode,
   setNode,
@@ -27,7 +27,7 @@ export default function TeeEditor({
   return (
     <>
       <Descriptions
-        title='Tee'
+        title='Tee90'
         layout='vertical'
         size='small'
         extra={
