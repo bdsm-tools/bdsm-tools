@@ -29,6 +29,8 @@
     "clean-webpack-plugin": "4.0.0",
     "compression-webpack-plugin": "11.1.0",
     "css-loader": "7.1.2",
+    "decryption-loader": "^2.0.1",
+    "dotenv": "^16.4.7",
     "eslint": "9.16.0",
     "eslint-plugin-css-modules": "2.12.0",
     "eslint-plugin-react": "7.37.2",

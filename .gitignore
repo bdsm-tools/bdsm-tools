@@ -6,3 +6,4 @@ gha-creds-*.json
 .terraform/
 *.tfstate.backup
 *.tfstate.lock.info
+.env

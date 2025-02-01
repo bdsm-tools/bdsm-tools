@@ -20,6 +20,7 @@ import GuiControls from './controls/GuiControls';
 import useSceneStore from './state/useSceneStore';
 import SelectionWrapper from './components/SelectionWrapper';
 import { useWhyDidYouUpdate } from 'ahooks';
+import SlaveModel from './components/SlaveModel';
 
 extend({ OrbitControls });
 
@@ -121,6 +122,13 @@ export default function SceneCanvas() {
               </Selection>
               <Controls />
               <CameraControls />
+
+              {scene.slaveModel?.enabled && (
+                <SlaveModel
+                  poseKey={scene.slaveModel?.pose}
+                  position={scene.slaveModel?.position}
+                />
+              )}
             </SelectionWrapper>
             <Preload all />
           </React.Suspense>

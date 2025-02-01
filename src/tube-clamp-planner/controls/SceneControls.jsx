@@ -5,8 +5,8 @@ import {
   Descriptions,
   Image,
   Input,
-  InputNumber,
-  Slider,
+  InputNumber, Select,
+  Slider
 } from 'antd';
 import useSceneStore from '../state/useSceneStore';
 import ReactGA from 'react-ga4';
@@ -20,15 +20,15 @@ const takeSnapshot = (canvas) =>
       ?.getElementsByTagName('canvas')[0]
   )?.toDataURL('image/jpeg', 0.3);
 
-export default function SceneControls({
+export default function SceneControls ({
   scene: propsScene,
   setScene: propsSetScene,
-  basicOnly = false,
+  basicOnly = false
 }) {
   const {
     scene: storeScene,
     setScene: storeSetScene,
-    canvasData,
+    canvasData
   } = useSceneStore();
 
   const scene = propsScene ?? storeScene;
@@ -40,70 +40,70 @@ export default function SceneControls({
         value={scene.title}
         onChange={({ target }) =>
           setScene({
-            title: target.value,
+            title: target.value
           })
         }
-        size='large'
-        placeholder='Scene title'
+        size="large"
+        placeholder="Scene title"
       />
       <Input.TextArea
         value={scene.description || ''}
         onChange={({ target }) =>
           setScene({
-            description: target.value,
+            description: target.value
           })
         }
-        size='large'
-        placeholder='Scene description'
+        size="large"
+        placeholder="Scene description"
         style={{ marginTop: 10 }}
       />
       <Descriptions
-        title='Scene'
-        layout='vertical'
-        size='small'
+        title="Scene"
+        layout="vertical"
+        size="small"
         column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}
         style={{ marginTop: 20 }}
       >
-        <Descriptions.Item label='Length'>
+        <Descriptions.Item label="Length">
           <InputNumber
-            addonAfter='cm'
+            addonAfter="cm"
             controls
-            size='small'
+            size="small"
             value={scene.length}
             onChange={(value) =>
               setScene({
-                length: value,
+                length: value
               })
             }
           />
         </Descriptions.Item>
-        <Descriptions.Item label='Width'>
+        <Descriptions.Item label="Width">
           <InputNumber
-            addonAfter='cm'
+            addonAfter="cm"
             controls
-            size='small'
+            size="small"
             value={scene.width}
             onChange={(value) =>
               setScene({
-                width: value,
+                width: value
               })
             }
           />
         </Descriptions.Item>
-        <Descriptions.Item label='Height'>
+        <Descriptions.Item label="Height">
           <InputNumber
-            addonAfter='cm'
+            addonAfter="cm"
             controls
-            size='small'
+            size="small"
             value={scene.height}
             onChange={(value) =>
               setScene({
-                height: value,
+                height: value
               })
             }
           />
         </Descriptions.Item>
-        <Descriptions.Item label='Brightness'>
+        <Descriptions.Item label="Brightness">
           <div style={{ width: '100%', paddingRight: 20 }}>
             <Slider
               step={0.05}
@@ -112,18 +112,18 @@ export default function SceneControls({
                 0.25: '25%',
                 0.5: '50%',
                 0.75: '75%',
-                1.0: '100%',
+                1.0: '100%'
               }}
               min={0}
               max={1.0}
               value={scene.brightness}
               onChange={(value) =>
                 setScene({
-                  brightness: value,
+                  brightness: value
                 })
               }
               tooltip={{
-                formatter: (value) => `${Math.round(value * 100)}%`,
+                formatter: (value) => `${Math.round(value * 100)}%`
               }}
               style={{ width: '100%' }}
             />
@@ -131,7 +131,54 @@ export default function SceneControls({
         </Descriptions.Item>
         {!basicOnly && (
           <>
-            <Descriptions.Item label='Post Processing'>
+            <Descriptions.Item label="Enhancements" contentStyle={{ flexDirection: 'column' }}>
+                <Checkbox
+                  checked={scene.slaveModel?.enabled}
+                  onChange={({ target }) =>
+                    setScene({
+                      slaveModel: {
+                        ...(scene.slaveModel || {}),
+                        enabled: target.checked,
+                        position: [scene.length / 2, 0, scene.width / 2],
+                        rotation: [0, 0, 0]
+                      }
+                    })
+                  }
+                >
+                  Show Slave Model
+                </Checkbox>
+                {scene.slaveModel?.enabled && (
+                  <Select
+                    className='full-width'
+                    options={[
+                      { value: 'default', label: 'T Pose (Default)' },
+                      { value: 'star', label: 'Star' },
+                      { value: 'submissive', label: 'Submissive' },
+                      { value: 'stretch', label: 'Stretch' },
+                      { value: 'stand', label: 'Stand' },
+                      { value: 'stand-hands-up', label: 'Stand with Hands Up' },
+                      { value: 'kneel', label: 'Kneel' },
+                      { value: 'kneel-hands-up', label: 'Kneel with Hands Up' },
+                      { value: 'bend-over', label: 'Bend Over' },
+                      { value: 'bend-over-hands-up', label: 'Bend Over with Hands Up' },
+                      { value: 'kneel-sit', label: 'Kneel Sitting' },
+                      { value: 'pile-driver', label: 'Pile Driver' },
+                      { value: 'missionary', label: 'Missionary' },
+                      { value: 'doggy', label: 'Doggy' },
+                      { value: 'ass-up-face-down', label: 'Ass up, Face Down' }
+                    ]}
+                    value={scene.slaveModel.pose}
+                    defaultValue='default'
+                    onChange={(value) => setScene({
+                      slaveModel: {
+                        enabled: true,
+                        pose: value
+                      }
+                    })}
+                  />
+                )}
+            </Descriptions.Item>
+            <Descriptions.Item label="Post Processing">
               <div style={{ width: '100%', paddingRight: 20 }}>
                 <Checkbox
                   checked={scene.settings?.n8ao}
@@ -139,8 +186,8 @@ export default function SceneControls({
                     setScene({
                       settings: {
                         ...(scene.settings || {}),
-                        n8ao: target.checked,
-                      },
+                        n8ao: target.checked
+                      }
                     })
                   }
                 >
@@ -152,8 +199,8 @@ export default function SceneControls({
                     setScene({
                       settings: {
                         ...(scene.settings || {}),
-                        smaa: target.checked,
-                      },
+                        smaa: target.checked
+                      }
                     })
                   }
                 >
@@ -162,7 +209,7 @@ export default function SceneControls({
               </div>
             </Descriptions.Item>
             <Descriptions.Item
-              label='Preview Image'
+              label="Preview Image"
               contentStyle={{ flexDirection: 'column' }}
             >
               {scene.previewImage && (
@@ -170,10 +217,10 @@ export default function SceneControls({
                   style={{
                     aspectRatio: 3 / 2,
                     overflowY: 'auto',
-                    width: '100%',
+                    width: '100%'
                   }}
                 >
-                  <Image width='100%' src={scene.previewImage} />
+                  <Image width="100%" src={scene.previewImage}/>
                 </div>
               )}
               <Button
@@ -187,21 +234,21 @@ export default function SceneControls({
                       position: {
                         x: canvasCameraPosition?.x,
                         y: canvasCameraPosition?.y,
-                        z: canvasCameraPosition?.z,
+                        z: canvasCameraPosition?.z
                       },
                       rotation: {
                         x: canvasCameraRotation?.x,
                         y: canvasCameraRotation?.y,
-                        z: canvasCameraRotation?.z,
+                        z: canvasCameraRotation?.z
                       },
                       focusPoint: {
                         x: canvasCameraFocusPoint?.x,
                         y: canvasCameraFocusPoint?.y,
-                        z: canvasCameraFocusPoint?.z,
+                        z: canvasCameraFocusPoint?.z
                       },
-                      up: canvasData?.camera?.up,
+                      up: canvasData?.camera?.up
                     },
-                    previewImage: takeSnapshot(canvasData.domElement),
+                    previewImage: takeSnapshot(canvasData.domElement)
                   });
 
                   ReactGA.event('take_canvas_snapshot');

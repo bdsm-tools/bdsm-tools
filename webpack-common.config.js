@@ -1,8 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
+const process = require('process');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const AntdMomentWebpackPlugin = require('@ant-design/moment-webpack-plugin');
+
+require('dotenv').config();
 
 module.exports = {
   resolve: {
@@ -67,7 +70,24 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(tif|png|glb)/,
+        test: /\.enc$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets',
+            },
+          },
+          {
+            loader: 'decryption-loader',
+            options: {
+              password: process.env.OBJ_DECRYPTION_PASSWORD,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(tif|png|glb|fbx)$/,
         use: [
           {
             loader: 'file-loader',
