@@ -6,10 +6,8 @@ import tubeMap from '../textures/Metal_Galvanized_1K_albedo.png';
 import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
-import useRotate from '../controls/useRotate';
-import TubeSleeveCylinderGeometry from './TubeSleeveCylinderGeometry';
 import { mapObject } from '../../util';
-import CacheGeometry, { useGeometryCache } from '../components/CacheGeometry';
+import CacheGeometry from '../components/CacheGeometry';
 
 export default function SingleMaleSwivel({ id, size }) {
   const textureProps = mapObject(

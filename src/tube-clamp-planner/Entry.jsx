@@ -11,6 +11,8 @@ import './connectors/corner';
 import './connectors/handrail-bracket';
 import './connectors/single-male-swivel';
 import './connectors/four-way-cross';
+import './connectors/platform';
+import './connectors/double-lugged-bracket';
 import useAnalytics from '../hooks/useAnalytics';
 import ConnectorPreviewCanvas from './components/ConnectorPreviewCanvas';
 

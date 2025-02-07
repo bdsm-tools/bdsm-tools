@@ -6,7 +6,6 @@ import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import { mapObject } from '../../util';
-import TubeSleeveCylinderGeometry from './TubeSleeveCylinderGeometry';
 import { Addition, Base, Subtraction } from '@react-three/csg';
 import CacheGeometry from '../components/CacheGeometry';
 
