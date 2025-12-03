@@ -1,8 +1,17 @@
 import React from 'react';
-import { Button, Descriptions, Image, Input, InputNumber, Slider } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Descriptions,
+  Image,
+  Input,
+  InputNumber,
+  Select,
+  Slider,
+} from 'antd';
 import useSceneStore from '../state/useSceneStore';
 import ReactGA from 'react-ga4';
-import { useDebounce, useDebounceFn } from 'ahooks';
+import { A, B, C, D, E } from '../sizes';
 
 const takeSnapshot = (canvas) =>
   (
@@ -10,7 +19,7 @@ const takeSnapshot = (canvas) =>
     document
       .getElementById('tube-planner-canvas')
       ?.getElementsByTagName('canvas')[0]
-  )?.toDataURL('image/jpeg', 0.5);
+  )?.toDataURL('image/jpeg', 0.3);
 
 export default function SceneControls({
   scene: propsScene,
@@ -95,6 +104,25 @@ export default function SceneControls({
             }
           />
         </Descriptions.Item>
+        <Descriptions.Item label='Tube Size'>
+          <Select
+            className='full-width'
+            options={[
+              { value: 'A', label: `A (${(A * 10).toFixed(1)}mm OD)` },
+              { value: 'B', label: `B (${(B * 10).toFixed(1)}mm OD)` },
+              { value: 'C', label: `C (${(C * 10).toFixed(1)}mm OD)` },
+              { value: 'D', label: `D (${(D * 10).toFixed(1)}mm OD)` },
+              { value: 'E', label: `E (${(E * 10).toFixed(1)}mm OD)` },
+            ]}
+            value={scene.size}
+            defaultValue='B'
+            onChange={(value) =>
+              setScene({
+                size: value,
+              })
+            }
+          />
+        </Descriptions.Item>
         <Descriptions.Item label='Brightness'>
           <div style={{ width: '100%', paddingRight: 20 }}>
             <Slider
@@ -122,39 +150,142 @@ export default function SceneControls({
           </div>
         </Descriptions.Item>
         {!basicOnly && (
-          <Descriptions.Item
-            label='Preview Image'
-            contentStyle={{ flexDirection: 'column' }}
-          >
-            {scene.previewImage && (
-              <div
-                style={{ aspectRatio: 3 / 2, overflowY: 'auto', width: '100%' }}
-              >
-                <Image width='100%' src={scene.previewImage} />
-              </div>
-            )}
-            <Button
-              style={{ marginTop: 5, width: '100%' }}
-              onClick={() => {
-                setScene({
-                  camera: {
-                    position: {
-                      x: canvasData?.camera?.canvasCamera?.position?.x,
-                      y: canvasData?.camera?.canvasCamera?.position?.y,
-                      z: canvasData?.camera?.canvasCamera?.position?.z,
-                    },
-                    up: canvasData?.camera?.canvasCamera?.up,
-                    focusPoint: { ...canvasData?.camera?.focusPoint },
-                  },
-                  previewImage: takeSnapshot(canvasData.domElement),
-                });
-
-                ReactGA.event('take_canvas_snapshot');
-              }}
+          <>
+            <Descriptions.Item
+              label='Enhancements'
+              contentStyle={{ flexDirection: 'column' }}
             >
-              Take {scene.previewImage ? 'new' : 'a'} Snapshot
-            </Button>
-          </Descriptions.Item>
+              <Checkbox
+                checked={scene.slaveModel?.enabled}
+                onChange={({ target }) =>
+                  setScene({
+                    slaveModel: {
+                      ...(scene.slaveModel || {}),
+                      enabled: target.checked,
+                      position: [scene.length / 2, 0, scene.width / 2],
+                      rotation: [0, 0, 0],
+                    },
+                  })
+                }
+              >
+                Show Slave Model (Not yet implemented)
+              </Checkbox>
+              {scene.slaveModel?.enabled && (
+                <Select
+                  className='full-width'
+                  options={[
+                    { value: 'default', label: 'T Pose (Default)' },
+                    { value: 'star', label: 'Star' },
+                    { value: 'submissive', label: 'Submissive' },
+                    { value: 'stretch', label: 'Stretch' },
+                    { value: 'stand', label: 'Stand' },
+                    { value: 'stand-hands-up', label: 'Stand with Hands Up' },
+                    { value: 'kneel', label: 'Kneel' },
+                    { value: 'kneel-hands-up', label: 'Kneel with Hands Up' },
+                    { value: 'bend-over', label: 'Bend Over' },
+                    {
+                      value: 'bend-over-hands-up',
+                      label: 'Bend Over with Hands Up',
+                    },
+                    { value: 'kneel-sit', label: 'Kneel Sitting' },
+                    { value: 'pile-driver', label: 'Pile Driver' },
+                    { value: 'missionary', label: 'Missionary' },
+                    { value: 'doggy', label: 'Doggy' },
+                    { value: 'ass-up-face-down', label: 'Ass up, Face Down' },
+                  ]}
+                  value={scene.slaveModel.pose}
+                  defaultValue='default'
+                  onChange={(value) =>
+                    setScene({
+                      slaveModel: {
+                        enabled: true,
+                        pose: value,
+                      },
+                    })
+                  }
+                />
+              )}
+            </Descriptions.Item>
+            <Descriptions.Item label='Post Processing'>
+              <div style={{ width: '100%', paddingRight: 20 }}>
+                <Checkbox
+                  checked={scene.settings?.n8ao}
+                  onChange={({ target }) =>
+                    setScene({
+                      settings: {
+                        ...(scene.settings || {}),
+                        n8ao: target.checked,
+                      },
+                    })
+                  }
+                >
+                  Enable N8AO
+                </Checkbox>
+                <Checkbox
+                  checked={scene.settings?.smaa}
+                  onChange={({ target }) =>
+                    setScene({
+                      settings: {
+                        ...(scene.settings || {}),
+                        smaa: target.checked,
+                      },
+                    })
+                  }
+                >
+                  Enable SMAA
+                </Checkbox>
+              </div>
+            </Descriptions.Item>
+            <Descriptions.Item
+              label='Preview Image'
+              contentStyle={{ flexDirection: 'column' }}
+            >
+              {scene.previewImage && (
+                <div
+                  style={{
+                    aspectRatio: 3 / 2,
+                    overflowY: 'auto',
+                    width: '100%',
+                  }}
+                >
+                  <Image width='100%' src={scene.previewImage} />
+                </div>
+              )}
+              <Button
+                style={{ marginTop: 5, width: '100%' }}
+                onClick={() => {
+                  const canvasCameraPosition = canvasData?.camera?.position;
+                  const canvasCameraRotation = canvasData?.camera?.rotation;
+                  const canvasCameraFocusPoint = canvasData?.camera?.focusPoint;
+                  setScene({
+                    camera: {
+                      position: {
+                        x: canvasCameraPosition?.x,
+                        y: canvasCameraPosition?.y,
+                        z: canvasCameraPosition?.z,
+                      },
+                      rotation: {
+                        x: canvasCameraRotation?.x,
+                        y: canvasCameraRotation?.y,
+                        z: canvasCameraRotation?.z,
+                      },
+                      focusPoint: {
+                        x: canvasCameraFocusPoint?.x,
+                        y: canvasCameraFocusPoint?.y,
+                        z: canvasCameraFocusPoint?.z,
+                      },
+                      up: canvasData?.camera?.up,
+                    },
+                    previewImage: takeSnapshot(canvasData.domElement),
+                  });
+
+                  ReactGA.event('take_canvas_snapshot');
+                }}
+              >
+                Take {scene.previewImage ? 'new' : 'a'} Snapshot
+              </Button>
+            </Descriptions.Item>
+          </>
         )}
       </Descriptions>
     </>

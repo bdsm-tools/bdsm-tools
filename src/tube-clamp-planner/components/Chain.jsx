@@ -1,6 +1,6 @@
 import React from 'react';
 import { getTypeDefinition } from '../connectors/types';
-import { B } from '../sizes';
+import { sizes } from '../sizes';
 import Tube from '../nodes/Tube';
 import useRotate from '../controls/useRotate';
 import useSelectionStore from '../state/useSelectionStore';
@@ -24,8 +24,9 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
           size={size}
         />
         {tube.children.middle
+          ?.filter((id) => !!id)
           ?.map((id) => chain[id])
-          .map((middle, index) => (
+          ?.map((middle, index) => (
             <ChainNode
               chain={chain}
               key={middle.id}
@@ -58,10 +59,18 @@ const TubeNode = ({ chain, tube, position, size, rotation }) => {
   );
 };
 
-const ChainNode = ({ chain, connection, size, position, rotation }) => {
+const ChainNode = ({
+  chain,
+  connection,
+  size,
+  position: positionRaw,
+  rotation,
+}) => {
   const groupRef = React.useRef();
-  useRotate(groupRef, rotation);
   const { selectedNodeId } = useSelectionStore();
+  const position = React.useMemo(() => positionRaw, [...positionRaw]);
+
+  useRotate(groupRef, rotation);
 
   const { Node } = getTypeDefinition(connection.node.type);
 
@@ -124,30 +133,34 @@ const ChainNode = ({ chain, connection, size, position, rotation }) => {
       </Select>
       {connection.children.end
         ?.filter((id) => id !== connection.parent)
-        .map((id) => chain[id])
-        .map((end, index) => (
-          <TubeNode
-            chain={chain}
-            key={end.id}
-            position={endConnectionPositions[index] || position}
-            rotation={endConnectionRotations[index] || rotation}
-            size={size}
-            tube={end}
-          />
-        ))}
+        ?.map((id) => chain[id])
+        ?.map((end, index) =>
+          !end ? null : (
+            <TubeNode
+              chain={chain}
+              key={end.id}
+              position={endConnectionPositions[index] || position}
+              rotation={endConnectionRotations[index] || rotation}
+              size={size}
+              tube={end}
+            />
+          ),
+        )}
       {connection.children.middle
         ?.filter((id) => id !== connection.parent)
-        .map((id) => chain[id])
-        .map((middle, index) => (
-          <TubeNode
-            chain={chain}
-            key={middle.id}
-            position={middleConnectionPositions[index] || position}
-            rotation={middleConnectionRotations[index] || rotation}
-            size={size}
-            tube={middle}
-          />
-        ))}
+        ?.map((id) => chain[id])
+        ?.map((middle, index) =>
+          !middle ? null : (
+            <TubeNode
+              chain={chain}
+              key={middle.id}
+              position={middleConnectionPositions[index] || position}
+              rotation={middleConnectionRotations[index] || rotation}
+              size={size}
+              tube={middle}
+            />
+          ),
+        )}
     </group>
   );
 };
@@ -184,9 +197,9 @@ export default function Chain({ chain, scene }) {
       <ChainNode
         chain={chain}
         connection={firstNode}
-        size={B}
+        size={sizes[scene.size || 'B']}
         position={[0, 0, 0]}
-        rotation={{ x: 0, y: 0, z: 0 }}
+        rotation={{ x: 0, y: firstNode.node.rotation || 0, z: 0 }}
       />
     </group>
   );

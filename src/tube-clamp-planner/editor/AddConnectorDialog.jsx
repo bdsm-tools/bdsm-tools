@@ -13,11 +13,6 @@ export default function AddConnectorDialog({ parent, tube, onAdd }) {
     open === 'end' ? tube.parent : undefined,
   ].filter((value) => !!value);
 
-  const tubeMiddleConnections = [
-    ...tube.children.middle,
-    open === 'middle' ? tube.parent : undefined,
-  ].filter((value) => !!value);
-
   React.useEffect(() => {
     if (!open) {
       setConnector({

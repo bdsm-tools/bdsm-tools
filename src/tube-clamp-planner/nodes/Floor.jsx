@@ -29,6 +29,7 @@ export default function Floor({ length, width }) {
       ref={ref}
       name='floor'
       position={[width / 2, 0, length / 2]}
+      castShadow={true}
       receiveShadow={true}
       userData={{
         id: 'floor',

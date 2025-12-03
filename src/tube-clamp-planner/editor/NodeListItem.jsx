@@ -26,6 +26,8 @@ export default function NodeListItem({ id, hideActions = false }) {
   const { getNode } = useSceneStore();
 
   const node = getNode(id);
+  if (!node) return null;
+
   const nodeDef = getTypeDefinition(getNode(id).node.type);
   return (
     <List.Item

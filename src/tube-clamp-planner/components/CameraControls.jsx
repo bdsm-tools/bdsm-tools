@@ -1,10 +1,7 @@
 import React from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, useSelect } from '@react-three/drei';
-import { Vector3 } from 'three';
+import { Box3, Vector3 } from 'three';
 import useKeyDown from '../../hooks/customHooks';
-import useFocusPoint from '../controls/useFocusPoint';
-import { useInterval } from 'ahooks';
 import useSceneStore from '../state/useSceneStore';
 import useSelectionStore from '../state/useSelectionStore';
 
@@ -13,10 +10,8 @@ export default function CameraControls() {
     camera,
     gl: { domElement },
   } = useThree();
-  const [focusPoint, setFocusPoint] = useFocusPoint();
-  const { selection } = useSelectionStore();
-
   const { scene, setCanvasData } = useSceneStore();
+  const { selection } = useSelectionStore();
 
   function zoomCamera(speed) {
     const direction = camera.getWorldDirection(new Vector3());
@@ -43,10 +38,8 @@ export default function CameraControls() {
       } else if (direction === 'backward') {
         return cameraDirection.multiplyScalar(-speed);
       } else if (direction === 'up') {
-        // return cameraDirection.multiplyScalar(speed).add(new Vector3(0, -speed, 0));
         return new Vector3(0, speed, 0);
       } else if (direction === 'down') {
-        // return cameraDirection.multiplyScalar(speed).add(new Vector3(0, speed, 0));
         return new Vector3(0, -speed, 0);
       } else {
         throw 'Unknown direction: ' + direction;
@@ -54,7 +47,7 @@ export default function CameraControls() {
     })();
 
     camera.position.add(moveAmount);
-    if (!rotate) setFocusPoint((old) => old.add(moveAmount));
+    if (!rotate) camera.focusPoint.add(moveAmount);
   }
 
   React.useEffect(() => {
@@ -62,35 +55,38 @@ export default function CameraControls() {
     camera.position.y = scene?.camera?.position?.y || 100;
     camera.position.z = scene?.camera?.position?.z || 150;
     camera.up = scene?.camera?.up || new Vector3(0, 1, 0);
+    camera.rotation.set(
+      scene?.camera?.rotation?.x || 1,
+      scene?.camera?.rotation?.y || 0,
+      scene?.camera?.rotation?.z || 0,
+    );
+    camera.focusPoint = new Vector3(
+      scene?.camera?.focusPoint?.x || 50,
+      scene?.camera?.focusPoint?.y || 50,
+      scene?.camera?.focusPoint?.z || 50,
+    );
 
-    if (scene?.camera?.focusPoint) {
-      setFocusPoint(
-        new Vector3(
-          scene?.camera?.focusPoint.x,
-          scene?.camera?.focusPoint.y,
-          scene?.camera?.focusPoint.z,
-        ),
-      );
-    }
+    camera.far = 10000;
+
+    camera.updateProjectionMatrix();
   }, [scene.id]);
 
   React.useEffect(() => {
     setCanvasData({
       domElement,
-      camera: {
-        canvasCamera: camera,
-        focusPoint: {
-          x: focusPoint.x,
-          y: focusPoint.y,
-          z: focusPoint.z,
-        },
-      },
+      camera,
     });
-  }, [focusPoint, camera, domElement]);
+  }, [camera, domElement]);
 
   React.useEffect(() => {
-    if (selection?.userData.cameraPositionOnFocus) {
-      camera.position.set(...selection?.userData.cameraPositionOnFocus);
+    if (selection) {
+      camera.focusPoint = new Box3()
+        .setFromObject(selection)
+        .getCenter(new Vector3());
+
+      if (selection.userData?.cameraPositionOnFocus) {
+        camera.position.set(...selection?.userData.cameraPositionOnFocus);
+      }
     }
   }, [selection]);
 
@@ -108,8 +104,8 @@ export default function CameraControls() {
   const zoomOut = useKeyDown(189);
 
   useFrame(() => {
-    const distanceToFocusPoint = camera.position.clone().sub(focusPoint); // WIP
-    camera.lookAt(focusPoint);
+    // const distanceToFocusPoint = camera.position.clone().sub(camera.focusPoint || new Vector3()); // WIP
+    if (camera.focusPoint) camera.lookAt(camera.focusPoint);
 
     const speed = 1.6;
     const modifier = (e) => (e.shiftKey ? 4 : e.ctrlKey ? 0.25 : 1);
@@ -134,14 +130,13 @@ export default function CameraControls() {
     if (zoomIn) zoomCamera(speed * modifier(zoomIn));
     if (zoomOut) zoomCamera(-speed * modifier(zoomOut));
 
-    // controls.current.update();
     camera.updateProjectionMatrix();
   });
 
   if (!scene.visuliseFocusPoint) return null;
   return (
     <>
-      <mesh position={focusPoint.toArray([])}>
+      <mesh position={camera.focusPoint.toArray([])}>
         <sphereGeometry args={[1, 16, 16]} />
         <meshBasicMaterial color={0xff0000} />
       </mesh>

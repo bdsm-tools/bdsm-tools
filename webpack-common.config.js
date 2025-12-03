@@ -1,8 +1,11 @@
 const webpack = require('webpack');
 const path = require('path');
+const process = require('process');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const AntdMomentWebpackPlugin = require('@ant-design/moment-webpack-plugin');
+
+require('dotenv').config();
 
 module.exports = {
   resolve: {
@@ -43,6 +46,17 @@ module.exports = {
           },
           priority: -10,
         },
+        json: {
+          test: /\.json$/,
+          name(module) {
+            const fileName = module.resource.match(
+              /[\\/](.*?)([^\\/]+)\.json$/,
+            );
+            return fileName ? `json/${fileName[2]}` : 'json/unknown';
+          },
+          chunks: 'all',
+          enforce: true,
+        },
         default: {
           minChunks: 2,
           priority: -20,
@@ -56,7 +70,24 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(tif|png)/,
+        test: /\.enc$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets',
+            },
+          },
+          {
+            loader: 'decryption-loader',
+            options: {
+              password: process.env.OBJ_DECRYPTION_PASSWORD,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(tif|png|glb|fbx)$/,
         use: [
           {
             loader: 'file-loader',

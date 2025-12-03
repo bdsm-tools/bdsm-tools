@@ -60,6 +60,7 @@ export default function Wall({ length, width, height }) {
         ref={ref}
         name='wall'
         position={[width / 2, height / 2, 0]}
+        castShadow={true}
         receiveShadow={true}
         userData={{
           id: 'back-wall',

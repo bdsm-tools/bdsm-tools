@@ -20,7 +20,7 @@ const SelectionWrapper = React.forwardRef(({ children }, ref) => {
       : s?.userData?.selectable
         ? s
         : getSelectable(s.parent);
-  const filter = (s) =>
+  const filter = (s = []) =>
     s
       .map(getSelectable)
       .filter((selectable) => !!selectable)

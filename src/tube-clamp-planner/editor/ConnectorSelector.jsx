@@ -5,6 +5,7 @@ import ConnectorPreview from './ConnectorPreview';
 
 export default function ConnectorSelector({ slot, value, onChange }) {
   const options = getTypeDefinitionsAsOptions((def) => {
+    if (def.type === 'tube') return false;
     if (slot === 'end') return def.endConnections > 0;
     if (slot === 'middle') return def.middleConnections > 0;
     if (slot === 'surface') return !!def.hasSurfaceConnection;
@@ -12,7 +13,7 @@ export default function ConnectorSelector({ slot, value, onChange }) {
   });
 
   return (
-    <div className='flex' style={{ margin: 10 }}>
+    <div className='flex' style={{ margin: 10, flexFlow: 'wrap' }}>
       {options.map(({ label, value: type }) => (
         <div
           key={type}

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, InputNumber, Modal, Typography } from 'antd';
+import { Button, InputNumber, Modal, Radio, Space, Typography } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
 import ReactGA from 'react-ga4';
 import useSceneStore from '../state/useSceneStore';
 
-export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
+export default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {
   const sceneStore = useSceneStore();
 
   const [open, setOpen] = React.useState(false);
@@ -16,6 +16,7 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
         length: 0,
         type: 'tube',
         position: 0,
+        slot: -1,
       });
     }
   }, [open]);
@@ -24,17 +25,32 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
     <>
       <Modal
         open={open}
+        okButtonProps={{
+          disabled: (!!options && tube.slot < 0) || tube.length < 2,
+        }}
         onOk={() => {
-          onAdd({
-            id: uuidv4(),
-            node: tube,
-            parent,
-            parentSlot,
-            children: {
-              middle: [],
-              end: [],
+          const node = { ...tube };
+
+          if (parentSlot !== 'middle') {
+            delete node.position;
+          }
+          if (parentSlot !== 'end' || node.slot < 0) {
+            delete node.slot;
+          }
+
+          onAdd(
+            {
+              id: uuidv4(),
+              node,
+              parent,
+              parentSlot,
+              children: {
+                middle: [],
+                end: [],
+              },
             },
-          });
+            Number(tube.slot),
+          );
 
           try {
             ReactGA.event('add_tube', {
@@ -58,7 +74,7 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
           controls
           size='small'
           autoFocus
-          min={10}
+          min={5}
           max={1000}
           value={tube.length}
           onChange={(value) =>
@@ -69,8 +85,32 @@ export default function AddTubeDialog({ parent, parentSlot, onAdd }) {
             }))
           }
         />
+
+        {!!options && (
+          <>
+            <br />
+            <Typography>Pick a slot:</Typography>
+            <Radio.Group
+              value={Number(tube.slot)}
+              onChange={({ target }) =>
+                setTube((old) => ({
+                  ...old,
+                  slot: Number(target.value),
+                }))
+              }
+            >
+              <Space direction='vertical'>
+                {Object.entries(options).map(([option, populated]) => (
+                  <Radio disabled={!!populated} value={Number(option)}>
+                    Slot {option}
+                  </Radio>
+                ))}
+              </Space>
+            </Radio.Group>
+          </>
+        )}
       </Modal>
-      <Button onClick={() => setOpen(true)}>Connect tube</Button>
+      <Button onClick={() => setOpen(true)}>Connect {parentSlot} tube</Button>
     </>
   );
 }

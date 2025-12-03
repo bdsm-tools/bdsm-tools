@@ -49,7 +49,7 @@ export const mapObject = (obj, ...mappingFunctions) =>
     Object.entries(obj).map(([key, value], index) => [
       key,
       mappingFunctions.reduce(
-        (value, mappingFunction) => mappingFunction(value, key, index),
+        (accValue, mappingFunction) => mappingFunction(accValue, key, index),
         value,
       ),
     ]),
@@ -71,3 +71,7 @@ export const downloadJSON = (jsonData, filename = 'download.json') => {
   document.body.removeChild(a);
   window.URL.revokeObjectURL(a.href);
 };
+
+// The distance multiplier when moving at 45°
+export const _45_DEGREE_DISTANCE_MULTIPLIER =
+  Math.sqrt(Math.pow(1, 2) + Math.pow(1, 2)) / 2;

@@ -1,0 +1,275 @@
+Index: src/tube-clamp-planner/editor/AddTubeDialog.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport { Button, InputNumber, Modal, Radio, Space, Typography } from 'antd';\nimport { v4 as uuidv4 } from 'uuid';\nimport ReactGA from 'react-ga4';\nimport useSceneStore from '../state/useSceneStore';\n\nexport default function AddTubeDialog({ parent, parentSlot, onAdd, options }) {\n  const sceneStore = useSceneStore();\n\n  const [open, setOpen] = React.useState(false);\n  const [tube, setTube] = React.useState({});\n\n  React.useEffect(() => {\n    if (!open) {\n      setTube({\n        length: 0,\n        type: 'tube',\n        position: 0,\n        slot: -1,\n      });\n    }\n  }, [open]);\n\n  return (\n    <>\n      <Modal\n        open={open}\n        okButtonProps={{\n          disabled: (!!options && tube.slot < 0) || tube.length < 2,\n        }}\n        onOk={() => {\n          const node = { ...tube };\n\n          if (parentSlot !== 'middle') {\n            delete node.position;\n          }\n          if (parentSlot !== 'end' || node.slot < 0) {\n            delete node.slot;\n          }\n\n          onAdd(\n            {\n              id: uuidv4(),\n              node,\n              parent,\n              parentSlot,\n              children: {\n                middle: [],\n                end: [],\n              },\n            },\n            Number(tube.slot),\n          );\n\n          try {\n            ReactGA.event('add_tube', {\n              parent: sceneStore.getNode(parent)?.node?.type,\n              parentSlot,\n              length: tube.length,\n              position: tube.position,\n            });\n          } catch (e) {\n            // Don't worry, it's just analytics\n            console.error(e);\n          }\n\n          setOpen(false);\n        }}\n        onCancel={() => setOpen(false)}\n      >\n        <Typography>Choose a length of the connecting tube:</Typography>\n        <InputNumber\n          addonAfter='cm'\n          controls\n          size='small'\n          autoFocus\n          min={5}\n          max={1000}\n          value={tube.length}\n          onChange={(value) =>\n            setTube((old) => ({\n              ...old,\n              length: value,\n              position: Math.floor(value / 2),\n            }))\n          }\n        />\n\n        {!!options && (\n          <>\n            <br />\n            <Typography>Pick a slot:</Typography>\n            <Radio.Group\n              value={Number(tube.slot)}\n              onChange={({ target }) =>\n                setTube((old) => ({\n                  ...old,\n                  slot: Number(target.value),\n                }))\n              }\n            >\n              <Space direction='vertical'>\n                {Object.entries(options).map(([option, populated]) => (\n                  <Radio disabled={!!populated} value={Number(option)}>\n                    Slot {option}\n                  </Radio>\n                ))}\n              </Space>\n            </Radio.Group>\n          </>\n        )}\n      </Modal>\n      <Button onClick={() => setOpen(true)}>Connect {parentSlot} tube</Button>\n    </>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/tube-clamp-planner/editor/AddTubeDialog.jsx b/src/tube-clamp-planner/editor/AddTubeDialog.jsx
+--- a/src/tube-clamp-planner/editor/AddTubeDialog.jsx	(revision 507132b399ba4bdafdc7ce268cf97d25d20b7577)
++++ b/src/tube-clamp-planner/editor/AddTubeDialog.jsx	(date 1736696914270)
+@@ -89,7 +89,7 @@
+         {!!options && (
+           <>
+             <br />
+-            <Typography>Pick a slot:</Typography>
++            <Typography>This connector has multiple slots to attach a tube. Pick a slot:</Typography>
+             <Radio.Group
+               value={Number(tube.slot)}
+               onChange={({ target }) =>
+@@ -101,7 +101,7 @@
+             >
+               <Space direction='vertical'>
+                 {Object.entries(options).map(([option, populated]) => (
+-                  <Radio disabled={!!populated} value={Number(option)}>
++                  <Radio key={option} disabled={!!populated} value={Number(option)}>
+                     Slot {option}
+                   </Radio>
+                 ))}
+Index: src/tube-clamp-planner/nodes/FourWayCross.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport { DoubleSide, Euler, MathUtils, RepeatWrapping } from 'three';\nimport { Addition, Base, Geometry, Subtraction } from '@react-three/csg';\nimport { useTexture } from '@react-three/drei';\nimport tubeMap from '../textures/Metal_Galvanized_1K_albedo.png';\nimport tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';\nimport tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';\nimport tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';\nimport useRotate from '../controls/useRotate';\nimport { mapObject } from '../../util';\nimport CacheGeometry from '../components/CacheGeometry';\n\nexport default function FourWayCross({\n  id,\n  size,\n  connectionSlot,\n  middleConnections,\n  setMiddleConnectionPosition,\n  setMiddleConnectionRotation,\n  setEndConnectionPosition,\n  setEndConnectionRotation,\n}) {\n  const [connectedTube] = middleConnections;\n\n  const ref = React.useRef();\n\n  const textureProps = mapObject(\n    useTexture({\n      map: tubeMap,\n      normalMap: tubeNormalMap,\n      roughnessMap: tubeRoughness,\n      metalnessMap: tubeMetalic,\n    }),\n    (t) => t.clone(),\n    (texture) => {\n      texture.wrapS = RepeatWrapping;\n      texture.wrapT = RepeatWrapping;\n      texture.repeat.setY((size * 3.14) / 20);\n\n      return texture;\n    },\n  );\n\n  const isMiddle = React.useCallback(\n    () => connectionSlot === 'middle',\n    [connectionSlot],\n  );\n  const isEnd = React.useCallback(\n    () => connectionSlot === 'end',\n    [connectionSlot],\n  );\n\n  const tubeRadius = size / 2;\n  const sleeveRadius = tubeRadius + size * 0.1;\n  const endPosition = isMiddle() ? [0, 0, 0] : [0, -tubeRadius, 0];\n\n  React.useEffect(() => {\n    if (isMiddle()) {\n      setEndConnectionPosition(0, [0, 0, -tubeRadius]);\n      setEndConnectionPosition(1, [tubeRadius, 0, 0]);\n      setEndConnectionPosition(2, [0, 0, tubeRadius]);\n      setEndConnectionPosition(3, [-tubeRadius, 0, 0]);\n\n      setEndConnectionRotation(0, { x: 270 });\n      setEndConnectionRotation(1, { z: 270 });\n      setEndConnectionRotation(2, { x: 90 });\n      setEndConnectionRotation(3, { z: 90 });\n    } else {\n      setEndConnectionPosition(0, [0, -tubeRadius, -tubeRadius]);\n      setEndConnectionPosition(1, [0, -tubeRadius * 2, 0]);\n      setEndConnectionPosition(2, [0, -tubeRadius, tubeRadius]);\n\n      setEndConnectionRotation(0, { x: 270 });\n      setEndConnectionRotation(1, { x: 180 });\n      setEndConnectionRotation(2, { x: 90 });\n\n      setMiddleConnectionRotation(0, { z: 90 });\n    }\n  }, []);\n\n  React.useEffect(\n    () =>\n      setMiddleConnectionPosition(0, [\n        connectedTube?.node?.position || 0,\n        endPosition[1],\n        0,\n      ]),\n    [connectedTube?.node?.position],\n  );\n\n  useRotate(ref, { z: 90 }, isMiddle);\n  useRotate(ref, { x: 270 }, isEnd);\n\n  return (\n    <group\n      ref={ref}\n      name='4-way-cross'\n      layers={1}\n      userData={{ id, selectable: true }}\n      position={endPosition}\n    >\n      <mesh castShadow={true} receiveShadow={true}>\n        <meshPhysicalMaterial {...textureProps} />\n        <CacheGeometry cacheKey={['4-way-cross', size]}>\n          <Base rotation={[0, 0, MathUtils.degToRad(90)]}>\n            <cylinderGeometry\n              args={[sleeveRadius, sleeveRadius, sleeveRadius * 2.2, 64, 1]}\n            />\n          </Base>\n          <Addition>\n            <cylinderGeometry\n              args={[sleeveRadius, sleeveRadius, sleeveRadius * 4, 64, 1]}\n            />\n          </Addition>\n          <Addition rotation={[MathUtils.degToRad(90), 0, 0]}>\n            <cylinderGeometry\n              args={[sleeveRadius, sleeveRadius, sleeveRadius * 4, 64, 1]}\n            />\n          </Addition>\n\n          <Subtraction rotation={[0, 0, MathUtils.degToRad(90)]}>\n            <cylinderGeometry\n              args={[\n                sleeveRadius * 0.9,\n                sleeveRadius * 0.9,\n                sleeveRadius * 2.2,\n                64,\n                1,\n              ]}\n            />\n          </Subtraction>\n          <Subtraction>\n            <cylinderGeometry\n              args={[\n                sleeveRadius * 0.9,\n                sleeveRadius * 0.9,\n                sleeveRadius * 4,\n                64,\n                1,\n              ]}\n            />\n          </Subtraction>\n          <Subtraction rotation={[MathUtils.degToRad(90), 0, 0]}>\n            <cylinderGeometry\n              args={[\n                sleeveRadius * 0.9,\n                sleeveRadius * 0.9,\n                sleeveRadius * 4,\n                64,\n                1,\n              ]}\n            />\n          </Subtraction>\n        </CacheGeometry>\n      </mesh>\n    </group>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/tube-clamp-planner/nodes/FourWayCross.jsx b/src/tube-clamp-planner/nodes/FourWayCross.jsx
+--- a/src/tube-clamp-planner/nodes/FourWayCross.jsx	(revision 507132b399ba4bdafdc7ce268cf97d25d20b7577)
++++ b/src/tube-clamp-planner/nodes/FourWayCross.jsx	(date 1736701882621)
+@@ -13,6 +13,7 @@
+ export default function FourWayCross({
+   id,
+   size,
++  connection,
+   connectionSlot,
+   middleConnections,
+   setMiddleConnectionPosition,
+@@ -20,6 +21,7 @@
+   setEndConnectionPosition,
+   setEndConnectionRotation,
+ }) {
++  const { parentSlot = 3 } = connection;
+   const [connectedTube] = middleConnections;
+ 
+   const ref = React.useRef();
+@@ -52,7 +54,22 @@
+ 
+   const tubeRadius = size / 2;
+   const sleeveRadius = tubeRadius + size * 0.1;
+-  const endPosition = isMiddle() ? [0, 0, 0] : [0, -tubeRadius, 0];
++  const endPosition = (() => {
++    if (isMiddle()) return [0, 0, 0];
++
++    if (parentSlot === 0) return [0, 0, 0];
++    if (parentSlot === 1) return [0, -tubeRadius, 0];
++    if (parentSlot === 2) return [0, -tubeRadius, tubeRadius];
++    return [0, -tubeRadius, 0];
++  })();
++  const endRotation = (() => {
++    if (isMiddle()) return [0, 0, MathUtils.degToRad(90)];
++
++    if (parentSlot === 0) return [MathUtils.degToRad(0), 0, 0];
++    if (parentSlot === 1) return [MathUtils.degToRad(90), 0, 0];
++    if (parentSlot === 2) return [MathUtils.degToRad(180), 0, 0];
++    return [MathUtils.degToRad(270), 0, 0];
++  })();
+ 
+   React.useEffect(() => {
+     if (isMiddle()) {
+@@ -66,13 +83,15 @@
+       setEndConnectionRotation(2, { x: 90 });
+       setEndConnectionRotation(3, { z: 90 });
+     } else {
+-      setEndConnectionPosition(0, [0, -tubeRadius, -tubeRadius]);
+-      setEndConnectionPosition(1, [0, -tubeRadius * 2, 0]);
+-      setEndConnectionPosition(2, [0, -tubeRadius, tubeRadius]);
++      setEndConnectionPosition((0 + parentSlot) % 3, [0, -tubeRadius, -tubeRadius]);
++      setEndConnectionPosition((1 + parentSlot) % 3, [0, -tubeRadius * 2, 0]);
++      setEndConnectionPosition((2 + parentSlot) % 3, [0, -tubeRadius, tubeRadius]);
++      setEndConnectionPosition((3 + parentSlot) % 3, [0, -tubeRadius, 0]);
+ 
+-      setEndConnectionRotation(0, { x: 270 });
+-      setEndConnectionRotation(1, { x: 180 });
+-      setEndConnectionRotation(2, { x: 90 });
++      setEndConnectionRotation((0 + parentSlot) % 3, { x: 270 });
++      setEndConnectionRotation((1 + parentSlot) % 3, { x: 180 });
++      setEndConnectionRotation((2 + parentSlot) % 3, { x: 90 });
++      setEndConnectionRotation((3 + parentSlot) % 3, { x: 0 });
+ 
+       setMiddleConnectionRotation(0, { z: 90 });
+     }
+@@ -88,9 +107,6 @@
+     [connectedTube?.node?.position],
+   );
+ 
+-  useRotate(ref, { z: 90 }, isMiddle);
+-  useRotate(ref, { x: 270 }, isEnd);
+-
+   return (
+     <group
+       ref={ref}
+@@ -98,6 +114,7 @@
+       layers={1}
+       userData={{ id, selectable: true }}
+       position={endPosition}
++      rotation={endRotation}
+     >
+       <mesh castShadow={true} receiveShadow={true}>
+         <meshPhysicalMaterial {...textureProps} />
+Index: src/tube-clamp-planner/editor/FourWayCrossEditor.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport { Button, Descriptions, Tooltip } from 'antd';\nimport CloseSelectionIcon from '@ant-design/icons/CloseCircleOutlined';\nimport PositionEditorInput from './PositionEditorInput';\nimport RotationEditorInput from './RotationEditorInput';\nimport AddTubeDialog from './AddTubeDialog';\nimport RemoveNodeDialog from './RemoveNodeDialog';\n\nexport default function FourWayCrossEditor({\n  node,\n  getNode,\n  setNode,\n  setChainNode,\n  addChainNode,\n  connection,\n  onDeselect,\n}) {\n  const slot = connection.parentSlot;\n  const parent = connection.parent ? getNode(connection.parent) : undefined;\n\n  const middle = connection.children.middle[0]\n    ? getNode(connection.children.middle[0])\n    : undefined;\n\n  const end1 = connection.children.end[0]\n    ? getNode(connection.children.end[0])\n    : undefined;\n  const end2 = connection.children.end[1]\n    ? getNode(connection.children.end[1])\n    : undefined;\n  const end3 = connection.children.end[2]\n    ? getNode(connection.children.end[2])\n    : undefined;\n  const end4 = connection.children.end[3]\n    ? getNode(connection.children.end[3])\n    : undefined;\n\n  return (\n    <>\n      <Descriptions\n        title='4 Way Cross'\n        layout='vertical'\n        size='small'\n        extra={\n          <>\n            <Tooltip title='Deselect' placement='left'>\n              <Button\n                type='text'\n                shape='circle'\n                icon={<CloseSelectionIcon />}\n                onClick={onDeselect}\n              />\n            </Tooltip>\n            <RemoveNodeDialog node={connection} showIconOnly />\n          </>\n        }\n        column={{ xxl: 1, xl: 1, lg: 1, md: 1, sm: 1, xs: 1 }}\n      >\n        {slot === 'end' && middle && (\n          <Descriptions.Item label='Tube Position'>\n            <PositionEditorInput\n              node={middle.node}\n              setNode={setChainNode(middle.id)}\n              max={middle?.node.length}\n            />\n          </Descriptions.Item>\n        )}\n        {slot === 'middle' && (\n          <Descriptions.Item label='Position on Tube'>\n            <PositionEditorInput\n              node={node}\n              setNode={setNode}\n              max={parent?.node.length}\n            />\n          </Descriptions.Item>\n        )}\n        <Descriptions.Item label='Rotation around Tube'>\n          <RotationEditorInput node={node} setNode={setNode} />\n        </Descriptions.Item>\n      </Descriptions>\n      {slot === 'end' && !middle && (\n        <AddTubeDialog\n          parent={connection.id}\n          parentSlot='middle'\n          onAdd={addChainNode}\n        />\n      )}\n      {slot === 'end' && (!end1 || !end2 || !end3) && (\n        <AddTubeDialog\n          parent={connection.id}\n          parentSlot='end'\n          onAdd={addChainNode}\n          options={{\n            0: end1,\n            1: end2,\n            2: end3,\n            3: true,\n          }}\n        />\n      )}\n      {slot === 'middle' && (!end1 || !end2 || !end3 || !end4) && (\n        <AddTubeDialog\n          parent={connection.id}\n          parentSlot='end'\n          onAdd={addChainNode}\n          options={{\n            0: end1,\n            1: end2,\n            2: end3,\n            3: end4,\n          }}\n        />\n      )}\n    </>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/tube-clamp-planner/editor/FourWayCrossEditor.jsx b/src/tube-clamp-planner/editor/FourWayCrossEditor.jsx
+--- a/src/tube-clamp-planner/editor/FourWayCrossEditor.jsx	(revision 507132b399ba4bdafdc7ce268cf97d25d20b7577)
++++ b/src/tube-clamp-planner/editor/FourWayCrossEditor.jsx	(date 1736701377353)
+@@ -35,6 +35,13 @@
+     ? getNode(connection.children.end[3])
+     : undefined;
+ 
++  const ends = {
++    0: end1 || connection.node.parentSlot === 0,
++    1: end2 || connection.node.parentSlot === 1,
++    2: end3 || connection.node.parentSlot === 2,
++    3: end4 || connection.node.parentSlot === undefined || connection.node.parentSlot === 3,
++  };
++
+   return (
+     <>
+       <Descriptions
+@@ -85,17 +92,12 @@
+           onAdd={addChainNode}
+         />
+       )}
+-      {slot === 'end' && (!end1 || !end2 || !end3) && (
++      {slot === 'end' && (Object.values(ends).includes(false)) && (
+         <AddTubeDialog
+           parent={connection.id}
+           parentSlot='end'
+           onAdd={addChainNode}
+-          options={{
+-            0: end1,
+-            1: end2,
+-            2: end3,
+-            3: true,
+-          }}
++          options={ends}
+         />
+       )}
+       {slot === 'middle' && (!end1 || !end2 || !end3 || !end4) && (
+Index: src/tube-clamp-planner/editor/AddConnectorDialog.jsx
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import React from 'react';\nimport { Button, InputNumber, Modal, Typography } from 'antd';\nimport { v4 as uuidv4 } from 'uuid';\nimport ConnectorSelector from './ConnectorSelector';\nimport ReactGA from 'react-ga4';\n\nexport default function AddConnectorDialog({ parent, tube, onAdd }) {\n  const [open, setOpen] = React.useState();\n  const [connector, setConnector] = React.useState({});\n\n  const tubeEndConnections = [\n    ...tube.children.end,\n    open === 'end' ? tube.parent : undefined,\n  ].filter((value) => !!value);\n\n  React.useEffect(() => {\n    if (!open) {\n      setConnector({\n        position: undefined,\n      });\n    } else if (open === 'middle') {\n      setConnector({\n        position: 0,\n      });\n    }\n  }, [open]);\n\n  return (\n    <>\n      <Modal\n        open={!!open}\n        okText='Add'\n        onOk={() => {\n          onAdd({\n            id: uuidv4(),\n            node: connector,\n            parent,\n            parentSlot: open,\n            children: {\n              middle: [],\n              end: [],\n            },\n          });\n\n          try {\n            ReactGA.event('add_connector', {\n              parentSlot: open,\n              type: connector.type,\n              position: connector.position,\n            });\n          } catch (e) {\n            // Don't worry, it's just analytics\n            console.error(e);\n          }\n\n          setOpen(undefined);\n        }}\n        onCancel={() => setOpen(undefined)}\n        okButtonProps={{\n          disabled: !connector.type,\n        }}\n      >\n        <Typography>Choose a connector to place on the tube:</Typography>\n        <ConnectorSelector\n          slot={open}\n          value={connector.type}\n          onChange={(type) => setConnector((old) => ({ ...old, type }))}\n        />\n        {open === 'middle' && (\n          <>\n            <Typography>\n              Choose a position to place the connector on the tube:\n            </Typography>\n            <InputNumber\n              addonAfter='cm'\n              controls\n              size='small'\n              autoFocus\n              min={0}\n              max={tube.node.length}\n              value={connector.position}\n              onChange={(value) =>\n                setConnector((old) => ({\n                  ...old,\n                  position: value,\n                }))\n              }\n            />\n          </>\n        )}\n      </Modal>\n      <Button onClick={() => setOpen('middle')}>Add Middle Connection</Button>\n      {tubeEndConnections.length < 2 && (\n        <Button onClick={() => setOpen('end')}>Add End Connection</Button>\n      )}\n    </>\n  );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/tube-clamp-planner/editor/AddConnectorDialog.jsx b/src/tube-clamp-planner/editor/AddConnectorDialog.jsx
+--- a/src/tube-clamp-planner/editor/AddConnectorDialog.jsx	(revision 507132b399ba4bdafdc7ce268cf97d25d20b7577)
++++ b/src/tube-clamp-planner/editor/AddConnectorDialog.jsx	(date 1736696907286)
+@@ -1,13 +1,17 @@
+ import React from 'react';
+-import { Button, InputNumber, Modal, Typography } from 'antd';
++import { Button, InputNumber, Modal, Radio, Space, Typography } from 'antd';
+ import { v4 as uuidv4 } from 'uuid';
+ import ConnectorSelector from './ConnectorSelector';
+ import ReactGA from 'react-ga4';
++import PositionEditorInput from './PositionEditorInput';
++import { getTypeDefinition } from '../connectors/types';
+ 
+ export default function AddConnectorDialog({ parent, tube, onAdd }) {
+   const [open, setOpen] = React.useState();
+   const [connector, setConnector] = React.useState({});
+ 
++  const connectorType = connector.type ? getTypeDefinition(connector.type) : undefined;
++
+   const tubeEndConnections = [
+     ...tube.children.end,
+     open === 'end' ? tube.parent : undefined,
+@@ -20,7 +24,7 @@
+       });
+     } else if (open === 'middle') {
+       setConnector({
+-        position: 0,
++        position: (tube?.node?.length || 0) / 2,
+       });
+     }
+   }, [open]);
+@@ -59,6 +63,7 @@
+         okButtonProps={{
+           disabled: !connector.type,
+         }}
++        width='60vw'
+       >
+         <Typography>Choose a connector to place on the tube:</Typography>
+         <ConnectorSelector
+@@ -69,23 +74,54 @@
+         {open === 'middle' && (
+           <>
+             <Typography>
+-              Choose a position to place the connector on the tube:
++              Choose a position to place the connector on the tube (you can modify this later):
+             </Typography>
+-            <InputNumber
+-              addonAfter='cm'
+-              controls
+-              size='small'
+-              autoFocus
+-              min={0}
+-              max={tube.node.length}
+-              value={connector.position}
+-              onChange={(value) =>
++            <PositionEditorInput
++              node={{
++                ...tube.node,
++                position: connector.position,
++              }}
++              setNode={({ position }) => setConnector((old) => ({
++                ...old,
++                position,
++              }))}
++            />
++          </>
++        )}
++
++        {!!connectorType &&
++          ((open === 'middle' && connectorType.middleConnections > 1) || (open === 'end' && connectorType.endConnections > 1)) && (
++          <>
++            <br />
++            <Typography>The connector has multiple slots to attach to a tube. Pick a slot:</Typography>
++            <Radio.Group
++              value={Number(connector.parentSlot)}
++              onChange={({ target }) =>
+                 setConnector((old) => ({
+                   ...old,
+-                  position: value,
++                  parentSlot: Number(target.value),
+                 }))
+               }
+-            />
++            >
++              {open === 'middle' && (
++                <Space direction='vertical'>
++                  {[...Array(connectorType.middleConnections).keys()].map((option) => (
++                    <Radio key={option} value={Number(option)}>
++                      Slot {option}
++                    </Radio>
++                  ))}
++                </Space>
++              )}
++              {open === 'end' && (
++                <Space direction='vertical'>
++                {[...Array(connectorType.endConnections).keys()].map((option) => (
++                  <Radio key={option} value={Number(option)}>
++                    Slot {option}
++                  </Radio>
++                ))}
++              </Space>
++                )}
++            </Radio.Group>
+           </>
+         )}
+       </Modal>
