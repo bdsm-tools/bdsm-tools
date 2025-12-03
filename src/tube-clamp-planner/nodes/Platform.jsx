@@ -66,7 +66,7 @@ export default function Platform({ id, size }) {
       </mesh>
       <group position={[0, firstConnectionPosition, 0]}>
         {connectorPositions.map((position) => (
-          <group position={[0, position, 0]}>
+          <group key={position} position={[0, position, 0]}>
             <DoubleLuggedBracket size={size} />
           </group>
         ))}

@@ -11,7 +11,7 @@ export const cacheOptions = {
 
 const geometryLoader = new BufferGeometryLoader();
 
-export default function CacheGeometry({ ref: fref, cacheKey, ...props }) {
+export default function CacheGeometry({ ref: fref, cacheKey, dev, ...props }) {
   const ref = React.useRef(fref);
   const id = cacheKey.join('-').concat('_v1');
   const [geometry, setGeometry] = React.useState();
@@ -28,6 +28,7 @@ export default function CacheGeometry({ ref: fref, cacheKey, ...props }) {
       .catch((e) => {
         console.error(e);
         setLoadedPregen(true);
+        setGeometry(null);
       });
   }, [id]);
 
@@ -43,7 +44,7 @@ export default function CacheGeometry({ ref: fref, cacheKey, ...props }) {
         setGeometry(geometryLoader.parse(json));
       }
     },
-    [ref?.current],
+    [ref?.current, id],
     { wait: 1000, maxWait: 2000 },
   );
 
@@ -51,7 +52,7 @@ export default function CacheGeometry({ ref: fref, cacheKey, ...props }) {
     return null;
   }
 
-  if (!cacheOptions.enabled || !geometry) {
+  if (!cacheOptions.enabled || dev || !geometry) {
     return <Geometry {...props} ref={ref} />;
   }
 

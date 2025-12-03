@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import useSceneStore from '../state/useSceneStore';
 import ReactGA from 'react-ga4';
-import { useDebounce, useDebounceFn } from 'ahooks';
+import { A, B, C, D, E } from '../sizes';
 
 const takeSnapshot = (canvas) =>
   (
@@ -104,6 +104,25 @@ export default function SceneControls({
             }
           />
         </Descriptions.Item>
+        <Descriptions.Item label='Tube Size'>
+          <Select
+            className='full-width'
+            options={[
+              { value: 'A', label: `A (${(A * 10).toFixed(1)}mm OD)` },
+              { value: 'B', label: `B (${(B * 10).toFixed(1)}mm OD)` },
+              { value: 'C', label: `C (${(C * 10).toFixed(1)}mm OD)` },
+              { value: 'D', label: `D (${(D * 10).toFixed(1)}mm OD)` },
+              { value: 'E', label: `E (${(E * 10).toFixed(1)}mm OD)` },
+            ]}
+            value={scene.size}
+            defaultValue='B'
+            onChange={(value) =>
+              setScene({
+                size: value,
+              })
+            }
+          />
+        </Descriptions.Item>
         <Descriptions.Item label='Brightness'>
           <div style={{ width: '100%', paddingRight: 20 }}>
             <Slider
@@ -149,7 +168,7 @@ export default function SceneControls({
                   })
                 }
               >
-                Show Slave Model
+                Show Slave Model (Not yet implemented)
               </Checkbox>
               {scene.slaveModel?.enabled && (
                 <Select

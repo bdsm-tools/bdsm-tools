@@ -1,13 +1,13 @@
 import React from 'react';
 import { RepeatWrapping } from 'three';
 import { useTexture } from '@react-three/drei';
+import { Addition, Base, Subtraction } from '@react-three/csg';
 import tubeMap from '../textures/Metal_Galvanized_1K_albedo.png';
 import tubeNormalMap from '../textures/Metal_Galvanized_1K_normal.png';
 import tubeRoughness from '../textures/Metal_Galvanized_1K_roughness.png';
 import tubeMetalic from '../textures/Metal_Galvanized_1K_metallic.png';
 import { mapObject } from '../../util';
-import { Addition, Base, Subtraction } from '@react-three/csg';
-import CacheGeometry from '../components/CacheGeometry';
+import CacheGeometry, { cacheOptions } from '../components/CacheGeometry';
 
 export default function Flange({ id, size, setEndConnectionPosition }) {
   const groupRef = React.useRef();
@@ -38,7 +38,10 @@ export default function Flange({ id, size, setEndConnectionPosition }) {
     },
   );
 
-  React.useEffect(() => setEndConnectionPosition(0, [0, baseHeight, 0]), []);
+  React.useEffect(
+    () => setEndConnectionPosition(0, [0, baseHeight, 0]),
+    [size],
+  );
 
   return (
     <group
@@ -66,7 +69,13 @@ export default function Flange({ id, size, setEndConnectionPosition }) {
           </Addition>
           <Subtraction position={[0, neckHeight / 2, 0]}>
             <cylinderGeometry
-              args={[neckRadius * 0.9, neckRadius * 0.9, neckHeight, 64, 1]}
+              args={[
+                neckRadius * 0.9,
+                neckRadius * 0.9,
+                neckHeight + 0.1,
+                64,
+                1,
+              ]}
             />
           </Subtraction>
           <Subtraction>

@@ -41,7 +41,7 @@ export default function Corner({
   const tubeHeight = size * 1.2;
   const endPosition = [0, -(tubeHeight / 2), tubeHeight / 2];
 
-  React.useEffect(() => setEndConnectionPosition(0, endPosition), []);
+  React.useEffect(() => setEndConnectionPosition(0, endPosition), [size]);
   React.useEffect(() => setEndConnectionRotation(0, { x: 90 }), []);
 
   return (

@@ -76,7 +76,7 @@ export default function FourWayCross({
 
       setMiddleConnectionRotation(0, { z: 90 });
     }
-  }, []);
+  }, [size]);
 
   React.useEffect(
     () =>
@@ -85,7 +85,7 @@ export default function FourWayCross({
         endPosition[1],
         0,
       ]),
-    [connectedTube?.node?.position],
+    [connectedTube?.node?.position, size],
   );
 
   useRotate(ref, { z: 90 }, isMiddle);

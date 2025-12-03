@@ -1,11 +1,10 @@
 import React from 'react';
 import { getTypeDefinition } from '../connectors/types';
-import { B } from '../sizes';
+import { sizes } from '../sizes';
 import Tube from '../nodes/Tube';
 import useRotate from '../controls/useRotate';
 import useSelectionStore from '../state/useSelectionStore';
 import { Select } from '@react-three/postprocessing';
-import { useWhyDidYouUpdate } from 'ahooks';
 
 const TubeNode = ({ chain, tube, position, size, rotation }) => {
   const groupRef = React.useRef();
@@ -198,7 +197,7 @@ export default function Chain({ chain, scene }) {
       <ChainNode
         chain={chain}
         connection={firstNode}
-        size={B}
+        size={sizes[scene.size || 'B']}
         position={[0, 0, 0]}
         rotation={{ x: 0, y: firstNode.node.rotation || 0, z: 0 }}
       />

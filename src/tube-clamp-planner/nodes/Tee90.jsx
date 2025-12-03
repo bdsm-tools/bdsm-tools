@@ -55,11 +55,14 @@ export default function Tee90({
         -tubeRadius,
         -connectedTube?.node?.position || 0,
       ]),
-    [connectedTube?.node?.position],
+    [connectedTube?.node?.position, size],
   );
   React.useEffect(() => setMiddleConnectionRotation(0, { x: 90 }), []);
 
-  React.useEffect(() => setEndConnectionPosition(0, [0, 0, -tubeRadius]), []);
+  React.useEffect(
+    () => setEndConnectionPosition(0, [0, 0, -tubeRadius]),
+    [size],
+  );
   React.useEffect(() => setEndConnectionRotation(0, { x: 270 }), []);
 
   const isEnd = React.useCallback(

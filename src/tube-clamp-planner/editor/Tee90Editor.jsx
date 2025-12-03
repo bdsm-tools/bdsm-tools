@@ -27,7 +27,7 @@ export default function Tee90Editor({
   return (
     <>
       <Descriptions
-        title='Tee90'
+        title='90° Tee'
         layout='vertical'
         size='small'
         extra={

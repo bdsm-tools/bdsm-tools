@@ -56,7 +56,7 @@ export default function Tee45({
         -(tubeRadius + selfPosition) +
           (connectedTube?.node?.position || 0) * _45_DEGREE_DISTANCE_MULTIPLIER,
       ]),
-    [connectedTube?.node?.position],
+    [connectedTube?.node?.position, size],
   );
   React.useEffect(() => setMiddleConnectionRotation(0, { x: 315 }), []);
 
@@ -67,7 +67,7 @@ export default function Tee45({
         tubeOffset + connectorPosition,
         tubeRadius + connectorPosition,
       ]),
-    [],
+    [size],
   );
   React.useEffect(() => setEndConnectionRotation(0, { x: 45 }), []);
 

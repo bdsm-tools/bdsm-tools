@@ -109,8 +109,8 @@ export default function SceneCanvas() {
                   width={scene.width}
                   height={scene.height}
                 />
-                {chains.map((chain, index) => (
-                  <Chain key={index} chain={chain} scene={scene} />
+                {chains.map((chain) => (
+                  <Chain key={chain?.id} chain={chain} scene={scene} />
                 ))}
 
                 <EffectComposer autoClear={false} multisampling={16}>
