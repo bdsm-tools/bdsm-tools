@@ -49,7 +49,7 @@ export const mapObject = (obj, ...mappingFunctions) =>
     Object.entries(obj).map(([key, value], index) => [
       key,
       mappingFunctions.reduce(
-        (value, mappingFunction) => mappingFunction(value, key, index),
+        (accValue, mappingFunction) => mappingFunction(accValue, key, index),
         value,
       ),
     ]),
