@@ -39,8 +39,8 @@ module.exports = merge(common, {
         SLAVE_TRAINING_API_ROOT: JSON.stringify('http://localhost:3300'),
       },
     }),
-    // new WebpackCdnPlugin({
-    //   modules: cdnModules(mode),
-    // }),
+    new WebpackCdnPlugin({
+      modules: cdnModules(mode),
+    }),
   ],
 });
