@@ -21,7 +21,7 @@ const useStore = create(
 
     importChains: (...inputChains) =>
       set({
-        chains: inputChains.map(importChain),
+        chains: inputChains.filter(Boolean).map(importChain),
       }),
 
     addChainNode: (node, index = -1) =>
@@ -81,7 +81,7 @@ const useStore = create(
         delete chain[id];
 
         if (Object.keys(chain).length === 0) {
-          state.chains.splice(chainIndex, 1);
+          state.chains.splice(chainIndex, 1, undefined);
         }
       }),
     addChain: (chain) =>
@@ -117,7 +117,7 @@ export const useInitScene = (sceneId) => {
       setLocalScene({
         ...JSON.parse(JSON.stringify(data.scene)),
         version: 1,
-        chains: data.chains.map((chain) => exportChain(chain)),
+        chains: data.chains.filter(Boolean).map((chain) => exportChain(chain)),
       });
     }
   };
