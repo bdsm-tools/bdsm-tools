@@ -1,8 +1,8 @@
 {
   "name": "feature-flags-api",
-  "version": "1.4.1",
+  "version": "1.5.1",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=24.0.0"
   },
   "scripts": {
     "deploy": "./deploy.sh"
@@ -10,8 +10,8 @@
   "dependencies": {
     "cors": "2.8.5",
     "connect-mongodb-session": "5.0.0",
-    "express": "4.19.2",
-    "express-session": "1.18.0",
-    "mongodb": "6.8.0"
+    "express": "5.2.1",
+    "express-session": "1.18.2",
+    "mongodb": "7.0.0"
   }
 }

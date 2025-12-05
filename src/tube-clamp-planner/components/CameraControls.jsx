@@ -1,7 +1,7 @@
 import React from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { Box3, Vector3 } from 'three';
-import useKeyDown from '../../hooks/customHooks';
+import useKeyDown from '../../hooks/useKeyDown';
 import useSceneStore from '../state/useSceneStore';
 import useSelectionStore from '../state/useSelectionStore';
 

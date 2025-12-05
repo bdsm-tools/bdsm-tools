@@ -6,7 +6,7 @@ gcloud config set project bdsm-tools &&
 gcloud functions deploy feature-flag-test \
   --gen2 \
   --entry-point app \
-  --runtime nodejs18 \
+  --runtime nodejs24 \
   --trigger-http \
   --allow-unauthenticated \
   --memory 128Mi \
