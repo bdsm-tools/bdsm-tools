@@ -27,12 +27,12 @@ jobs:
       - name: Set up the Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
-          version: '>= 363.0.0'
+          version: '>= 548.0.0'
 
       - name: Build
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: 24.x
       - run: npm ci && npm run build
 
       - name: Clean Bucket
@@ -51,7 +51,7 @@ jobs:
           cd api/scene-negotiation && gcloud functions deploy scene-negotiation \
             --gen2 \
             --entry-point app \
-            --runtime nodejs18 \
+            --runtime nodejs24 \
             --trigger-http \
             --allow-unauthenticated \
             --memory 128Mi \
@@ -63,7 +63,7 @@ jobs:
           cd api/feature-flags && gcloud functions deploy feature-flag \
             --gen2 \
             --entry-point app \
-            --runtime nodejs18 \
+            --runtime nodejs24 \
             --trigger-http \
             --allow-unauthenticated \
             --memory 128Mi \
@@ -76,7 +76,7 @@ jobs:
           cd api/slave-training && gcloud functions deploy slave-training \
             --gen2 \
             --entry-point app \
-            --runtime nodejs18 \
+            --runtime nodejs24 \
             --trigger-http \
             --allow-unauthenticated \
             --memory 128Mi \
