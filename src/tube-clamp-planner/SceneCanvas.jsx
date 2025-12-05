@@ -109,7 +109,7 @@ export default function SceneCanvas() {
                   width={scene.width}
                   height={scene.height}
                 />
-                {chains.map((chain, index) => (
+                {chains.filter(Boolean).map((chain, index) => (
                   <Chain key={index} chain={chain} scene={scene} />
                 ))}
 

@@ -21,7 +21,7 @@ const useStore = create(
 
     importChains: (...inputChains) =>
       set({
-        chains: inputChains.map(importChain),
+        chains: inputChains.filter(Boolean).map(importChain),
       }),
 
     addChainNode: (node, index = -1) =>
@@ -65,7 +65,8 @@ const useStore = create(
       }),
     removeChainNode: (id) =>
       set((state) => {
-        const chain = state.chains.find((chain) => chain[id]);
+        const chainIndex = state.chains.findIndex((chain) => chain[id]);
+        const chain = state.chains[chainIndex];
 
         Object.keys(chain).forEach((key) => {
           const middleIndex = chain[key].children.middle.indexOf(id);
@@ -78,6 +79,10 @@ const useStore = create(
           }
         });
         delete chain[id];
+
+        if (Object.keys(chain).length === 0) {
+          state.chains.splice(chainIndex, 1, undefined);
+        }
       }),
     addChain: (chain) =>
       set((state) => {
@@ -112,7 +117,7 @@ export const useInitScene = (sceneId) => {
       setLocalScene({
         ...JSON.parse(JSON.stringify(data.scene)),
         version: 1,
-        chains: data.chains.map((chain) => exportChain(chain)),
+        chains: data.chains.filter(Boolean).map((chain) => exportChain(chain)),
       });
     }
   };

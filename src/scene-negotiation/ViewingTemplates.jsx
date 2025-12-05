@@ -86,7 +86,7 @@ export default function ViewingTemplates() {
             {...template}
             onClick={() => {
               ReactGA.event('create_negotiation', { title: template.title });
-              navigate(template.title);
+              navigate(encodeURIComponent(template.title));
             }}
           />
         ))}
