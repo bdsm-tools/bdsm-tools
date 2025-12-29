@@ -64,6 +64,13 @@ const TubePlannerEntry = React.lazy(
     ),
 );
 
+const ChastityDommeEntry = React.lazy(
+  () =>
+    import(
+      /* webpackChunkName: "ChastityDomme", webpackPrefetch: true */ './chastity-domme/Entry'
+    ),
+);
+
 const AboutEntry = React.lazy(
   () =>
     import(
@@ -105,6 +112,7 @@ export default function Application() {
               <Route index element={<TubePlannerDashboard />} />
               <Route path=':sceneId' element={<TubePlanViewer />} />
             </Route>
+            <Route path='chasity-domme' element={<ChastityDommeEntry />}/>
           </Route>
         </Route>
       </Routing>

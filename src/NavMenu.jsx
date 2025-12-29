@@ -63,6 +63,12 @@ export default function NavMenu({ vertical = false }) {
                 label: <Link to='/tools/tube-planner'>Tube Clamp Planner</Link>,
                 icon: <EditOutlined />,
               },
+              {
+                key: 'chastity-domme',
+                title: 'Chastity Domme',
+                label: <Link to='/tools/chastity-domme'>Chastity Domme</Link>,
+                icon: <EditOutlined />,
+              },
             ],
           },
           {
