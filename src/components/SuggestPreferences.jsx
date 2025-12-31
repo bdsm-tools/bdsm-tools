@@ -16,10 +16,11 @@ export default function SuggestPreferences() {
       cancelButtonProps={{ style: { display: 'none' } }}
     >
       <Typography.Paragraph>
-        Set some preferences to make this tool better for you or continue without
+        Set some preferences to make this tool better for you or continue
+        without
       </Typography.Paragraph>
       <MyBodyParts />
       <MyEquipment />
     </Modal>
-  )
+  );
 }
