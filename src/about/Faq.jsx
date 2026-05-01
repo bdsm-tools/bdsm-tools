@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Collapse } from 'antd';
-import { PageHeader } from '@ant-design/pro-components';
+import PageHeader from '../components/PageHeader';
 import IssueLink from './IssueLink';
 import useAnalytics from '../hooks/useAnalytics';
 

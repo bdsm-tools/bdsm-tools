@@ -1,6 +1,6 @@
 import React from 'react';
 import { useMatch } from 'react-router-dom';
-import { PageHeader } from '@ant-design/pro-components';
+import PageHeader from '../components/PageHeader';
 import { Outlet, useNavigate } from 'react-router';
 import './connectors/tube';
 import './connectors/flange';
