@@ -18,5 +18,11 @@ export default function validateChain(chain) {
     throw `The chain start '${type}' is not able to connect to a surface`;
   }
 
-  validateTypeDefinition(typeDefinition, chain, 'surface');
+  try {
+    validateTypeDefinition(typeDefinition, chain, 'surface');
+  } catch (e) {
+    console.error('Chain validation error:', e);
+    console.error('The above validation error was for the chain:', chain);
+    throw e;
+  }
 }

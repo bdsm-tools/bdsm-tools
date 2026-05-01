@@ -13,8 +13,8 @@ export default function validateTypeDefinition(
 
   const fromMiddle = joinedFrom === 'middle' ? 1 : 0;
   if (
-    typeDefinition.middleConnections - fromMiddle <
-    middleConnections.length
+    typeDefinition.middleConnections - fromMiddle <=
+    middleConnections?.filter(Boolean).length
   ) {
     throw `Type '${type}' can only connect to ${typeDefinition.middleConnections} middle connections`;
   }
@@ -24,9 +24,11 @@ export default function validateTypeDefinition(
     throw `Type '${type}' can only connect to ${typeDefinition.endConnections} end connections`;
   }
 
-  middleConnections?.forEach((connection) =>
-    validateTube(connection, 'middle'),
-  );
+  middleConnections
+    ?.filter(Boolean)
+    ?.forEach((connection) => validateTube(connection, 'middle'));
 
-  endConnections?.forEach((connection) => validateTube(connection, 'end'));
+  endConnections
+    ?.filter(Boolean)
+    ?.forEach((connection) => validateTube(connection, 'end'));
 }
