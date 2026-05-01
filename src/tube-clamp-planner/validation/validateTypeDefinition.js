@@ -13,14 +13,17 @@ export default function validateTypeDefinition(
 
   const fromMiddle = joinedFrom === 'middle' ? 1 : 0;
   if (
-    typeDefinition.middleConnections - fromMiddle <=
+    typeDefinition.middleConnections - fromMiddle <
     middleConnections?.filter(Boolean).length
   ) {
     throw `Type '${type}' can only connect to ${typeDefinition.middleConnections} middle connections`;
   }
 
   const fromEnd = joinedFrom === 'end' ? 1 : 0;
-  if (typeDefinition.endConnections - fromEnd < endConnections.length) {
+  if (
+    typeDefinition.endConnections - fromEnd <
+    endConnections?.filter(Boolean).length
+  ) {
     throw `Type '${type}' can only connect to ${typeDefinition.endConnections} end connections`;
   }
 
