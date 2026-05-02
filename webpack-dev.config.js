@@ -1,10 +1,8 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-const WebpackCdnPlugin = require('webpack-cdn-plugin');
 const path = require('path');
 
 const common = require('./webpack-common.config');
-const cdnModules = require('./webpack-cdn-config');
 
 const mode = 'development';
 module.exports = merge(common, {
@@ -43,9 +41,6 @@ module.exports = merge(common, {
           'https://slave-training.api.test.bdsmtools.org',
         ),
       },
-    }),
-    new WebpackCdnPlugin({
-      modules: cdnModules(mode),
     }),
   ],
 });

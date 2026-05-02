@@ -1,10 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
-const WebpackCdnPlugin = require('webpack-cdn-plugin');
 
 const common = require('./webpack-common.config');
-const cdnModules = require('./webpack-cdn-config');
 
 const mode = 'development';
 module.exports = merge(common, {
@@ -39,8 +37,5 @@ module.exports = merge(common, {
         SLAVE_TRAINING_API_ROOT: JSON.stringify('http://localhost:3300'),
       },
     }),
-    // new WebpackCdnPlugin({
-    //   modules: cdnModules(mode),
-    // }),
   ],
 });

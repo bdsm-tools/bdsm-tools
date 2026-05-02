@@ -1,11 +1,9 @@
 const webpack = require('webpack');
 const { merge } = require('webpack-merge');
 const CompressionPlugin = require('compression-webpack-plugin');
-const WebpackCdnPlugin = require('webpack-cdn-plugin');
 
 const { version } = require('./package.json');
 const common = require('./webpack-common.config');
-const cdnModules = require('./webpack-cdn-config');
 
 const mode = 'production';
 module.exports = merge(common, {
@@ -45,9 +43,6 @@ module.exports = merge(common, {
           'https://slave-training.api.bdsmtools.org',
         ),
       },
-    }),
-    new WebpackCdnPlugin({
-      modules: cdnModules(mode),
     }),
   ],
 });

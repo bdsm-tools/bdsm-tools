@@ -24,18 +24,29 @@ module.exports = {
 
   entry: './src/index.jsx',
   output: {
-    filename: 'bundle/[contenthash]/[name].bundle.js',
-    chunkFilename: 'bundle/[contenthash]/[name].chunk.js',
+    filename: 'bundle/[name].[contenthash].bundle.js',
+    chunkFilename: 'bundle/[name].[contenthash].chunk.js',
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
+    clean: true,
   },
 
   optimization: {
+    moduleIds: 'deterministic',
+    runtimeChunk: 'single',
     splitChunks: {
       chunks: 'all',
       maxInitialRequests: Infinity,
-      minSize: 0,
+      minSize: 5000,
       cacheGroups: {
+        // Group 1: The Core Framework (Highest Stability)
+        framework: {
+          test: /[\\/]node_modules[\\/](react|react-dom|scheduler|prop-types)[\\/]/,
+          name: 'vendor/framework',
+          priority: 40,
+          enforce: true,
+        },
+        // Group 2: Your existing "Per-Package" logic
         vendor: {
           test: /[\\/]node_modules[\\/]/,
           name(module) {
@@ -44,8 +55,9 @@ module.exports = {
             )[1];
             return `vendor/${packageName.replace('@', '')}`;
           },
-          priority: -10,
+          priority: 10,
         },
+        // Group 3: Your JSON logic
         json: {
           test: /\.json$/,
           name(module) {
@@ -54,17 +66,11 @@ module.exports = {
             );
             return fileName ? `json/${fileName[2]}` : 'json/unknown';
           },
-          chunks: 'all',
+          priority: 20,
           enforce: true,
-        },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true,
         },
       },
     },
-    runtimeChunk: 'single',
   },
 
   module: {
@@ -153,13 +159,6 @@ module.exports = {
       },
     ],
   },
-
-  // externals: [nodeExternals({
-  //   allowlist: [
-  //     'react',
-  //     'react-dom',
-  //   ],
-  // })],
 
   plugins: [
     new HtmlWebpackPlugin({
