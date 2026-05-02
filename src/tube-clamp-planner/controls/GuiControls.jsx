@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, Segmented } from 'antd';
-import { PageHeader } from '@ant-design/pro-components';
+import PageHeader from '../../components/PageHeader';
 import { useNavigate } from 'react-router-dom';
 import SceneControls from './SceneControls';
 import SelectionControls from './SelectionControls';
@@ -41,7 +41,7 @@ export default function GuiControls() {
       <div
         style={{
           padding: 10,
-          height: 'calc(100% - 64px - 50px)',
+          height: 'calc(100% - 64px - 64px)',
           overflowY: 'scroll',
         }}
       >

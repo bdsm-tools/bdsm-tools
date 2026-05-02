@@ -14,19 +14,24 @@ export default function validateTypeDefinition(
   const fromMiddle = joinedFrom === 'middle' ? 1 : 0;
   if (
     typeDefinition.middleConnections - fromMiddle <
-    middleConnections.length
+    middleConnections?.filter(Boolean).length
   ) {
     throw `Type '${type}' can only connect to ${typeDefinition.middleConnections} middle connections`;
   }
 
   const fromEnd = joinedFrom === 'end' ? 1 : 0;
-  if (typeDefinition.endConnections - fromEnd < endConnections.length) {
+  if (
+    typeDefinition.endConnections - fromEnd <
+    endConnections?.filter(Boolean).length
+  ) {
     throw `Type '${type}' can only connect to ${typeDefinition.endConnections} end connections`;
   }
 
-  middleConnections?.forEach((connection) =>
-    validateTube(connection, 'middle'),
-  );
+  middleConnections
+    ?.filter(Boolean)
+    ?.forEach((connection) => validateTube(connection, 'middle'));
 
-  endConnections?.forEach((connection) => validateTube(connection, 'end'));
+  endConnections
+    ?.filter(Boolean)
+    ?.forEach((connection) => validateTube(connection, 'end'));
 }

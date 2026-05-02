@@ -11,7 +11,7 @@ export default function Tags({ values, colourFunction = {} }) {
           <Popover key={value} content={value} trigger='click'>
             <Tag
               color={
-                colourFunction[value] || colourFunction[undefined] || value
+                colourFunction[value] || colourFunction[undefined] || undefined
               }
             >
               {ellipse(value, { limit: 20 })}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Col, Row, Divider, Alert, App } from 'antd';
-import { PageHeader } from '@ant-design/pro-components';
+import PageHeader from '../components/PageHeader';
 import useAnalytics from '../hooks/useAnalytics';
 import DailyTask from './task/DailyTask';
 import TaskStats from './stats/TaskStats';
