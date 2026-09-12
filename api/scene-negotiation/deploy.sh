@@ -5,6 +5,6 @@ gcloud functions deploy scene-negotiation-test \
   --runtime nodejs24 \
   --trigger-http \
   --allow-unauthenticated \
-  --memory 128Mi \
+  --memory 256Mi \
   --timeout 10s \
   --region europe-west1
