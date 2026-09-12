@@ -1,6 +1,6 @@
 {
   "name": "scene-negotiation-api",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "engines": {
     "node": ">=24.0.0"
   },
@@ -8,8 +8,8 @@
     "deploy": "./deploy.sh"
   },
   "dependencies": {
-    "cors": "2.8.5",
+    "cors": "2.8.6",
     "express": "5.2.1",
-    "firebase-admin": "13.6.0"
+    "firebase-admin": "13.10.0"
   }
 }
